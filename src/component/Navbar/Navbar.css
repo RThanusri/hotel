@@ -1,0 +1,76 @@
+.Navbar {
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Ensures space between logo and menu */
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.Navbar .logo {
+    width: 250px;
+    height: auto; /* Adjust height automatically */
+}
+
+.navbar-menu {
+    display: flex;
+    font-size: 18px;
+    list-style: none;
+    color: black;
+    gap: 40px; /* Adjust for even spacing between menu items */
+}
+
+.navbar-right {
+    margin-top: 0px;;
+    display: flex;
+    font-size: 18px;
+    gap: 100px; 
+}
+.navbar-right1{
+    box-shadow: inset;
+    display: flex;
+    font-size: 18px;
+    gap: 100px; 
+}
+
+.Navbar button {
+    background: transparent;
+    color: black;
+    font-size: 20px;
+    padding: 10px 20px; 
+    cursor: pointer;
+    border-radius: 50px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.Navbar button:hover {
+    background: #ffcccc; 
+    color: red; 
+    text-decoration: underline;
+}
+
+.Navbar .active {
+    padding-bottom: 2px;
+    border-bottom: 2px solid #ff2b2b;
+    color: #ff2b2b;
+}
+
+.Navbar li {
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.Navbar li:hover {
+    color: red; 
+}
+
+.navbar-menu a {
+    color: black;
+    text-decoration: none;
+    padding: 10px; 
+}
+
+.navbar-menu a:hover {
+    color: red;
+    text-decoration: underline;
+}
+ 

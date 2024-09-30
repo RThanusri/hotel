@@ -1,0 +1,7 @@
+.body{
+    display: flex;
+    flex-direction: column;
+    margin-left: 250px; /* Matches the width of the Admin-Navbar */
+    padding: 20px; /* Optional: Adds some padding to your content */
+    box-sizing: border-box; /* Ensures padding is included in the width */
+}

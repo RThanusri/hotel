@@ -1,0 +1,58 @@
+.room-listing-container {
+    padding: 20px;
+  }
+  
+  .room-cards-container {
+    max-width: 100;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center cards horizontally */
+  }
+  
+  .room-card {
+    width: 750px; /* Increase width of the card */
+    height: auto; /* Adjust height */
+    margin: 20px; /* Space between cards */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
+    border-radius: 10px; /* Rounded corners */
+    overflow: hidden; /* Prevent overflow */
+  }
+  
+  .room-header {
+    font-size: 1.5rem; /* Increase font size for header */
+    font-weight: bold; /* Make header bold */
+  }
+  
+  .room-card p {
+    font-size: 1.1rem; /* Increase font size for paragraphs */
+  }
+  
+  .image-container {
+    display: flex;
+    align-items: center; /* Center images vertically */
+    justify-content: center; /* Center images horizontally */
+  }
+  
+  .image-container button {
+    background-color: #007bff; /* Button color */
+    color: white; /* Button text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 15px; /* Padding */
+    margin: 0 10px; /* Space between buttons */
+    cursor: pointer; /* Pointer cursor */
+    font-size: 1rem; /* Increase font size for buttons */
+  }
+  
+  .image-container button:disabled {
+    background-color: #ccc; /* Disabled button color */
+    cursor: not-allowed; /* Not-allowed cursor */
+  }
+  
+  .room-image {
+    width: 100%; /* Make image take full width of the card */
+    height: 300px; /* Set fixed height for images */
+    object-fit: cover; /* Maintain aspect ratio while covering the area */
+    border-radius: 0; /* No border radius for images */
+  }
+  

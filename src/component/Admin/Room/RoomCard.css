@@ -1,0 +1,47 @@
+/* RoomCard.css */
+
+/* Styling individual room card */
+.room-card {
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px; /* Fixed width for room cards */
+    margin: 10px; /* Margin around each card */
+    padding: 15px; /* Padding inside each card */
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center; /* Center text in the card */
+  }
+  
+  .room-card img {
+    width: 100%; /* Image will take full width of the card */
+    height: 200px; /* Fixed height for images */
+    object-fit: cover; /* Cover image proportionally */
+    border-radius: 10px; /* Rounded corners for the image */
+  }
+  
+  .room-card h3, .room-card h4, .room-card p {
+    color: #333; /* Dark text color */
+    font-family: Arial, sans-serif; /* Font for text */
+    margin: 10px 0; /* Margin around text elements */
+  }
+  
+  .room-card button {
+    background-color: #ff0000; /* Button background color */
+    color: white; /* Button text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners for button */
+    padding: 10px 15px; /* Padding inside button */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Transition for hover effect */
+  }
+  
+  .room-card button:hover {
+    background-color: #ff0000; /* Darker button color on hover */
+  }
+  
+  /* Hover effect for card */
+  .room-card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+  }
+  

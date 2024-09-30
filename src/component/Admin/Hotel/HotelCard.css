@@ -1,0 +1,155 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+  }
+  
+  .card {
+    width: 300px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out;
+    text-align: center;
+    /* display: flex;
+    flex-direction: column; */
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
+  .card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+  
+  .card h3 {
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .card h2 {
+    font-size: 24px;
+    color: #ff1e1e; /* Bright red for hotel name */
+    margin: 10px 0;
+  }
+  
+  .card p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+    margin: 5px 0;
+  }
+  
+  button {
+    background-color: #ff1e1e; /* Red background for buttons */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+  }
+  
+  button:hover {
+    background-color: #cc1616; /* Darker red on hover */
+  }
+  
+  button:focus {
+    outline: none;
+  }
+  
+  .modal {
+    width: 500px; /* Fixed width for modal */
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: fixed; /* Fixed positioning for centering */
+    top: 50%; /* Centers vertically */
+    left: 50%; /* Centers horizontally */
+    transform: translate(-50%, -50%); /* Shifts it by 50% of its own size */
+    text-align: left;
+    z-index: 1000; /* Ensure it stays above other content */
+  }
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 999; /* Should be lower than the modal's z-index */
+  }
+  
+  input[type="text"] {
+    width: calc(100% - 20px); /* Full width with padding */
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  input[type="file"] {
+    margin: 15px 0;
+  }
+  
+  img {
+    border-radius: 5px;
+  }
+  
+  button.confirm {
+    background-color: #ff1e1e; /* Same red as other buttons */
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button.confirm:hover {
+    background-color: #cc1616; /* Darker red on hover */
+  }
+  
+  button.cancel {
+    background-color: black;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button.cancel:hover {
+    background-color: #333; /* Slightly lighter black on hover */
+  }
+  
+  /* Responsive styling */
+  @media screen and (max-width: 600px) {
+    .card {
+      width: 90%;
+    }
+  
+    .modal {
+      width: 90%; /* Modal adjusts for smaller screens */
+      top: 50%; /* Keeps modal centered */
+      left: 50%; /* Keeps modal centered */
+      transform: translate(-50%, -50%);
+    }
+  
+    button {
+      width: 100%; /* Buttons are full width on small screens */
+      margin-top: 10px;
+    }
+  }
+  

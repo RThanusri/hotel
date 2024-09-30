@@ -1,0 +1,47 @@
+/* UserCard.css */
+
+/* Styling individual user card */
+.user-card {
+    background-color: #ffffff; /* White background for the card */
+    border: 1px solid #e0e0e0; /* Light border */
+    border-radius: 10px; /* Rounded corners */
+    padding: 15px; /* Padding inside the card */
+    margin: 10px; /* Margin around each card */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: transform 0.3s, box-shadow 0.3s; /* Transition for hover effect */
+  }
+  
+  /* Styling for card text */
+  .user-card h3 {
+    color: #333; /* Dark text color for the header */
+    font-family: Arial, sans-serif; /* Font for header */
+    margin: 0; /* No margin for header */
+  }
+  
+  .user-card p {
+    color: #666; /* Lighter text color for paragraph */
+    margin: 5px 0; /* Margin for paragraph elements */
+  }
+  
+  /* Button styles inside the card */
+  .user-card button {
+    background-color: #d9534f; /* Red button background color */
+    color: white; /* Button text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 8px 12px; /* Padding inside button */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Transition for hover effect */
+  }
+  
+  /* Button hover effect */
+  .user-card button:hover {
+    background-color: #c9302c; /* Darker red color on hover */
+  }
+  
+  /* Hover effect for card */
+  .user-card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+  }
+  

@@ -1,0 +1,17 @@
+.app {
+  width: 85%;
+  margin: auto;  
+  display: flex;        
+  flex-direction: column; 
+  justify-content: space-between; 
+  padding: 10px;       
+}
+.content1 {
+  margin-top: 50px; 
+  width: 100%;
+}
+
+.content2 {
+  margin-top: 50px;
+  width: 100%; 
+}

@@ -1,0 +1,33 @@
+/* About.css */
+
+.about-container {
+    max-width: 800px;
+    margin: 0 auto; /* Center the container */
+    font-family: 'Arial', sans-serif; /* Set a clean font */
+    padding-left: 20px; /* Add padding to the left */
+  }
+  
+  h1 {
+    text-align: center; /* Center the main title */
+    color: #333; /* Darker color for the title */
+  }
+  
+  h2 {
+    color: #555; /* Lighter color for subheadings */
+    margin-top: 20px; /* Space above subheadings */
+  }
+  
+  .about-description {
+    line-height: 1.6; /* Better readability */
+    margin-bottom: 15px; /* Space below paragraphs */
+  }
+  
+  .about-list {
+    list-style-type: disc; /* Use bullet points for the list */
+    margin-left: 20px; /* Indent the list */
+  }
+  
+  .about-list li {
+    margin-bottom: 10px; /* Space between list items */
+  }
+  

@@ -1,0 +1,71 @@
+/* Overall styling */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Navbar container */
+.Admin-Navbar {
+  width: 250px;
+  height: 100vh; /* Full height */
+  background-color: #ffffff; /* Red color theme */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo styling */
+.Admin-Navbar img.logo {
+  width: 150px;
+  height: 150px;
+  /* margin: 20px 0; */
+}
+
+/* Navbar menu styling */
+.Admin-navbar-menu {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  gap:50px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Menu items */
+.Admin-navbar-menu li {
+  width: 100%;
+  padding: 15px 0;
+  cursor: pointer;
+  color: red; /* Red by default */
+  font-size: 18px;
+  text-align: center;
+  /* transition: background-color 0.3s ease; */
+  border-bottom: 1px solid transparent; 
+  /* Transparent border for underline */
+  box-sizing: border-box; 
+}
+
+/* Active menu item */
+.Admin-navbar-menu li.active {
+  padding-bottom: 2px;
+  color: #000000; /* Underline for active item */
+  text-decoration: underline;
+}
+
+/* Hover effect */
+.Admin-navbar-menu li:hover {
+  color: #000000; 
+}
+
+.Admin-navbar-menu li a {
+  text-decoration: none;
+  color: inherit; /* This ensures the link takes the same color as the parent */
+  width: 100%;
+  display: block;
+  height: 100%;
+}
