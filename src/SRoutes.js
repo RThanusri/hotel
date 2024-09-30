@@ -5,7 +5,7 @@ import Search from "./component/Hotel/Search"
 import HotelListing from "./component/Hotel/HotelListing"
 import RoomListing from "./component/Hotel/RoomListing"
 
-import AdminNavBar from "./component/Admin/AdminNavBar/AdminNavBar"
+
 import AddHotel from "./component/Admin/Hotel/AddHotel"
 import HotelReviews from "./component/Hotel/HotelReviews"
 import HotelDetails from "./component/Hotel/HotelDetails"
@@ -23,7 +23,7 @@ import Contact from "./component/Contact/Contact"
 import AdminReview from "./component/Admin/Review/AdminReview"
 import Hotel from "./component/Admin/Hotel/Hotel";
 import Room from "./component/Admin/Room/Room"
-import Navbar from "./component/Navbar/Navbar"
+
 import ExploreHotelListings from "./component/Home/ExploreHotelListing.js"
 import ExploreRoomListing from "./component/Home/ExploreRoomListing.js"
 import UserNavbar from "./component/User/UserNavBar.js"

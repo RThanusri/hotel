@@ -4,25 +4,24 @@ body {
   font-family: Arial, sans-serif;
 }
 
-/* Navbar container */
 .Admin-Navbar {
-  width: 250px;
+  width: 200px;
   height: 100vh; /* Full height */
-  background-color: #ffffff; /* Red color theme */
+  background-color: #ffffff; /* Background color */
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: fixed;
-  top: 0;
+  position: fixed; /* Fixes the navbar on the left */
+  top: 280px; /* Adjust this value to move the navbar down */
   left: 0;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  z-index: 1000; /* Ensure it stays above other elements */
 }
 
 /* Logo styling */
 .Admin-Navbar img.logo {
   width: 150px;
-  height: 150px;
-  /* margin: 20px 0; */
+  height: auto; /* Maintain aspect ratio */
 }
 
 /* Navbar menu styling */
@@ -31,7 +30,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: 0;
-  gap:50px;
+  gap: 20px; /* Space between items */
   width: 100%;
   margin-top: 20px;
 }
@@ -44,27 +43,25 @@ body {
   color: red; /* Red by default */
   font-size: 18px;
   text-align: center;
-  /* transition: background-color 0.3s ease; */
-  border-bottom: 1px solid transparent; 
-  /* Transparent border for underline */
-  box-sizing: border-box; 
+  border-bottom: 1px solid transparent; /* Transparent border for underline */
+  box-sizing: border-box; /* Ensure padding does not affect width */
 }
 
 /* Active menu item */
 .Admin-navbar-menu li.active {
   padding-bottom: 2px;
-  color: #000000; /* Underline for active item */
-  text-decoration: underline;
+  color: #000000; /* Color for active item */
+  text-decoration: underline; /* Underline for active item */
 }
 
 /* Hover effect */
 .Admin-navbar-menu li:hover {
-  color: #000000; 
+  color: #000000; /* Change color on hover */
 }
 
 .Admin-navbar-menu li a {
   text-decoration: none;
-  color: inherit; /* This ensures the link takes the same color as the parent */
+  color: inherit; /* Inherit color from parent */
   width: 100%;
   display: block;
   height: 100%;

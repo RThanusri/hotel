@@ -96,7 +96,7 @@ const RoomListing = () => {
 
 const RoomCard = ({ room, onReviewClick, handleReserve }) => {
   return (
-    <Card sx={{ width: 500, height: 800, borderRadius: 2, boxShadow: 3 }}>
+    <Card sx={{ width: 500, height: 50, borderRadius: 2, boxShadow: 3 }}>
       <Carousel showArrows={true} autoPlay interval={4000} infiniteLoop>
         {room.images.map((image, index) => (
           <div key={index} style={{ height: '350px', overflow: 'hidden' }}>

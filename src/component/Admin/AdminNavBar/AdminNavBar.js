@@ -7,7 +7,7 @@ const AdminNavBar = () => {
   return (
     <div className="Admin-Navbar">
       <img
-        src="https://i.postimg.cc/90QWFChW/e3nr-Ui-Cd-Tm-GRzw-7-P8oz-SQ.webp"
+        src="../logo1.jpeg"
         alt=""
         className="logo"
       />
