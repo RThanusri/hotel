@@ -5,7 +5,6 @@ import "./SignIn.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const SESSION_DURATION = 30 * 60 * 1000; // 30 minutes in milliseconds
 
 const SignIn = ({ open, handleClose, openSignUp }) => {
   const [email, setEmail] = useState("");
@@ -33,15 +32,14 @@ const SignIn = ({ open, handleClose, openSignUp }) => {
 
         setSuccessMessage("Login Successful");
         handleClose();
-<<<<<<< HEAD
+
         
         if (role === 'USER') nav('/');
         else if (role === 'ADMIN') nav('/admin');
-=======
         if (role === "USER") nav("/");
         else if (role === "ADMIN") nav("/admin");
         else if (role === "HOTEL_OWNER") nav("/owner");
->>>>>>> 77edc996c55d6cdc2c560c6891f330f6277cff25
+
       })
       .catch((error) => {
         setErrorMessage("Login failed! Please check your credentials.");

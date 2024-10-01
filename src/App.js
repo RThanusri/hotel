@@ -4,11 +4,10 @@ import UserNavbar from "./component/User/UserNavBar";
 import SRoutes from "./SRoutes";
 import 'semantic-ui-css/semantic.min.css';
 import SignIn from "./component/User/SignIn";
-<<<<<<< HEAD
+
 import { Snackbar, Alert } from '@mui/material'; 
-=======
 import Owner from "./component/HotelOwner/Owner";
->>>>>>> 77edc996c55d6cdc2c560c6891f330f6277cff25
+ 
 
 const SESSION_DURATION = 30 * 60 * 1000; 
 
