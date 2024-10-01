@@ -30,7 +30,7 @@ const Navbar = () => {
          
         </li>
         <li className={menu === "viewBooking" ? "active" : ""}>
-        <Link to="/viewBooking" onClick={() => setMenu("viewBooking")}>view Bookings</Link>
+        <Link to="/viewBooking" onClick={() => setMenu("viewBooking")}>View Bookings</Link>
          
         </li>
         <li className={menu === "about-us" ? "active" : ""}>

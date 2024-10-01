@@ -76,7 +76,7 @@ const AddBooking = () => {
           onMouseEnter={(e) => (e.target.style.color = "#990000")} // Darker red on hover
           onMouseLeave={(e) => (e.target.style.color = "#cc0000")}
         >
-          Add  New Booking
+          Reserve Your Stay
         </Typography>
         <Box mt={2}>
           <Grid container spacing={2}>

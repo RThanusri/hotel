@@ -59,7 +59,7 @@ const ExploreByDestinations = () => {
     console.log(params);
 
     try {
-      const response = await axios.get('http://localhost:8081/api/user/searchHotelByAddress', {
+      const response = await axios.get('http://localhost:8080/api/user/searchHotelByAddress', {
         params,
         headers: {
           'Authorization': `Bearer ${token}`,

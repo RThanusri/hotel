@@ -7,6 +7,7 @@ import SignIn from "./component/User/SignIn";
 
 import { Snackbar, Alert } from '@mui/material'; 
 import Owner from "./component/HotelOwner/Owner";
+import Footer from "./component/Footer/Footer";
  
 
 const SESSION_DURATION = 30 * 60 * 1000; 
@@ -33,7 +34,7 @@ function App() {
 
     checkSession(); 
 
-    const intervalId = setInterval(checkSession, 30000); 
+    const intervalId = setInterval(checkSession, 300000); 
 
     return () => clearInterval(intervalId); 
   }, []);
@@ -77,6 +78,7 @@ function App() {
         handleClose={() => setSignInOpen(false)}
         onLoginSuccess={handleLoginSuccess}
       />
+    
     </div>
   );
 }

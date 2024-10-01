@@ -12,7 +12,7 @@ const User = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .get("http://localhost:808/api/admin/allUsersWithRoleUser", {
+      .get("http://localhost:8080/api/admin/allUsersWithRoleUser", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -17,7 +17,7 @@ const AllHotels = () => {
           },
         });
 
-        navigate('/hotelListings', { 
+        navigate('/explorehotelListings', { 
           state: {
             hotels: response.data,
           }

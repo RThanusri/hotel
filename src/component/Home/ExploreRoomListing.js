@@ -36,7 +36,7 @@ const ExploreRoomListing = () => {
       console.log(searchParams);
 
       try {
-        const response = await axios.get(`http://localhost:8081/api/shared/allRoomsInHotel/${hotelId}`, { // Fixed API endpoint
+        const response = await axios.get(`http://localhost:8080/api/shared/allRoomsInHotel/${hotelId}`, { // Fixed API endpoint
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',

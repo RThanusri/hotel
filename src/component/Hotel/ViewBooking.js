@@ -1,17 +1,31 @@
-import React, { useState, useEffect } from "react"; // Ensure this is the correct import path
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../Admin/Booking/Booking.css";
-import axios from "axios"; // Import axios
+import axios from "axios";
 import ViewBookingCard from "./ViewBookingCard";
+import {
+    Container,
+    Typography,
+    Button,
+    Grid,
+    Paper,
+    Snackbar,
+    Alert,
+    CircularProgress,
+} from "@mui/material";
 
 const ViewBooking = () => {
     const nav = useNavigate();
-    const [bookings, setBookings] = useState([]); // Initialize with an empty array
+    const [bookings, setBookings] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
 
     const getBookings = () => {
         const token = localStorage.getItem("token");
         const userId = localStorage.getItem("userId");
 
+        setLoading(true);
         axios
             .get(`http://localhost:8080/api/api/shared/getBookingsByUserId/${userId}`, {
                 headers: {
@@ -20,9 +34,14 @@ const ViewBooking = () => {
             })
             .then((response) => {
                 setBookings(response.data);
+                setError("");
             })
             .catch((error) => {
+                setError("Error fetching bookings. Please try again later.");
                 console.error("There was an error fetching the bookings!", error);
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
@@ -36,10 +55,13 @@ const ViewBooking = () => {
                 },
             })
             .then(() => {
-                alert("Booking cancelled successfully");
-                getBookings(); // Refresh booking list after deletion
+                setSnackbarMessage("Booking cancelled successfully");
+                setSnackbarOpen(true);
+                getBookings();
             })
             .catch((error) => {
+                setSnackbarMessage("Error cancelling booking. Please try again.");
+                setSnackbarOpen(true);
                 console.error("There was an error cancelling the booking!", error);
             });
     };
@@ -54,39 +76,79 @@ const ViewBooking = () => {
                 },
             })
             .then(() => {
-                alert("Booking updated successfully");
-                getBookings(); // Refresh booking list after update
+                setSnackbarMessage("Booking updated successfully");
+                setSnackbarOpen(true);
+                getBookings();
             })
             .catch((error) => {
+                setSnackbarMessage("Error updating booking. Please try again.");
+                setSnackbarOpen(true);
                 console.error("There was an error updating the booking!", error);
             });
     };
 
     useEffect(() => {
-        getBookings(); // Fetch all bookings on component mount
+        getBookings();
     }, []);
 
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
     return (
-        <>
-            <div className="booking-container">
-                {bookings.length === 0 ? (
-                    <div>
-                        <h2>No bookings found.</h2>
-                        <button onClick={() => nav("/AllHotels")}>Book Now</button>
-                    </div>
-                ) : (
-                    bookings.map((booking) => (
-                        <ViewBookingCard
-                            key={booking.bookingId}
-                            {...booking}
-                            remove={() => cancelBooking(booking.bookingId)} // Pass the remove function
-                            update={(id,updatedBooking) => updateBooking(booking.bookingId, updatedBooking)} // Pass the update function
-                        />
-                    ))
-                )}
-            </div>
-        </>
+        <Container maxWidth="md" style={{ backgroundColor: '#F0F8FF', padding: '20px', borderRadius: '8px solid black' }}>
+            <Typography variant="h4" align="center" gutterBottom style={{ color: 'black',fontWeight:'bolder' }}>
+                My Bookings ({bookings.length})
+            </Typography>
+            {loading ? (
+                <CircularProgress style={{ display: 'block', margin: 'auto', color: '#cc0000' }} />
+            ) : error ? (
+                <Paper elevation={3} style={{ padding: '20px', textAlign: 'center', backgroundColor: '#cc0000', color: '#fff' }}>
+                    <Typography variant="h5">{error}</Typography>
+                    <Button 
+                        variant="contained" 
+                        style={{ marginTop: '20px', backgroundColor: '#cc0000', color: '#fff' }}
+                        onClick={getBookings}
+                    >
+                        Retry
+                    </Button>
+                </Paper>
+            ) : bookings.length === 0 ? (
+                <Paper elevation={3} style={{ padding: '20px', textAlign: 'center', backgroundColor: '#cc0000', color: '#fff' }}>
+                    <Typography variant="h5">No bookings found.</Typography>
+                    <Button 
+                        variant="contained" 
+                        onClick={() => nav("/AllHotels")}
+                        style={{ marginTop: '20px', backgroundColor: '#cc0000', color: '#fff' }}
+                    >
+                        Book Now
+                    </Button>
+                </Paper>
+            ) : (
+                <Grid container spacing={2}>
+                    {bookings.map((booking) => (
+                        <Grid item xs={12} key={booking.bookingId}>
+                            <ViewBookingCard
+                                bookingId={booking.bookingId}
+                                checkInDate={booking.checkInDate}
+                                checkOutDate={booking.checkOutDate}
+                                numberOfAdults={booking.numberOfAdults}
+                                numberOfChildren={booking.numberOfChildren}
+                                guestAges={booking.guestAges}
+                                remove={() => cancelBooking(booking.bookingId)}
+                                update={(updatedBooking) => updateBooking(booking.bookingId, updatedBooking)}
+                            />
+                        </Grid>
+                    ))}
+                </Grid>
+            )}
+            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+                <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
+        </Container>
     );
-}
+};
 
 export default ViewBooking;

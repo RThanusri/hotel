@@ -29,6 +29,7 @@ const HotelListing = () => {
       state: { checkInDate, checkOutDate, numberOfRooms, numberOfAdults, numberOfChildren, hotelLocation },
     });
   };
+  
 
   const handleMoreDetailsClick = (hotel) => {
     navigate(`/hotelDetails/${hotel.id}`, { state: { hotel } });

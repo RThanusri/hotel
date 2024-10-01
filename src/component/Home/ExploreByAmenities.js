@@ -7,16 +7,15 @@ const ExploreByAmenities = () => {
   const amenities = [
     { title: 'Pool', description: 'Find hotels with pools.', icon: '🏊' },
     { title: 'Free WiFi', description: 'Hotels with complimentary WiFi.', icon: '📶' },
-    { title: 'Breakfast Included', description: 'Enjoy breakfast at these hotels.', icon: '🍳' },
+    { title: 'Restaurant', description: 'Enjoy food at these hotels.', icon: '🍳' },
     { title: 'Pet-Friendly', description: 'Stay with your furry friends.', icon: '🐾' },
     { title: 'Free Parking', description: 'Enjoy complimentary parking.', icon: '🅿️' },
-    { title: 'Washing Machine', description: 'In-room washing machines available.', icon: '🧺' },
+    { title: 'Laundry Facility', description: 'In-room washing machines available.', icon: '🧺' },
     { title: 'AC', description: 'Stay cool with air conditioning.', icon: '❄️' },
-    { title: 'Fireplace', description: 'Cozy up with an in-room fireplace.', icon: '🔥' },
+   
     { title: 'TV', description: 'Enjoy your favorite shows in-room.', icon: '📺' },
-    { title: 'Heating', description: 'Stay warm with heating options.', icon: '🌡️' },
-    { title: 'Barbeque', description: 'Grill your favorites in our outdoor spaces.', icon: '🍖' },
-    { title: 'Spa Services', description: 'Relax and rejuvenate with spa services.', icon: '💆‍♀️' },
+    
+    { title: 'Spa ', description: 'Relax and rejuvenate with spa services.', icon: '💆‍♀️' },
   ];
 
   const navigate = useNavigate();
@@ -27,7 +26,7 @@ const ExploreByAmenities = () => {
     const params = { amenities: amenityTitle };
 
     try {
-      const response = await axios.get('http://localhost:8081/api/user/searchHotelByAmenities', {
+      const response = await axios.get('http://localhost:8080/api/user/searchHotelByAmenities', {
         params,
         headers: {
           'Authorization': `Bearer ${token}`,
