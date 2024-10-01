@@ -29,8 +29,9 @@ const Navbar = () => {
         <Link to="/AllHotels" onClick={() => setMenu("hotels")}>Hotels</Link>
          
         </li>
-        <li onClick={() => setMenu("news")} className={menu === "news" ? "active" : ""}>
-          News
+        <li className={menu === "viewBooking" ? "active" : ""}>
+        <Link to="/viewBooking" onClick={() => setMenu("viewBooking")}>view Bookings</Link>
+         
         </li>
         <li className={menu === "about-us" ? "active" : ""}>
         <Link to="/About" onClick={() => setMenu("about-us")}>About Us</Link>

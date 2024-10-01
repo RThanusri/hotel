@@ -26,7 +26,7 @@ const AddRoom = () => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage
 
     axios
-      .post("http://localhost:8081/api/owner/addRoom", room, {
+      .post("http://localhost:8080/api/owner/addRoom", room, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import HotelCard from "./HotelCard"; // Ensure this is the correct import path
+import HotelCard from "../../Admin/Hotel/HotelCard"; // Ensure this is the correct import path
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Import axios
-import "./Hotel.css";
-import AdminNavBar from "../AdminNavBar/AdminNavBar";
+import "../../Admin/Hotel/Hotel.css";
 
-const Hotel = () => {
+const HotelByOwner = () => {
   const nav = useNavigate();
   const [hotels, setHotels] = useState([]); // Initialize with empty array
   const [searchTerm, setSearchTerm] = useState(0); // For search functionality
@@ -16,9 +15,10 @@ const Hotel = () => {
 
   const getHotels = () => {
     const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId"); // Replace this with your method of getting the userId
 
     axios
-      .get("http://localhost:8080/api/user/getAllHotels", {
+      .get(`http://localhost:8080/api/owner/getAllHotelsByOwner/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -72,7 +72,6 @@ const Hotel = () => {
         },
       })
       .then((response) => {
-      
         alert("Hotel updated successfully");
         getHotels(); // Refresh hotel list after update
       })
@@ -122,4 +121,4 @@ const Hotel = () => {
   );
 };
 
-export default Hotel;
+export default HotelByOwner;

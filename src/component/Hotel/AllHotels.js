@@ -10,7 +10,7 @@ const AllHotels = () => {
       const token = localStorage.getItem('token');
 
       try {
-        const response = await axios.get('http://localhost:8081/api/user/getAllHotels', {
+        const response = await axios.get('http://localhost:8080/api/user/getAllHotels', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',

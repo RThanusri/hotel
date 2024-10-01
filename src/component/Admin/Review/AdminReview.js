@@ -25,7 +25,7 @@ const AdminReview = () => {
       const token = localStorage.getItem('token');
         const hotelId=1;
       try {
-        const response = await axios.get(`http://localhost:8081/api/shared/hotelReviews/${hotelId}`, {
+        const response = await axios.get(`http://localhost:8080/api/shared/hotelReviews/${hotelId}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',

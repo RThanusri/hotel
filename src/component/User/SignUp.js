@@ -21,7 +21,7 @@ const SignUp = ({ open, handleClose, handleOpenSignIn }) => {
     e.preventDefault();
     const user = { name, email, password, role };
 
-    axios.post('http://localhost:8081/api/auth/signup', user)
+    axios.post('http://localhost:8080/api/auth/signup', user)
       .then(() => {
         alert("Sign Up Successful...You can login now");
         handleClose(); 

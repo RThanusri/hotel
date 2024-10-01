@@ -34,7 +34,7 @@ const AddBooking = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .post("http://localhost:8081/api/api/user/makeBooking", booking, {
+      .post("http://localhost:8080/api/api/user/makeBooking", booking, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

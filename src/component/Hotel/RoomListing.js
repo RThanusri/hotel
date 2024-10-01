@@ -46,7 +46,7 @@ const RoomListing = () => {
       console.log(searchParams);
 
       try {
-        const response = await axios.get('http://localhost:8081/api/user/searchRooms', {
+        const response = await axios.get('http://localhost:8080/api/user/searchRooms', {
           params: searchParams,
           headers: {
             'Authorization': `Bearer ${token}`,

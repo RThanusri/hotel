@@ -12,7 +12,7 @@ const User = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .get("http://localhost:8081/api/admin/allUsersWithRoleUser", {
+      .get("http://localhost:808/api/admin/allUsersWithRoleUser", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -40,7 +40,7 @@ const User = () => {
     const token = localStorage.getItem("token");
     // const userId = localStorage.getItem("userId");
     axios
-      .delete(`http://localhost:8081/api/shared/deleteAccount/${id}`, {
+      .delete(`http://localhost:8080/api/shared/deleteAccount/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

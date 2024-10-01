@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FormField, Button, Form } from "semantic-ui-react";
 import { Modal, Box, Snackbar, Alert } from "@mui/material";
-import './SignIn.css';
+import "./SignIn.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -19,7 +19,7 @@ const SignIn = ({ open, handleClose, openSignUp }) => {
     const login = { email, password };
 
     axios
-      .post("http://localhost:8081/api/auth/login", login)
+      .post("http://localhost:8080/api/auth/login", login)
       .then((response) => {
         const token = response.data.jwt;
         const userId = response.data.userId;
@@ -33,9 +33,15 @@ const SignIn = ({ open, handleClose, openSignUp }) => {
 
         setSuccessMessage("Login Successful");
         handleClose();
+<<<<<<< HEAD
         
         if (role === 'USER') nav('/');
         else if (role === 'ADMIN') nav('/admin');
+=======
+        if (role === "USER") nav("/");
+        else if (role === "ADMIN") nav("/admin");
+        else if (role === "HOTEL_OWNER") nav("/owner");
+>>>>>>> 77edc996c55d6cdc2c560c6891f330f6277cff25
       })
       .catch((error) => {
         setErrorMessage("Login failed! Please check your credentials.");
@@ -52,13 +58,13 @@ const SignIn = ({ open, handleClose, openSignUp }) => {
       <Modal open={open} onClose={handleClose}>
         <Box
           sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
             width: 600,
-            bgcolor: 'background.paper',
-            borderRadius: '8px',
+            bgcolor: "background.paper",
+            borderRadius: "8px",
             boxShadow: 24,
             p: 4,
           }}
@@ -71,7 +77,9 @@ const SignIn = ({ open, handleClose, openSignUp }) => {
             X
           </span>
           <center>
-            <h1 style={{ color: '#cc0000' }} className="title">Login</h1>
+            <h1 style={{ color: "#cc0000" }} className="title">
+              Login
+            </h1>
           </center>
           <Form onSubmit={handleSignIn}>
             <FormField>
@@ -97,7 +105,7 @@ const SignIn = ({ open, handleClose, openSignUp }) => {
             <Button type="submit" className="submit">
               Login
             </Button>
-            <div className="login" style={{ fontSize: '1.3rem' }}>
+            <div className="login" style={{ fontSize: "1.3rem" }}>
               Don't have an account?{" "}
               <span
                 onClick={() => {
@@ -105,7 +113,12 @@ const SignIn = ({ open, handleClose, openSignUp }) => {
                   openSignUp();
                 }}
                 className="login-navigation"
-                style={{ fontSize: '1.5rem', cursor: "pointer", color: "#cc0000", textDecoration: "underline" }}
+                style={{
+                  fontSize: "1.5rem",
+                  cursor: "pointer",
+                  color: "#cc0000",
+                  textDecoration: "underline",
+                }}
               >
                 Register Here
               </span>
@@ -118,7 +131,7 @@ const SignIn = ({ open, handleClose, openSignUp }) => {
         open={Boolean(successMessage)}
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Position at top
+        anchorOrigin={{ vertical: "top", horizontal: "center" }} // Position at top
       >
         <Alert onClose={handleSnackbarClose} severity="success">
           {successMessage}
@@ -129,7 +142,7 @@ const SignIn = ({ open, handleClose, openSignUp }) => {
         open={Boolean(errorMessage)}
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Position at top
+        anchorOrigin={{ vertical: "top", horizontal: "center" }} // Position at top
       >
         <Alert onClose={handleSnackbarClose} severity="error">
           {errorMessage}

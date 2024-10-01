@@ -27,6 +27,10 @@ import Room from "./component/Admin/Room/Room"
 import ExploreHotelListings from "./component/Home/ExploreHotelListing.js"
 import ExploreRoomListing from "./component/Home/ExploreRoomListing.js"
 import UserNavbar from "./component/User/UserNavBar.js"
+import ViewBooking from "./component/Hotel/ViewBooking.js"
+import OwnerNavbar from "./component/HotelOwner/OwnerNavBar/OwnerNavBar.js"
+import HotelByOwner from "./component/HotelOwner/Hotel/Hotel.js"
+import Owner from "./component/HotelOwner/Owner.js"
 
 
 
@@ -65,10 +69,10 @@ const SRoutes=()=>
       <Route path="/UserNavBar" element={<UserNavbar/>}/>
       <Route path="/Contact" element={<Contact/>}/>
       <Route path="/About" element={<About/>}/>
-
-
-
-
+      <Route path="/viewBooking" element={<ViewBooking/>}/>
+      <Route path="/ownerNavBar" element={<OwnerNavbar/>}/>
+      <Route path="/hotelByOwner" element={<HotelByOwner/>}/>
+      <Route path="/owner" element={<Owner/>}/>
 
 
   </Routes>
