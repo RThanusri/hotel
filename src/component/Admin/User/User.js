@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import UserCard from "./UserCard"; // Ensure this is the correct import path
 import axios from "axios"; // Import axios
-import './User.css'
+import './User.css';
+import { Alert } from "@mui/material"; // Import Alert from MUI
 
 const User = () => {
   const [users, setUsers] = useState([]); // Initialize with an empty array
   const [searchTerm, setSearchTerm] = useState(""); // For search functionality
   const [filteredUsers, setFilteredUsers] = useState([]);
+  const [alertMsg, setAlertMsg] = useState(''); // Message for success/error alerts
+  const [alertType, setAlertType] = useState(''); // Type for alert severity (success, error)
+  const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
 
   const getUsers = () => {
     const token = localStorage.getItem("token");
@@ -21,7 +25,13 @@ const User = () => {
         setUsers(response.data); // Set the users to the state
       })
       .catch((error) => {
-        console.error("There was an error fetching the users!", error);
+        setAlertType('error');
+        setAlertMsg('There was an error fetching the users!');
+        setShowAlert(true);
+        // Hide alert after 3 seconds
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 3000);
       });
   };
 
@@ -38,19 +48,29 @@ const User = () => {
 
   const removeUser = (id) => {
     const token = localStorage.getItem("token");
-    // const userId = localStorage.getItem("userId");
+    
     axios
       .delete(`http://localhost:8080/api/shared/deleteAccount/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((response) => {
-        alert("User removed successfully");
+      .then(() => {
+        setAlertType('success');
+        setAlertMsg('User removed successfully');
+        setShowAlert(true);
         getUsers(); // Refresh user list after deletion
       })
       .catch((error) => {
-        console.error("There was an error removing the user!", error);
+        setAlertType('error');
+        setAlertMsg('There was an error removing the user!');
+        setShowAlert(true);
+      })
+      .finally(() => {
+        // Hide alert after 3 seconds
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 3000);
       });
   };
 
@@ -61,30 +81,45 @@ const User = () => {
 
   return (
     <>
-    <div className="user-container">
-      <input
-        type="text"
-        placeholder="Search by User Name or Email"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)} 
-      />
-      <button onClick={handleSearch}>Search</button>
+      {showAlert && (
+        <div
+          style={{
+            position: "fixed",
+            top: "20px",
+            right: "20px",
+            zIndex: 1000,
+            width: "320px",
+          }}
+        >
+          <Alert severity={alertType}>{alertMsg}</Alert>
+        </div>
+      )}
 
-      {searchTerm
-        ? filteredUsers.map((user) => (
-            <UserCard
-              key={user.userId}
-              {...user}
-              remove={() => removeUser(user.userId)} 
-            />
-          ))
-        : users.map((user) => (
-            <UserCard
-              key={user.userId}
-              {...user}
-              remove={() => removeUser(user.userId)} 
-            />
-          ))}</div>
+      <div className="user-container">
+        <input
+          type="text"
+          placeholder="Search by User Name or Email"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)} 
+        />
+        <button onClick={handleSearch}>Search</button>
+
+        {searchTerm
+          ? filteredUsers.map((user) => (
+              <UserCard
+                key={user.userId}
+                {...user}
+                remove={() => removeUser(user.userId)} 
+              />
+            ))
+          : users.map((user) => (
+              <UserCard
+                key={user.userId}
+                {...user}
+                remove={() => removeUser(user.userId)} 
+              />
+            ))}
+      </div>
     </>
   );
 };

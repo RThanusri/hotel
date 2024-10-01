@@ -6,6 +6,7 @@ import {
   TextField,
   Typography,
   Card,
+  Alert,
 } from "@mui/material";
 
 const AddHotel = () => {
@@ -16,6 +17,10 @@ const AddHotel = () => {
   const [address, setAddress] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
   const [noOfRooms, setNoOfRooms] = useState(0);
+  
+  const [alertMsg, setAlertMsg] = useState(''); // Message for alerts
+  const [alertType, setAlertType] = useState(''); // Type for alert severity (success, error)
+  const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
 
   const addHotel = (e) => {
     e.preventDefault();
@@ -43,25 +48,49 @@ const AddHotel = () => {
         },
       })
       .then(() => {
-        alert("Hotel added successfully!");
+        setAlertType('success');
+        setAlertMsg('Hotel added successfully!');
+        setShowAlert(true);
       })
       .catch((error) => {
         console.error("There was an error in adding the hotel!", error);
-        alert("Failed to add the hotel");
+        setAlertType('error');
+        setAlertMsg('Failed to add the hotel');
+        setShowAlert(true);
+      })
+      .finally(() => {
+        // Hide alert after 3 seconds
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 3000);
       });
   };
 
   return (
     <Box
       sx={{
-        bgcolor: '#F5F5F5', // Background color
-        width: '100vw', // Full viewport width
-        height: '80vh', // Full viewport height
+        bgcolor: '#F5F5F5',
+        width: '100vw',
+        height: '80vh',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
       }}
     >
+      {showAlert && (
+        <div
+          style={{
+            position: "fixed",
+            top: "20px",
+            right: "20px",
+            zIndex: 1000,
+            width: "320px",
+          }}
+        >
+          <Alert severity={alertType}>{alertMsg}</Alert>
+        </div>
+      )}
+
       <Card
         sx={{
           backgroundColor: 'white',
@@ -86,10 +115,10 @@ const AddHotel = () => {
               InputProps={{
                 sx: {
                   '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#cc0000', // Change border color on hover
+                    borderColor: '#cc0000',
                   },
                   '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#cc0000', // Change border color on focus
+                    borderColor: '#cc0000',
                   },
                 },
               }}

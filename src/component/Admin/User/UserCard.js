@@ -9,7 +9,6 @@ const UserCard = ({ userId, userName, email, role, remove }) => {
       <p>Email: {email}</p>
       <p>Role: {role}</p>
 
-      {/* Button to remove user */}
       <button onClick={() => remove(userId)}>Remove User</button>
     </div>
   );

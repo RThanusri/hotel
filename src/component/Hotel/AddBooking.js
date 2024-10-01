@@ -8,6 +8,7 @@ import {
   Grid,
   Box,
   Paper,
+  Alert, // Import Alert from MUI
 } from "@mui/material";
 
 const AddBooking = () => {
@@ -18,6 +19,11 @@ const AddBooking = () => {
   const [guestAges, setGuestAges] = useState([""]);
   const [numberOfRooms, setNumberOfRooms] = useState(1);
   const [roomIds, setRoomIds] = useState([""]);
+
+  // Alert state
+  const [alertMsg, setAlertMsg] = useState("");
+  const [alertType, setAlertType] = useState(""); // Type for alert severity (success, error)
+  const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
 
   const addBooking = () => {
     const userId = localStorage.getItem("userId");
@@ -41,10 +47,20 @@ const AddBooking = () => {
         },
       })
       .then((response) => {
-        alert("Booking added successfully!");
+        setAlertType("success");
+        setAlertMsg("Booking added successfully!");
+        setShowAlert(true);
       })
       .catch((error) => {
-        console.error("There was an error in adding the booking!", error);
+        setAlertType("error");
+        setAlertMsg("There was an error in adding the booking!");
+        setShowAlert(true);
+      })
+      .finally(() => {
+        // Hide alert after 3 seconds
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 3000);
       });
   };
 
@@ -62,12 +78,27 @@ const AddBooking = () => {
 
   return (
     <Container maxWidth="md">
-      <Paper elevation={3} style={{ padding: "20px", backgroundColor: "#fff",  border: '2px solid black'}}>
+      {/* Alert Component */}
+      {showAlert && (
+        <div
+          style={{
+            position: "fixed",
+            top: "20px",
+            right: "20px",
+            zIndex: 1000,
+            width: "320px",
+          }}
+        >
+          <Alert severity={alertType}>{alertMsg}</Alert>
+        </div>
+      )}
+
+      <Paper elevation={3} style={{ padding: "20px", backgroundColor: "#fff", border: '2px solid black' }}>
         <Typography
           variant="h4"
           align="center"
           style={{
-            fontWeight:'bold',
+            fontWeight: 'bold',
             color: "#cc0000",
             fontFamily: "Arial, sans-serif", // Change to desired font
             transition: "color 0.3s",

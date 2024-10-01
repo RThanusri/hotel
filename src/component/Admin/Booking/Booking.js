@@ -2,13 +2,18 @@ import React, { useState, useEffect } from "react";
 import BookingCard from "./BookingCard"; // Ensure this is the correct import path
 import { useNavigate } from "react-router-dom";
 import "./Booking.css";
-import axios from "axios"; // Import axios
+import axios from "axios";
+import { Alert } from "@mui/material"; // Import Alert from MUI
 
 const Booking = () => {
   const nav = useNavigate();
-  const [bookings, setBookings] = useState([]); // Initialize with an empty array
-  const [searchTerm, setSearchTerm] = useState(0); // For search functionality
+  const [bookings, setBookings] = useState([]); 
+  const [searchTerm, setSearchTerm] = useState(0);
   const [filteredBookings, setFilteredBookings] = useState([]);
+  const [alertMsg, setAlertMsg] = useState(''); // Message for success/error alerts
+  const [alertType, setAlertType] = useState(''); // Type for alert severity (success, error)
+  
+  const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
 
   const getBookings = () => {
     const token = localStorage.getItem("token");
@@ -23,7 +28,13 @@ const Booking = () => {
         setBookings(response.data);
       })
       .catch((error) => {
-        console.error("There was an error fetching the bookings!", error);
+        setAlertType('error');
+        setAlertMsg('There was an error fetching the bookings!');
+        setShowAlert(true);
+        // Hide alert after 3 seconds
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 3000);
       });
   };
 
@@ -47,11 +58,21 @@ const Booking = () => {
         },
       })
       .then(() => {
-        alert("Booking cancelled successfully");
+        setAlertType('success');
+        setAlertMsg('Booking cancelled successfully');
+        setShowAlert(true);
         getBookings(); // Refresh booking list after deletion
       })
       .catch((error) => {
-        console.error("There was an error cancelling the booking!", error);
+        setAlertType('error');
+        setAlertMsg('There was an error cancelling the booking!');
+        setShowAlert(true);
+      })
+      .finally(() => {
+        // Hide alert after 3 seconds
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 3000);
       });
   };
 
@@ -65,11 +86,21 @@ const Booking = () => {
         },
       })
       .then(() => {
-        alert("Booking updated successfully");
+        setAlertType('success');
+        setAlertMsg('Booking updated successfully');
+        setShowAlert(true);
         getBookings(); // Refresh booking list after update
       })
       .catch((error) => {
-        console.error("There was an error updating the booking!", error);
+        setAlertType('error');
+        setAlertMsg('There was an error updating the booking!');
+        setShowAlert(true);
+      })
+      .finally(() => {
+        // Hide alert after 3 seconds
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 3000);
       });
   };
 
@@ -79,6 +110,20 @@ const Booking = () => {
 
   return (
     <>
+      {showAlert && (
+        <div
+          style={{
+            position: "fixed",
+            top: "20px",
+            right: "20px",
+            zIndex: 1000,
+            width: "320px",
+          }}
+        >
+          <Alert severity={alertType}>{alertMsg}</Alert>
+        </div>
+      )}
+
       <input
         type="text"
         placeholder="Search by Booking ID"
@@ -87,26 +132,26 @@ const Booking = () => {
       />
       <button onClick={handleSearch}>Search</button>
       <div className="booking-container">
-      {searchTerm
-        ? filteredBookings.map((booking) => (
-            <BookingCard
-              key={booking.bookingId}
-              {...booking}
-              remove={() => cancelBooking(booking.bookingId)} // Pass the remove function
-              update={(updatedBooking) => updateBooking(booking.bookingId, updatedBooking)} // Pass the update function
-            />
-          ))
-        : bookings.map((booking) => (
-            <BookingCard
-              key={booking.bookingId}
-              {...booking}
-              remove={() => cancelBooking(booking.bookingId)} // Pass the remove function
-              update={(updatedBooking) => updateBooking(booking.bookingId, updatedBooking)} // Pass the update function
-            />
-          ))}</div>
+        {searchTerm
+          ? filteredBookings.map((booking) => (
+              <BookingCard
+                key={booking.bookingId}
+                {...booking}
+                remove={() => cancelBooking(booking.bookingId)} // Pass the remove function
+                update={(updatedBooking) => updateBooking(booking.bookingId, updatedBooking)} // Pass the update function
+              />
+            ))
+          : bookings.map((booking) => (
+              <BookingCard
+                key={booking.bookingId}
+                {...booking}
+                remove={() => cancelBooking(booking.bookingId)} // Pass the remove function
+                update={(updatedBooking) => updateBooking(booking.bookingId, updatedBooking)} // Pass the update function
+              />
+            ))}
+      </div>
     </>
   );
 };
 
 export default Booking;
-

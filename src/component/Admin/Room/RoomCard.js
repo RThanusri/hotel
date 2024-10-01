@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Button, Modal } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
-import './RoomCard.css'
+import './RoomCard.css';
+import { Alert } from "@mui/material"; // Import Alert from MUI
 
 const RoomCard = ({
   id,
@@ -28,10 +29,11 @@ const RoomCard = ({
   const [nAvailableFrom, setNAvailableFrom] = useState(availableFrom);
   const [nAvailableTo, setNAvailableTo] = useState(availableTo);
   const [nImages, setNImages] = useState(images.join(", "));
+  const [alertMsg, setAlertMsg] = useState(''); // Alert message
+  const [alertType, setAlertType] = useState(''); // Alert type
+  const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
 
   const handleUpdate = () => {
-    console.log("inside handle update");
-
     const updatedData = {};
 
     if (nRoomSize !== roomSize) {
@@ -65,16 +67,24 @@ const RoomCard = ({
     if (nImages !== images.join(", ")) {
       updatedData.images = nImages.split(",").map((img) => img.trim());
     }
+
     if (Object.keys(updatedData).length > 0) {
       update(id, {
         ...updatedData,
       });
+      // Show success alert after update
+      setAlertType('success');
+      setAlertMsg('Room updated successfully!');
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 3000);
     }
-    console.log(updatedData);
     setOpen(false);
   };
 
   const handleClose = () => {
+    // Reset fields to original values
     setNRoomSize(roomSize);
     setNBedSize(bedSize);
     setNMaxOccupancy(maxOccupancy);
@@ -82,18 +92,30 @@ const RoomCard = ({
     setNIsAC(isAC);
     setNAvailableFrom(availableFrom);
     setNAvailableTo(availableTo);
-    setNImages(images);
+    setNImages(images.join(", "));
     setOpen(false);
   };
 
   return (
     <>
+      {showAlert && (
+        <div
+          style={{
+            position: "fixed",
+            top: "20px",
+            right: "20px",
+            zIndex: 1000,
+            width: "320px",
+          }}
+        >
+          <Alert severity={alertType}>{alertMsg}</Alert>
+        </div>
+      )}
       <center>
         <div className="room-card">
           <img
-            src={images} // show the first image
+            src={images[0]} // show the first image
             alt="Room"
-            // onClick={handleCardClick}
             style={{ cursor: "pointer" }}
           />
           <h3>Room Id: {id}</h3>
@@ -169,7 +191,7 @@ const RoomCard = ({
             <br />
             {nImages && (
               <img
-                src={nImages}
+                src={nImages.split(",")[0]} // Show the first image URL entered
                 alt="New Image"
                 style={{ width: "100px", height: "100px" }}
               />

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Alert } from "@mui/material"; // Import Alert from MUI
 
 const AddRoom = () => {
   const [roomSize, setRoomSize] = useState("");
@@ -11,7 +12,14 @@ const AddRoom = () => {
   const [availableTo, setAvailableTo] = useState("");
   const [images, setImages] = useState("");
 
-  const addRoom = () => {
+  // State for alerts
+  const [alertMsg, setAlertMsg] = useState(''); // Message for success/error alerts
+  const [alertType, setAlertType] = useState(''); // Type for alert severity (success, error)
+  const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
+
+  const addRoom = (e) => {
+    e.preventDefault(); // Prevent form submission
+
     const room = {
       roomSize,
       bedSize,
@@ -34,16 +42,40 @@ const AddRoom = () => {
       })
       .then((response) => {
         console.log(response);
-        alert("Room added successfully!");
+        setAlertType('success');
+        setAlertMsg('Room added successfully!');
+        setShowAlert(true);
       })
       .catch((error) => {
-        console.error("There was an error in adding the room!", error);
-        alert("Failed to add the room");
+        console.error("There was an error adding the room!", error);
+        setAlertType('error');
+        setAlertMsg('Failed to add the room');
+        setShowAlert(true);
+      })
+      .finally(() => {
+        // Hide alert after 3 seconds
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 3000);
       });
   };
 
   return (
     <div>
+      {showAlert && (
+        <div
+          style={{
+            position: "fixed",
+            top: "20px",
+            right: "20px",
+            zIndex: 1000,
+            width: "320px",
+          }}
+        >
+          <Alert severity={alertType}>{alertMsg}</Alert>
+        </div>
+      )}
+
       <h2>Add a New Room</h2>
       <form onSubmit={addRoom}>
         <div>

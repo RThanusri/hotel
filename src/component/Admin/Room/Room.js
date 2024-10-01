@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import RoomCard from "./RoomCard";
 import axios from "axios";
-import './Room.css'
+import { Alert } from "@mui/material"; // Import Alert from MUI
+import './Room.css';
 
 const Room = () => {
   const { hotelId } = useParams();
@@ -10,6 +11,10 @@ const Room = () => {
   const [rooms, setRooms] = useState([]); // Initialize with empty array
   const [searchTerm, setSearchTerm] = useState(0); // For search functionality
   const [filteredRooms, setFilteredRooms] = useState([]);
+  const [alertMsg, setAlertMsg] = useState(''); // Message for success/error alerts
+  const [alertType, setAlertType] = useState(''); // Type for alert severity (success, error)
+  const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
+
   const handleAddRoom = () => {
     nav("/addRoom");
   };
@@ -29,22 +34,25 @@ const Room = () => {
       })
       .catch((error) => {
         console.error("There was an error fetching the hotels!", error);
+        setAlertType('error');
+        setAlertMsg('There was an error fetching the rooms!');
+        setShowAlert(true);
+        setTimeout(() => setShowAlert(false), 3000); // Hide alert after 3 seconds
       });
   };
 
-  // Search hotels based on name
+  // Search rooms based on ID
   const handleSearch = () => {
     const searchId = parseInt(searchTerm); // Convert search term to number
     if (!isNaN(searchId)) {
-      const filtered = rooms.filter((room) => room.id === searchId); // Filter hotels by ID
-      setFilteredRooms(filtered); // Set filtered hotels
+      const filtered = rooms.filter((room) => room.id === searchId); // Filter rooms by ID
+      setFilteredRooms(filtered); // Set filtered rooms
     } else {
       setFilteredRooms(rooms);
     }
   };
 
   const removeRoom = (id) => {
-    console.log(id);
     const token = localStorage.getItem("token");
 
     axios
@@ -55,18 +63,25 @@ const Room = () => {
       })
       .then((response) => {
         console.log(response);
-        alert("room removed successfully");
-        getRooms(); // Refresh hotel list after deletion
+        setAlertType('success');
+        setAlertMsg('Room removed successfully!');
+        setShowAlert(true);
+        getRooms(); // Refresh room list after deletion
       })
       .catch((error) => {
         console.error("There was an error removing the room!", error);
+        setAlertType('error');
+        setAlertMsg('There was an error removing the room!');
+        setShowAlert(true);
+      })
+      .finally(() => {
+        setTimeout(() => setShowAlert(false), 3000); // Hide alert after 3 seconds
       });
   };
 
   const updateRoom = (id, updatedData) => {
     const token = localStorage.getItem("token");
-    console.log("id :" + id);
-    console.log("inside update room in room.js" + updatedData);
+
     axios
       .put(`http://localhost:8080/api/owner/updateRoom/${id}`, updatedData, {
         headers: {
@@ -75,11 +90,19 @@ const Room = () => {
       })
       .then((response) => {
         console.log(response);
-        alert("Room updated successfully");
-        getRooms(); // Refresh hotel list after update
+        setAlertType('success');
+        setAlertMsg('Room updated successfully!');
+        setShowAlert(true);
+        getRooms(); // Refresh room list after update
       })
       .catch((error) => {
         console.error("There was an error updating the Room!", error);
+        setAlertType('error');
+        setAlertMsg('There was an error updating the room!');
+        setShowAlert(true);
+      })
+      .finally(() => {
+        setTimeout(() => setShowAlert(false), 3000); // Hide alert after 3 seconds
       });
   };
 
@@ -90,32 +113,47 @@ const Room = () => {
 
   return (
     <>
+      {showAlert && (
+        <div
+          style={{
+            position: "fixed",
+            top: "20px",
+            right: "20px",
+            zIndex: 1000,
+            width: "320px",
+          }}
+        >
+          <Alert severity={alertType}>{alertMsg}</Alert>
+        </div>
+      )}
+
       <input
         type="text"
-        placeholder="Search by id"
+        placeholder="Search by ID"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)} // Update search term
       />
       <button onClick={handleSearch}>Search</button>
       <button onClick={handleAddRoom}>Add Room</button>
       <div className="room-container">
-      {searchTerm
-        ? filteredRooms.map((room) => (
-            <RoomCard
-              key={room.id}
-              {...room}
-              remove={() => removeRoom(room.id)} // Pass the remove function with hotel id
-              update={(updatedRoom) => updateRoom(room.id, updatedRoom)} // Pass the update function with hotel id
-            />
-          ))
-        : rooms.map((room) => (
-            <RoomCard
-              key={room.id}
-              {...room}
-              remove={() => removeRoom(room.id)} // Pass the remove function here
-              update={(id, updatedData) => updateRoom(room.id, updatedData)} // Pass the update function here
-            />
-          ))}</div>
+        {searchTerm
+          ? filteredRooms.map((room) => (
+              <RoomCard
+                key={room.id}
+                {...room}
+                remove={() => removeRoom(room.id)} // Pass the remove function with room id
+                update={(updatedRoom) => updateRoom(room.id, updatedRoom)} // Pass the update function with room id
+              />
+            ))
+          : rooms.map((room) => (
+              <RoomCard
+                key={room.id}
+                {...room}
+                remove={() => removeRoom(room.id)} // Pass the remove function here
+                update={(updatedRoom) => updateRoom(room.id, updatedRoom)} // Pass the update function here
+              />
+            ))}
+      </div>
     </>
   );
 };

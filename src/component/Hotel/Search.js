@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
-import { Button } from '@mui/material';
+import { Button, Alert } from '@mui/material'; // Import Alert from MUI
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -45,6 +45,9 @@ export default function Search() {
   const [numberOfRooms, setNumberOfRooms] = React.useState(1);
   const [numberOfAdults, setNumberOfAdults] = React.useState(1);
   const [numberOfChildren, setNumberOfChildren] = React.useState(0);
+  const [alertMsg, setAlertMsg] = React.useState('');
+  const [alertType, setAlertType] = React.useState('');
+  const [showAlert, setShowAlert] = React.useState(false);
   const navigate = useNavigate();
 
   const fetchLocations = async (inputValue) => {
@@ -64,14 +67,25 @@ export default function Search() {
         label: location.display_name,
       })));
     } catch (error) {
-      console.error("Error fetching locations:", error);
-      alert("Could not fetch locations. Please try again later.");
+      setAlertType('error');
+      setAlertMsg("Could not fetch locations. Please try again later.");
+      setShowAlert(true);
+      // Hide alert after 3 seconds
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 3000);
     }
   };
 
   const handleSearch = async () => {
     if (!selectedLocation) {
-      alert("Please select a location.");
+      setAlertType('error');
+      setAlertMsg("Please select a location.");
+      setShowAlert(true);
+      // Hide alert after 3 seconds
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 3000);
       return;
     }
 
@@ -87,8 +101,6 @@ export default function Search() {
     const token = localStorage.getItem('token');
 
     try {
-      console.log("Search Parameters:", searchParams); // Debugging
-
       const response = await axios.get('http://localhost:8080/api/user/searchHotel', {
         params: searchParams,
         headers: {
@@ -97,10 +109,14 @@ export default function Search() {
         },
       });
 
-      console.log("API Response:", response.data); 
-
       if (!response.data || response.data.length === 0) {
-        alert("No hotels found. Please try different search criteria.");
+        setAlertType('warning');
+        setAlertMsg("No hotels found. Please try different search criteria.");
+        setShowAlert(true);
+        // Hide alert after 3 seconds
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 3000);
         return;
       }
 
@@ -116,14 +132,33 @@ export default function Search() {
         }
       });
     } catch (error) {
-      console.error("Error searching for hotels:", error);
-      alert("Error searching for hotels. Please try again later.");
+      setAlertType('error');
+      setAlertMsg("Error searching for hotels. Please try again later.");
+      setShowAlert(true);
+      // Hide alert after 3 seconds
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 3000);
     }
   };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <SearchBox sx={{ width: '100%' }}>
+        {showAlert && (
+          <div
+            style={{
+              position: "fixed",
+              top: "20px",
+              right: "20px",
+              zIndex: 1000,
+              width: "320px",
+            }}
+          >
+            <Alert severity={alertType}>{alertMsg}</Alert>
+          </div>
+        )}
+
         <center>
           <p style={{ color: '#000', fontWeight: 'bold', fontSize: '3.0rem' }}>
             Find places to stay on Cozy Haven Stay

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Modal } from "semantic-ui-react";
+import { Alert } from "@mui/material"; // Import Alert from MUI
 import './BookingCard.css';
 
 const BookingCard = ({
@@ -9,8 +10,8 @@ const BookingCard = ({
   numberOfAdults,
   numberOfChildren,
   numberOfRooms,
-  guestAges = [], // Default to an empty array
-  roomIds = [],   // Default to an empty array
+  guestAges = [],
+  roomIds = [],
   update,
   remove,
 }) => {
@@ -22,6 +23,9 @@ const BookingCard = ({
   const [nNumberOfRooms, setNNumberOfRooms] = useState(numberOfRooms);
   const [nGuestAges, setNGuestAges] = useState([...guestAges]);
   const [nRoomIds, setNRoomIds] = useState([...roomIds]);
+  const [alertMsg, setAlertMsg] = useState(''); // Message for alerts
+  const [alertType, setAlertType] = useState(''); // Type for alert severity
+  const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
 
   const handleUpdate = () => {
     const updatedData = {};
@@ -57,10 +61,20 @@ const BookingCard = ({
     // Only update if there are changes
     if (Object.keys(updatedData).length > 0) {
       update(bookingId, updatedData);
+      setAlertType('success');
+      setAlertMsg('Booking updated successfully');
+      setShowAlert(true);
+      setOpen(false); // Close the modal
+    } else {
+      setAlertType('error');
+      setAlertMsg('No changes made to the booking');
+      setShowAlert(true);
     }
 
-    console.log(updatedData); // Log the updated data
-    setOpen(false);
+    // Hide alert after 3 seconds
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 3000);
   };
 
   const handleClose = () => {
@@ -97,6 +111,20 @@ const BookingCard = ({
 
   return (
     <div className="booking-card">
+      {showAlert && (
+        <div
+          style={{
+            position: "fixed",
+            top: "20px",
+            right: "20px",
+            zIndex: 1000,
+            width: "320px",
+          }}
+        >
+          <Alert severity={alertType}>{alertMsg}</Alert>
+        </div>
+      )}
+
       <h3>Booking Id: {bookingId}</h3>
       <p>Check-in Date: {checkInDate}</p>
       <p>Check-out Date: {checkOutDate}</p>

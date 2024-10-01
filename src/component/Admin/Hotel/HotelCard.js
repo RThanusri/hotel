@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Button, Modal } from "semantic-ui-react";
 import "./HotelCard.css";
 import { useNavigate } from "react-router-dom";
+import { Alert } from "@mui/material"; // Import Alert from MUI
+
 const HotelCard = ({
   id,
   name = "test",
@@ -22,6 +24,11 @@ const HotelCard = ({
   const [nImage, setNImage] = useState(image);
   const [nAddress, setNAddress] = useState(address);
   const [nPhoneNo, setNPhoneNo] = useState(phoneNo);
+
+  // State for alerts
+  const [alertMsg, setAlertMsg] = useState('');
+  const [alertType, setAlertType] = useState(''); // Type for alert severity (success, error)
+  const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -59,6 +66,13 @@ const HotelCard = ({
     }
     if (Object.keys(updatedData).length > 0) {
       update(id, updatedData);
+      setAlertType('success');
+      setAlertMsg('Hotel updated successfully!');
+      setShowAlert(true);
+      // Hide alert after 3 seconds
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 3000);
     }
     console.log(updatedData);
     setOpen(false);
@@ -74,6 +88,17 @@ const HotelCard = ({
     setOpen(false);
   };
 
+  const handleRemove = () => {
+    remove(id); // Call the remove function passed as prop
+    setAlertType('success');
+    setAlertMsg('Hotel removed successfully!');
+    setShowAlert(true);
+    // Hide alert after 3 seconds
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 3000);
+  };
+
   const handleReserve = () => {
     navigate("/addBooking");
   };
@@ -84,6 +109,20 @@ const HotelCard = ({
 
   return (
     <>
+      {showAlert && (
+        <div
+          style={{
+            position: "fixed",
+            top: "20px",
+            right: "20px",
+            zIndex: 1000,
+            width: "320px",
+          }}
+        >
+          <Alert severity={alertType}>{alertMsg}</Alert>
+        </div>
+      )}
+
       <center>
         <div className="card">
           <img
@@ -99,7 +138,7 @@ const HotelCard = ({
           <p>
             {address} Phone No: {phoneNo}
           </p>
-          <button onClick={() => remove(id)}>remove</button>
+          <button onClick={handleRemove}>Remove</button>
           <Modal
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
@@ -156,13 +195,14 @@ const HotelCard = ({
               />
             )}
             <br />
-            <button onClick={handleUpdate}>confirm</button>
-            <button onClick={handleClose}>cancel</button>
+            <button onClick={handleUpdate}>Confirm</button>
+            <button onClick={handleClose}>Cancel</button>
           </Modal>
-          <button onClick={handleReserve}>reserve</button>
+          <button onClick={handleReserve}>Reserve</button>
         </div>
       </center>
     </>
   );
 };
+
 export default HotelCard;
