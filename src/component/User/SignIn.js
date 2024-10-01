@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FormField, Button, Form } from "semantic-ui-react";
 import { Modal, Box, Snackbar, Alert } from "@mui/material";
 import './SignIn.css';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
+const SESSION_DURATION = 30 * 60 * 1000; // 30 minutes in milliseconds
 
 const SignIn = ({ open, handleClose, openSignUp }) => {
   const [email, setEmail] = useState("");
@@ -11,13 +13,6 @@ const SignIn = ({ open, handleClose, openSignUp }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const nav = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setErrorMessage("Your session has expired. Please log in to continue.");
-    }
-  }, []);
 
   const handleSignIn = (e) => {
     e.preventDefault();
@@ -29,19 +24,22 @@ const SignIn = ({ open, handleClose, openSignUp }) => {
         const token = response.data.jwt;
         const userId = response.data.userId;
         const role = response.data.role;
+        const currentTime = Date.now();
+
         localStorage.setItem("token", token);
         localStorage.setItem("userId", userId);
-        localStorage.setItem("Role", role);
+        localStorage.setItem("role", role);
+        localStorage.setItem("loginTime", currentTime); // Store the login time
+
         setSuccessMessage("Login Successful");
         handleClose();
+        
         if (role === 'USER') nav('/');
         else if (role === 'ADMIN') nav('/admin');
       })
       .catch((error) => {
-        
-          setErrorMessage("Login failed! Please check your credentials.");
-        }
-      );
+        setErrorMessage("Login failed! Please check your credentials.");
+      });
   };
 
   const handleSnackbarClose = () => {
