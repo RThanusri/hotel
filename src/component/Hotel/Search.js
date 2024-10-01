@@ -89,7 +89,7 @@ export default function Search() {
     try {
       console.log("Search Parameters:", searchParams); // Debugging
 
-      const response = await axios.get('http://localhost:8081/api/user/searchHotel', {
+      const response = await axios.get('http://localhost:8080/api/user/searchHotel', {
         params: searchParams,
         headers: {
           'Authorization': `Bearer ${token}`,

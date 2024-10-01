@@ -1,19 +1,18 @@
 import React, { useState } from "react";
 import { Button, Modal } from "semantic-ui-react";
-import './BookingCard.css';
-
-const BookingCard = ({
+import "../Admin/Booking/BookingCard.css";
+const ViewBookingCard = (
   bookingId,
   checkInDate,
   checkOutDate,
   numberOfAdults,
   numberOfChildren,
   numberOfRooms,
-  guestAges = [], // Default to an empty array
-  roomIds = [],   // Default to an empty array
+  guestAges=[],
+  roomIds=[],
   update,
-  remove,
-}) => {
+  remove
+) => {
   const [open, setOpen] = useState(false);
   const [nCheckInDate, setNCheckInDate] = useState(checkInDate);
   const [nCheckOutDate, setNCheckOutDate] = useState(checkOutDate);
@@ -191,4 +190,4 @@ const BookingCard = ({
   );
 };
 
-export default BookingCard;
+export default ViewBookingCard;

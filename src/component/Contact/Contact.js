@@ -25,8 +25,12 @@ const Contact = () => {
   };
 
   return (
-    <div className="contact-container">
+    <div className="contact-card">
       <h1>Contact Us</h1>
+      <div className="contact-info">
+        <p><strong>Contact Number:</strong> +1 (234) 567-8901</p>
+        <p><strong>Email:</strong> support@example.com</p>
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">Name:</label>
@@ -67,3 +71,4 @@ const Contact = () => {
 };
 
 export default Contact;
+

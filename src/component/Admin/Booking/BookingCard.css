@@ -1,0 +1,73 @@
+/* Booking Card Styling */
+.booking-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    transition: transform 0.2s ease-in-out;
+    margin: 10px; /* Add some margin to avoid touching other elements */
+  }
+  
+  .booking-card h3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .booking-card p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 8px;
+  }
+  
+  /* Card Hover Effect */
+  .booking-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Modal Button */
+  button {
+    background-color: #d02121;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px 0;
+  }
+  
+  button:hover {
+    background-color: #c21616;
+  }
+  
+  /* Modal Styling */
+  .ui.modal {
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #fff;
+  }
+  
+  .ui.modal input {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .ui.modal button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .ui.modal button:hover {
+    background-color: #ff0000;
+  }
+  

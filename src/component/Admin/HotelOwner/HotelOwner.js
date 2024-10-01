@@ -13,7 +13,7 @@ const HotelOwner = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .get("http://localhost:8081/api/admin/allUsersWithRoleHotelOwner", {
+      .get("http://localhost:8080/api/admin/allUsersWithRoleHotelOwner", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -41,7 +41,7 @@ const HotelOwner = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .delete(`http://localhost:8081/api/shared/deleteAccount/${id}`, {
+      .delete(`http://localhost:8080/api/shared/deleteAccount/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

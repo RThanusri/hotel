@@ -4,6 +4,7 @@ import UserNavbar from "./component/User/UserNavBar";
 import SRoutes from "./SRoutes";
 import 'semantic-ui-css/semantic.min.css';
 import SignIn from "./component/User/SignIn";
+import Owner from "./component/HotelOwner/Owner";
 
 
 function App() {

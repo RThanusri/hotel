@@ -12,10 +12,9 @@ const Booking = () => {
 
   const getBookings = () => {
     const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
 
     axios
-      .get(`http://localhost:8081/api/api/shared/getBookingsByUserId/${userId}`, {
+      .get(`http://localhost:8080/api/api/admin/getAllBookings`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -42,7 +41,7 @@ const Booking = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .delete(`http://localhost:8081/api/api/shared/cancelBookings/${id}`, {
+      .delete(`http://localhost:8080/api/api/shared/cancelBookings/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -60,7 +59,7 @@ const Booking = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .put(`http://localhost:8081/api/api/user/updatebookings/${id}`, updatedBooking, {
+      .put(`http://localhost:8080/api/api/user/updatebookings/${id}`, updatedBooking, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -87,6 +86,7 @@ const Booking = () => {
         onChange={(e) => setSearchTerm(e.target.value)} // Update search term
       />
       <button onClick={handleSearch}>Search</button>
+      <div className="booking-container">
       {searchTerm
         ? filteredBookings.map((booking) => (
             <BookingCard
@@ -103,7 +103,7 @@ const Booking = () => {
               remove={() => cancelBooking(booking.bookingId)} // Pass the remove function
               update={(updatedBooking) => updateBooking(booking.bookingId, updatedBooking)} // Pass the update function
             />
-          ))}
+          ))}</div>
     </>
   );
 };

@@ -36,7 +36,7 @@ const AddHotel = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .post("http://localhost:8081/api/owner/addHotel", hotel, {
+      .post("http://localhost:8080/api/owner/addHotel", hotel, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

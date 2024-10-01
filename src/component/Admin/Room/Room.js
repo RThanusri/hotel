@@ -18,7 +18,7 @@ const Room = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .get(`http://localhost:8081/api/shared/allRoomsInHotel/${hotelId}`, {
+      .get(`http://localhost:8080/api/shared/allRoomsInHotel/${hotelId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -48,7 +48,7 @@ const Room = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .delete(`http://localhost:8081/api/owner/removeRoom/${id}`, {
+      .delete(`http://localhost:8080/api/owner/removeRoom/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -68,7 +68,7 @@ const Room = () => {
     console.log("id :" + id);
     console.log("inside update room in room.js" + updatedData);
     axios
-      .put(`http://localhost:8081/api/owner/updateRoom/${id}`, updatedData, {
+      .put(`http://localhost:8080/api/owner/updateRoom/${id}`, updatedData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -90,7 +90,6 @@ const Room = () => {
 
   return (
     <>
-      {/* <AdminNavBar/> */}
       <input
         type="text"
         placeholder="Search by id"

@@ -29,7 +29,7 @@ const AddReview = () => {
     };
 
     try {
-      await axios.post('http://localhost:8081/api/user/submitReview', params, {
+      await axios.post('http://localhost:8080/api/user/submitReview', params, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
