@@ -7,12 +7,13 @@ const About = () => {
       maxWidth='xl'
       sx={{
         padding: '3rem',
-        backgroundColor: '#F0F8FF', // Light blue background
+        height:'1000px',
+        backgroundColor: 'white', // Light blue background
         borderRadius: '12px',
         color: '#333', // Dark grey text
-        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)', // Subtle shadow for depth
-        marginTop: '2rem',
-        border: '2px solid black', // Black border
+        boxShadow: 'none',// Subtle shadow for depth
+        margin: '-90px auto ',
+
       }}
     >
       <Typography variant="h2" gutterBottom align='center' sx={{ fontWeight: 'bold', color: '#cc0000' }}>

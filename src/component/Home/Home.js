@@ -3,6 +3,7 @@ import ExploreByDestinations from "./ExploreByAddress";
 import ExploreByAmenities from "./ExploreByAmenities";
 import Search from "../Hotel/Search";
 import { Box } from "@mui/material";
+import FAQ from "./FAQ";
 
 const Home = () => {
   return (
@@ -15,6 +16,9 @@ const Home = () => {
       </Box>
       <Box > 
         <ExploreByAmenities />
+      </Box>
+      <Box > 
+        <FAQ />
       </Box>
     
     </Box>

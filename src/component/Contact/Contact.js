@@ -81,14 +81,14 @@ function Contact() {
               required
             />
 
-            <button type="submit">Submit</button>
+            <button className='submi'type="submit">Submit</button>
           </form>
         </div>
 
         <div className="contact-info">
           <h3>Our Office</h3>
           <p>123 Cozy Street, Haven City, CH 10101</p>
-          <p>Email: info@cozyhavenstay.com</p>
+          <p>Email: support@cozyhavenstay.com</p>
           <p>Phone: +123 456 7890</p>
 
           <div className="map-container">

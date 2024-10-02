@@ -31,6 +31,10 @@ import ViewBooking from "./component/Hotel/ViewBooking.js"
 import OwnerNavbar from "./component/HotelOwner/OwnerNavBar/OwnerNavBar.js"
 import HotelByOwner from "./component/HotelOwner/Hotel/Hotel.js"
 import Owner from "./component/HotelOwner/Owner.js"
+import PrivacyPolicy from "./component/Footer/PrivacyPolicy.js"
+import TermsOfService from "./component/Footer/TermsOfService.js"
+import Sitemap from "./component/Footer/SiteMap.js"
+import CompanyDetails from "./component/Footer/CompanyDetails.js"
 
 
 
@@ -73,6 +77,11 @@ const SRoutes=()=>
       <Route path="/ownerNavBar" element={<OwnerNavbar/>}/>
       <Route path="/hotelByOwner" element={<HotelByOwner/>}/>
       <Route path="/owner" element={<Owner/>}/>
+      <Route path="/privacy" element={<PrivacyPolicy/>}/>
+      <Route path="/terms" element={<TermsOfService/>}/>
+      <Route path="/sitemap" element={<Sitemap/>}/>
+      <Route path ="/company-details" element={<CompanyDetails/>}/>
+
 
 
   </Routes>

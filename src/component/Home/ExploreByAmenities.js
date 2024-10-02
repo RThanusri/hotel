@@ -13,7 +13,7 @@ const ExploreByAmenities = () => {
     { title: 'Laundry Facility', description: 'In-room washing machines available.', icon: '🧺' },
     { title: 'AC', description: 'Stay cool with air conditioning.', icon: '❄️' },
    
-    { title: 'TV', description: 'Enjoy your favorite shows in-room.', icon: '📺' },
+    
     
     { title: 'Spa ', description: 'Relax and rejuvenate with spa services.', icon: '💆‍♀️' },
   ];

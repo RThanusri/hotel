@@ -71,7 +71,7 @@ const AdminReview = () => {
         <Grid item xs={12} sm={6}>
           <Paper elevation={3} sx={{ p: 2, borderRadius: 2, textAlign: 'center' }}>
             <Typography variant="h6">Overall rating</Typography>
-            <Rating name="overall-rating" value={parseFloat(overallRating)} readOnly precision={0.1} />
+            <Rating name="overall-rating" value={parseFloat(overallRating)} readOnly precision={0.1} sx={{ color: '#cc0000' }}/>
             <Typography variant="body2">
               {overallRating} stars, {((overallRating / 5) * 100).toFixed(0)}% of reviews
             </Typography>
@@ -88,7 +88,7 @@ const AdminReview = () => {
                 <ListItemText
                   primary={
                     <Typography variant="h6" sx={{ fontWeight: 'bold', textAlign: 'center' }}>
-                      User ID: {review.userId} - <Rating name="review-rating" value={review.overallRating} readOnly />
+                      User ID: {review.userId} - <Rating name="review-rating" value={review.overallRating} readOnly sx={{ color: '#cc0000' }} />
                     </Typography>
                   }
                   secondary={
@@ -99,11 +99,11 @@ const AdminReview = () => {
                         {review.reviewText}
                       </Typography>
                       <Divider sx={{ my: 1 }} />
-                      <Typography variant="body2">Cleanliness: <Rating value={review.cleanlinessRating} readOnly /></Typography>
-                      <Typography variant="body2">Staff Service: <Rating value={review.staffServiceRating} readOnly /></Typography>
-                      <Typography variant="body2">Amenities: <Rating value={review.amenitiesRating} readOnly /></Typography>
-                      <Typography variant="body2">Property Conditions: <Rating value={review.propertyConditionsRating} readOnly /></Typography>
-                      <Typography variant="body2">Eco-Friendliness: <Rating value={review.ecoFriendlinessRating} readOnly /></Typography>
+                      <Typography variant="body2">Cleanliness: <Rating value={review.cleanlinessRating} readOnly sx={{ color: '#cc0000' }}/></Typography>
+                      <Typography variant="body2">Staff Service: <Rating value={review.staffServiceRating} readOnly sx={{ color: '#cc0000' }}/></Typography>
+                      <Typography variant="body2">Amenities: <Rating value={review.amenitiesRating} readOnly sx={{ color: '#cc0000' }} /></Typography>
+                      <Typography variant="body2">Property Conditions: <Rating value={review.propertyConditionsRating} readOnly sx={{ color: '#cc0000' }}/></Typography>
+                      <Typography variant="body2">Eco-Friendliness: <Rating value={review.ecoFriendlinessRating} readOnly sx={{ color: '#cc0000' }}/></Typography>
                     </>
                   }
                 />

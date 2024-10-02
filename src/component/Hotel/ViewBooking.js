@@ -33,7 +33,16 @@ const ViewBooking = () => {
                 },
             })
             .then((response) => {
-                setBookings(response.data);
+                // Process bookings and integrate local storage data
+                const updatedBookings = response.data.map(booking => {
+                    const localStorageBooking = JSON.parse(localStorage.getItem(`booking_${booking.bookingId}`) || "{}");
+                    return {
+                        ...booking,
+                        totalFare: localStorageBooking.totalFare || booking.totalFare,
+                        bookingStatus: localStorageBooking.bookingStatus || booking.bookingStatus,
+                    };
+                });
+                setBookings(updatedBookings);
                 setError("");
             })
             .catch((error) => {
@@ -55,9 +64,27 @@ const ViewBooking = () => {
                 },
             })
             .then(() => {
+                setBookings(prevBookings => {
+                    const updatedBookings = prevBookings.map(booking => 
+                        booking.bookingId === id 
+                        ? { ...booking, bookingStatus: "CANCELLED" } 
+                        : booking
+                    );
+
+                    // Update local storage with the new booking status
+                    const localStorageBooking = JSON.parse(localStorage.getItem(`booking_${id}`) || "{}");
+                    if (localStorageBooking) {
+                        localStorage.setItem(`booking_${id}`, JSON.stringify({
+                            ...localStorageBooking,
+                            bookingStatus: "CANCELLED"
+                        }));
+                    }
+
+                    return updatedBookings;
+                });
+
                 setSnackbarMessage("Booking cancelled successfully");
                 setSnackbarOpen(true);
-                getBookings();
             })
             .catch((error) => {
                 setSnackbarMessage("Error cancelling booking. Please try again.");
@@ -97,7 +124,7 @@ const ViewBooking = () => {
 
     return (
         <Container maxWidth="md" style={{ backgroundColor: '#F0F8FF', padding: '20px', borderRadius: '8px solid black' }}>
-            <Typography variant="h4" align="center" gutterBottom style={{ color: 'black',fontWeight:'bolder' }}>
+            <Typography variant="h4" align="center" gutterBottom style={{ color: 'black', fontWeight: 'bolder' }}>
                 My Bookings ({bookings.length})
             </Typography>
             {loading ? (
@@ -129,12 +156,14 @@ const ViewBooking = () => {
                     {bookings.map((booking) => (
                         <Grid item xs={12} key={booking.bookingId}>
                             <ViewBookingCard
+                                bookingStatus={booking.bookingStatus}
                                 bookingId={booking.bookingId}
                                 checkInDate={booking.checkInDate}
                                 checkOutDate={booking.checkOutDate}
                                 numberOfAdults={booking.numberOfAdults}
                                 numberOfChildren={booking.numberOfChildren}
                                 guestAges={booking.guestAges}
+                                totalFare={booking.totalFare} // Use total fare from local storage if available
                                 remove={() => cancelBooking(booking.bookingId)}
                                 update={(updatedBooking) => updateBooking(booking.bookingId, updatedBooking)}
                             />

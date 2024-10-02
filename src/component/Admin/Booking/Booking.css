@@ -21,7 +21,7 @@ input[type="text"] {
 /* Search Button */
 button {
   padding: 10px 20px;
-  background-color: #4CAF50;
+  background-color:'#cc0000';
   color: white;
   border: none;
   border-radius: 4px;

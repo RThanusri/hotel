@@ -1,7 +1,23 @@
 import React, { useState } from "react";
-import { Button, Modal } from "semantic-ui-react";
-import { Alert } from "@mui/material"; // Import Alert from MUI
-import './BookingCard.css';
+import { Button, Modal, TextField, Typography, Box } from "@mui/material";
+import { Alert } from "@mui/material";
+import { styled } from "@mui/system";
+
+const BookingCardContainer = styled(Box)(({ theme }) => ({
+  backgroundColor: '#fff',
+  border: '1px solid #cc0000',
+  borderRadius: '8px',
+  padding: '16px',
+  margin: '16px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  width:'30%',
+  height:'350px'
+}));
+
+const Title = styled(Typography)({
+  color: '#cc0000',
+  marginBottom: '16px',
+});
 
 const BookingCard = ({
   bookingId,
@@ -23,9 +39,9 @@ const BookingCard = ({
   const [nNumberOfRooms, setNNumberOfRooms] = useState(numberOfRooms);
   const [nGuestAges, setNGuestAges] = useState([...guestAges]);
   const [nRoomIds, setNRoomIds] = useState([...roomIds]);
-  const [alertMsg, setAlertMsg] = useState(''); // Message for alerts
-  const [alertType, setAlertType] = useState(''); // Type for alert severity
-  const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
+  const [alertMsg, setAlertMsg] = useState('');
+  const [alertType, setAlertType] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleUpdate = () => {
     const updatedData = {};
@@ -33,52 +49,43 @@ const BookingCard = ({
     if (nCheckInDate !== checkInDate) {
       updatedData.checkInDate = nCheckInDate;
     }
-
     if (nCheckOutDate !== checkOutDate) {
       updatedData.checkOutDate = nCheckOutDate;
     }
-
     if (nNumberOfAdults !== numberOfAdults) {
       updatedData.numberOfAdults = nNumberOfAdults;
     }
-
     if (nNumberOfChildren !== numberOfChildren) {
       updatedData.numberOfChildren = nNumberOfChildren;
     }
-
     if (nNumberOfRooms !== numberOfRooms) {
       updatedData.numberOfRooms = nNumberOfRooms;
     }
-
     if (JSON.stringify(nGuestAges) !== JSON.stringify(guestAges)) {
       updatedData.guestAges = nGuestAges;
     }
-
     if (JSON.stringify(nRoomIds) !== JSON.stringify(roomIds)) {
       updatedData.roomIds = nRoomIds;
     }
 
-    // Only update if there are changes
     if (Object.keys(updatedData).length > 0) {
       update(bookingId, updatedData);
       setAlertType('success');
       setAlertMsg('Booking updated successfully');
       setShowAlert(true);
-      setOpen(false); // Close the modal
+      setOpen(false);
     } else {
       setAlertType('error');
       setAlertMsg('No changes made to the booking');
       setShowAlert(true);
     }
 
-    // Hide alert after 3 seconds
     setTimeout(() => {
       setShowAlert(false);
     }, 3000);
   };
 
   const handleClose = () => {
-    // Reset fields to original values
     setNCheckInDate(checkInDate);
     setNCheckOutDate(checkOutDate);
     setNNumberOfAdults(numberOfAdults);
@@ -90,11 +97,11 @@ const BookingCard = ({
   };
 
   const addGuestAge = () => {
-    setNGuestAges([...nGuestAges, ""]); // Add an empty string for a new input
+    setNGuestAges([...nGuestAges, ""]);
   };
 
   const addRoomId = () => {
-    setNRoomIds([...nRoomIds, ""]); // Add an empty string for a new input
+    setNRoomIds([...nRoomIds, ""]);
   };
 
   const handleGuestAgeChange = (index, value) => {
@@ -110,112 +117,103 @@ const BookingCard = ({
   };
 
   return (
-    <div className="booking-card">
+    <BookingCardContainer>
       {showAlert && (
-        <div
-          style={{
-            position: "fixed",
-            top: "20px",
-            right: "20px",
-            zIndex: 1000,
-            width: "320px",
-          }}
-        >
-          <Alert severity={alertType}>{alertMsg}</Alert>
-        </div>
+        <Alert severity={alertType} style={{ marginBottom: '16px' }}>
+          {alertMsg}
+        </Alert>
       )}
 
-      <h3>Booking Id: {bookingId}</h3>
-      <p>Check-in Date: {checkInDate}</p>
-      <p>Check-out Date: {checkOutDate}</p>
-      <p>Number of Adults: {numberOfAdults}</p>
-      <p>Number of Children: {numberOfChildren}</p>
-      <p>Number of Rooms: {numberOfRooms}</p>
-      <p>Guest Ages: {guestAges.join(", ")}</p>
-      <p>Room IDs: {roomIds.join(", ")}</p>
+      <Title variant="h6">Booking Id: {bookingId}</Title>
+      <Typography>Check-in Date: {checkInDate}</Typography>
+      <Typography>Check-out Date: {checkOutDate}</Typography>
+      <Typography>Number of Adults: {numberOfAdults}</Typography>
+      <Typography>Number of Children: {numberOfChildren}</Typography>
+      <Typography>Number of Rooms: {numberOfRooms}</Typography>
+      <Typography>Guest Ages: {guestAges.join(", ")}</Typography>
+      <Typography>Room IDs: {roomIds.join(", ")}</Typography><br/>
 
-      <Button onClick={() => remove(bookingId)}>Remove</Button>
-      <Modal
-        onClose={handleClose}
-        onOpen={() => setOpen(true)}
-        open={open}
-        trigger={<Button>Update</Button>}
-      >
-        <div>
-          <label>Check-in Date: </label>
-          <input
+      <Button variant="contained" color="error" onClick={() => remove(bookingId)}>Remove</Button><br/><br/>
+      <Button variant="contained" color="error" onClick={() => setOpen(true)}>Update</Button>
+
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={{ p: 2, backgroundColor: 'white', borderRadius: '8px' }}>
+          <Typography variant="h6">Update Booking</Typography>
+          <TextField
+            label="Check-in Date"
             type="date"
             value={nCheckInDate}
             onChange={(e) => setNCheckInDate(e.target.value)}
+            fullWidth
+            margin="normal"
           />
-        </div>
-        <div>
-          <label>Check-out Date: </label>
-          <input
+          <TextField
+            label="Check-out Date"
             type="date"
             value={nCheckOutDate}
             onChange={(e) => setNCheckOutDate(e.target.value)}
+            fullWidth
+            margin="normal"
           />
-        </div>
-        <div>
-          <label>Number of Adults: </label>
-          <input
+          <TextField
+            label="Number of Adults"
             type="number"
             value={nNumberOfAdults}
             onChange={(e) => setNNumberOfAdults(e.target.value)}
+            fullWidth
+            margin="normal"
           />
-        </div>
-        <div>
-          <label>Number of Children: </label>
-          <input
+          <TextField
+            label="Number of Children"
             type="number"
             value={nNumberOfChildren}
             onChange={(e) => setNNumberOfChildren(e.target.value)}
+            fullWidth
+            margin="normal"
           />
-        </div>
-        <div>
-          <label>Number of Rooms: </label>
-          <input
+          <TextField
+            label="Number of Rooms"
             type="number"
             value={nNumberOfRooms}
             onChange={(e) => setNNumberOfRooms(e.target.value)}
+            fullWidth
+            margin="normal"
           />
-        </div>
 
-        {/* Guest Ages Input Fields */}
-        <div>
-          <label>Guest Ages: </label>
+          <Typography variant="body1">Guest Ages:</Typography>
           {nGuestAges.map((age, index) => (
-            <input
+            <TextField
               key={index}
               type="number"
               value={age}
               onChange={(e) => handleGuestAgeChange(index, e.target.value)}
               placeholder={`Guest Age ${index + 1}`}
+              margin="normal"
+              fullWidth
             />
           ))}
-          <Button onClick={addGuestAge}>Add Guest Age</Button>
-        </div>
+          <Button variant="contained" color="primary" onClick={addGuestAge}>Add Guest Age</Button>
 
-        {/* Room IDs Input Fields */}
-        <div>
-          <label>Room IDs: </label>
+          <Typography variant="body1">Room IDs:</Typography>
           {nRoomIds.map((id, index) => (
-            <input
+            <TextField
               key={index}
-              type="text"
               value={id}
               onChange={(e) => handleRoomIdChange(index, e.target.value)}
               placeholder={`Room ID ${index + 1}`}
+              margin="normal"
+              fullWidth
             />
           ))}
-          <Button onClick={addRoomId}>Add Room ID</Button>
-        </div>
+          <Button variant="contained" color="primary" onClick={addRoomId}>Add Room ID</Button>
 
-        <button onClick={handleUpdate}>Confirm</button>
-        <button onClick={handleClose}>Cancel</button>
+          <Box sx={{ mt: 2 }}>
+            <Button variant="contained" color="error" onClick={handleUpdate}>Confirm</Button>
+            <Button variant="contained" color="error" onClick={handleClose} sx={{ ml: 2 }}>Cancel</Button>
+          </Box>
+        </Box>
       </Modal>
-    </div>
+    </BookingCardContainer>
   );
 };
 

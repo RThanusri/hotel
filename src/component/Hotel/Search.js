@@ -31,10 +31,10 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 const SearchBox = styled(Box)(({ theme }) => ({
-  backgroundColor: '#f8f8f8',
+  backgroundColor: 'white',
   padding: theme.spacing(3),
   borderRadius: '8px',
-  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+  boxShadow: 'none',
 }));
 
 export default function Search() {

@@ -4,10 +4,11 @@ import UserNavbar from "./component/User/UserNavBar";
 import SRoutes from "./SRoutes";
 import 'semantic-ui-css/semantic.min.css';
 import SignIn from "./component/User/SignIn";
+import Footer from "./component/Footer/Footer";
+
 
 import { Snackbar, Alert } from '@mui/material'; 
-import Owner from "./component/HotelOwner/Owner";
-import Footer from "./component/Footer/Footer";
+
  
 
 const SESSION_DURATION = 30 * 60 * 1000; 
@@ -34,7 +35,7 @@ function App() {
 
     checkSession(); 
 
-    const intervalId = setInterval(checkSession, 300000); 
+    const intervalId = setInterval(checkSession, 3000000 ); 
 
     return () => clearInterval(intervalId); 
   }, []);
@@ -61,6 +62,7 @@ function App() {
     <div className="app">
       <UserNavbar onLogout={handleLogout} />
       <SRoutes />
+      <Footer/>
 
       <Snackbar
         open={sessionExpired}
@@ -78,6 +80,7 @@ function App() {
         handleClose={() => setSignInOpen(false)}
         onLoginSuccess={handleLoginSuccess}
       />
+      
     
     </div>
   );

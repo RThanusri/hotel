@@ -41,7 +41,7 @@
 .contact-form input:focus,
 .contact-form textarea:focus {
   outline: none;
-  border-color: #fe5f55;
+  border-color:'#cc0000';
 }
 
 .contact-form textarea {
@@ -50,7 +50,7 @@
 }
 
 .contact-form button {
-  background-color: #fe5f55;
+  background-color: '#cc0000';
   color: white;
   padding: 10px;
   border: none;
@@ -60,7 +60,7 @@
 }
 
 .contact-form button:hover {
-  background-color: #ff7b72;
+  background-color: '#cc0000';
 }
 
 /* Contact information styling */
@@ -102,7 +102,7 @@
 }
 
 .social-links a:hover {
-  color: #ff7b72;
+  color: '#cc0000';
 }
 
 /* Responsive Design */
@@ -124,4 +124,7 @@
   .social-links a {
     font-size: 16px;
   }
+}
+.submit{
+  background-color: '#cc0000';
 }

@@ -8,7 +8,7 @@ import {
   Grid,
   Box,
   Paper,
-  Alert, // Import Alert from MUI
+  Modal,
 } from "@mui/material";
 
 const AddBooking = () => {
@@ -20,10 +20,9 @@ const AddBooking = () => {
   const [numberOfRooms, setNumberOfRooms] = useState(1);
   const [roomIds, setRoomIds] = useState([""]);
 
-  // Alert state
-  const [alertMsg, setAlertMsg] = useState("");
-  const [alertType, setAlertType] = useState(""); // Type for alert severity (success, error)
-  const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
+  const [openModal, setOpenModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [bookingInfo, setBookingInfo] = useState({});
 
   const addBooking = () => {
     const userId = localStorage.getItem("userId");
@@ -47,20 +46,25 @@ const AddBooking = () => {
         },
       })
       .then((response) => {
-        setAlertType("success");
-        setAlertMsg("Booking added successfully!");
-        setShowAlert(true);
+        const { bookingId, totalFare, bookingStatus } = response.data;
+        console.log(response.data)
+
+        // Store booking info in local storage using a unique key
+        localStorage.setItem(`booking_${bookingId}`, JSON.stringify({ totalFare, bookingStatus }));
+
+        setBookingInfo({
+          bookingId,
+          totalFare,
+          bookingStatus,
+        });
+
+        setModalMessage("Booking added successfully!");
       })
       .catch((error) => {
-        setAlertType("error");
-        setAlertMsg("There was an error in adding the booking!");
-        setShowAlert(true);
+        setModalMessage("There was an error in adding the booking!");
       })
       .finally(() => {
-        // Hide alert after 3 seconds
-        setTimeout(() => {
-          setShowAlert(false);
-        }, 3000);
+        setOpenModal(true);
       });
   };
 
@@ -76,22 +80,41 @@ const AddBooking = () => {
     setRoomIds(newRoomIds);
   };
 
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
   return (
     <Container maxWidth="md">
-      {/* Alert Component */}
-      {showAlert && (
-        <div
-          style={{
-            position: "fixed",
-            top: "20px",
-            right: "20px",
-            zIndex: 1000,
-            width: "320px",
+      <Modal open={openModal} onClose={handleCloseModal}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 400,
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 2,
           }}
         >
-          <Alert severity={alertType}>{alertMsg}</Alert>
-        </div>
-      )}
+          <Typography variant="h6" component="h2">
+            {modalMessage}
+          </Typography>
+          {modalMessage === "Booking added successfully!" && (
+            <Box mt={2}>
+              <Typography variant="body1">Booking ID: {bookingInfo.bookingId}</Typography>
+              <Typography variant="body1">Total Fare: ₹{bookingInfo.totalFare.toFixed(2)}</Typography>
+              <Typography variant="body1">Booking Status: {bookingInfo.bookingStatus}</Typography>
+            </Box>
+          )}
+          <Button onClick={handleCloseModal} color="primary" variant="contained" style={{ marginTop: '20px' }}>
+            Close
+          </Button>
+        </Box>
+      </Modal>
 
       <Paper elevation={3} style={{ padding: "20px", backgroundColor: "#fff", border: '2px solid black' }}>
         <Typography
@@ -100,11 +123,11 @@ const AddBooking = () => {
           style={{
             fontWeight: 'bold',
             color: "#cc0000",
-            fontFamily: "Arial, sans-serif", // Change to desired font
+            fontFamily: "Arial, sans-serif",
             transition: "color 0.3s",
             cursor: "pointer",
           }}
-          onMouseEnter={(e) => (e.target.style.color = "#990000")} // Darker red on hover
+          onMouseEnter={(e) => (e.target.style.color = "#990000")}
           onMouseLeave={(e) => (e.target.style.color = "#cc0000")}
         >
           Reserve Your Stay
