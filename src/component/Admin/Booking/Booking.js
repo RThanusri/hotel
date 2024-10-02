@@ -7,12 +7,12 @@ import { Alert } from "@mui/material"; // Import Alert from MUI
 
 const Booking = () => {
   const nav = useNavigate();
-  const [bookings, setBookings] = useState([]); 
+  const [bookings, setBookings] = useState([]);
   const [searchTerm, setSearchTerm] = useState(0);
   const [filteredBookings, setFilteredBookings] = useState([]);
-  const [alertMsg, setAlertMsg] = useState(''); // Message for success/error alerts
-  const [alertType, setAlertType] = useState(''); // Type for alert severity (success, error)
-  
+  const [alertMsg, setAlertMsg] = useState(""); // Message for success/error alerts
+  const [alertType, setAlertType] = useState(""); // Type for alert severity (success, error)
+
   const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
 
   const getBookings = () => {
@@ -25,11 +25,12 @@ const Booking = () => {
         },
       })
       .then((response) => {
+        console.log(response.data);
         setBookings(response.data);
       })
       .catch((error) => {
-        setAlertType('error');
-        setAlertMsg('There was an error fetching the bookings!');
+        setAlertType("error");
+        setAlertMsg("There was an error fetching the bookings!");
         setShowAlert(true);
         // Hide alert after 3 seconds
         setTimeout(() => {
@@ -41,7 +42,9 @@ const Booking = () => {
   const handleSearch = () => {
     const searchId = parseInt(searchTerm); // Convert search term to a number
     if (!isNaN(searchId)) {
-      const filtered = bookings.filter((booking) => booking.bookingId === searchId);
+      const filtered = bookings.filter(
+        (booking) => booking.bookingId === searchId
+      );
       setFilteredBookings(filtered);
     } else {
       setFilteredBookings(bookings);
@@ -58,14 +61,14 @@ const Booking = () => {
         },
       })
       .then(() => {
-        setAlertType('success');
-        setAlertMsg('Booking cancelled successfully');
+        setAlertType("success");
+        setAlertMsg("Booking cancelled successfully");
         setShowAlert(true);
         getBookings(); // Refresh booking list after deletion
       })
       .catch((error) => {
-        setAlertType('error');
-        setAlertMsg('There was an error cancelling the booking!');
+        setAlertType("error");
+        setAlertMsg("There was an error cancelling the booking!");
         setShowAlert(true);
       })
       .finally(() => {
@@ -80,20 +83,24 @@ const Booking = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .put(`http://localhost:8080/api/api/user/updatebookings/${id}`, updatedBooking, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .put(
+        `http://localhost:8080/api/api/user/updatebookings/${id}`,
+        updatedBooking,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then(() => {
-        setAlertType('success');
-        setAlertMsg('Booking updated successfully');
+        setAlertType("success");
+        setAlertMsg("Booking updated successfully");
         setShowAlert(true);
         getBookings(); // Refresh booking list after update
       })
       .catch((error) => {
-        setAlertType('error');
-        setAlertMsg('There was an error updating the booking!');
+        setAlertType("error");
+        setAlertMsg("There was an error updating the booking!");
         setShowAlert(true);
       })
       .finally(() => {
@@ -138,7 +145,9 @@ const Booking = () => {
                 key={booking.bookingId}
                 {...booking}
                 remove={() => cancelBooking(booking.bookingId)} // Pass the remove function
-                update={(updatedBooking) => updateBooking(booking.bookingId, updatedBooking)} // Pass the update function
+                update={(updatedBooking) =>
+                  updateBooking(booking.bookingId, updatedBooking)
+                } // Pass the update function
               />
             ))
           : bookings.map((booking) => (
@@ -146,7 +155,9 @@ const Booking = () => {
                 key={booking.bookingId}
                 {...booking}
                 remove={() => cancelBooking(booking.bookingId)} // Pass the remove function
-                update={(updatedBooking) => updateBooking(booking.bookingId, updatedBooking)} // Pass the update function
+                update={(updatedBooking) =>
+                  updateBooking(booking.bookingId, updatedBooking)
+                } // Pass the update function
               />
             ))}
       </div>

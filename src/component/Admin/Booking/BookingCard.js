@@ -27,7 +27,7 @@ const BookingCard = ({
   numberOfChildren,
   numberOfRooms,
   guestAges = [],
-  roomIds = [],
+  rooms = [], // Assuming `rooms` is an array of objects
   update,
   remove,
 }) => {
@@ -38,7 +38,9 @@ const BookingCard = ({
   const [nNumberOfChildren, setNNumberOfChildren] = useState(numberOfChildren);
   const [nNumberOfRooms, setNNumberOfRooms] = useState(numberOfRooms);
   const [nGuestAges, setNGuestAges] = useState([...guestAges]);
-  const [nRoomIds, setNRoomIds] = useState([...roomIds]);
+  const [nRoomIds, setNRoomIds] = useState(
+    rooms.map((room) => room.roomId) // Extract room IDs
+  );
   const [alertMsg, setAlertMsg] = useState('');
   const [alertType, setAlertType] = useState('');
   const [showAlert, setShowAlert] = useState(false);
@@ -64,7 +66,7 @@ const BookingCard = ({
     if (JSON.stringify(nGuestAges) !== JSON.stringify(guestAges)) {
       updatedData.guestAges = nGuestAges;
     }
-    if (JSON.stringify(nRoomIds) !== JSON.stringify(roomIds)) {
+    if (JSON.stringify(nRoomIds) !== JSON.stringify(rooms.map((room) => room.roomId))) {
       updatedData.roomIds = nRoomIds;
     }
 
@@ -92,7 +94,7 @@ const BookingCard = ({
     setNNumberOfChildren(numberOfChildren);
     setNNumberOfRooms(numberOfRooms);
     setNGuestAges([...guestAges]);
-    setNRoomIds([...roomIds]);
+    setNRoomIds(rooms.map((room) => room.roomId)); // Reset room IDs
     setOpen(false);
   };
 
@@ -124,14 +126,15 @@ const BookingCard = ({
         </Alert>
       )}
 
-      <Title variant="h6">Booking Id: {bookingId}</Title>
-      <Typography>Check-in Date: {checkInDate}</Typography>
-      <Typography>Check-out Date: {checkOutDate}</Typography>
-      <Typography>Number of Adults: {numberOfAdults}</Typography>
-      <Typography>Number of Children: {numberOfChildren}</Typography>
-      <Typography>Number of Rooms: {numberOfRooms}</Typography>
-      <Typography>Guest Ages: {guestAges.join(", ")}</Typography>
-      <Typography>Room IDs: {roomIds.join(", ")}</Typography><br/>
+    <Title variant="h6">Booking Id: {bookingId}</Title>
+    <Typography>Check-in Date: {checkInDate}</Typography>
+    <Typography>Check-out Date: {checkOutDate}</Typography>
+    <Typography>Number of Adults: {numberOfAdults}</Typography>
+    <Typography>Number of Children: {numberOfChildren}</Typography>
+    <Typography>Number of Rooms: {numberOfRooms}</Typography>
+    <Typography>Guest Ages: {guestAges.join(", ")}</Typography>
+    <Typography>Room IDs: {rooms.map((room) => room.id).join(", ")}</Typography><br/>
+    
 
       <Button variant="contained" color="error" onClick={() => remove(bookingId)}>Remove</Button><br/><br/>
       <Button variant="contained" color="error" onClick={() => setOpen(true)}>Update</Button>
@@ -207,10 +210,7 @@ const BookingCard = ({
           ))}
           <Button variant="contained" color="primary" onClick={addRoomId}>Add Room ID</Button>
 
-          <Box sx={{ mt: 2 }}>
-            <Button variant="contained" color="error" onClick={handleUpdate}>Confirm</Button>
-            <Button variant="contained" color="error" onClick={handleClose} sx={{ ml: 2 }}>Cancel</Button>
-          </Box>
+          <Button variant="contained" color="primary" onClick={handleUpdate}>Update</Button>
         </Box>
       </Modal>
     </BookingCardContainer>

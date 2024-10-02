@@ -61,7 +61,7 @@ const AddBooking = () => {
         setModalMessage("Booking added successfully!");
       })
       .catch((error) => {
-        setModalMessage("There was an error in adding the booking!");
+        setModalMessage("There was an error in adding the booking!",error);
       })
       .finally(() => {
         setOpenModal(true);

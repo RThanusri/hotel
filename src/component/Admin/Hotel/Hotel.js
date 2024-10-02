@@ -156,7 +156,7 @@ const Hotel = () => {
                 key={hotel.id}
                 {...hotel}
                 remove={() => removeHotel(hotel.id)} // Pass the remove function here
-                update={(updatedHotel) =>
+                update={(id,updatedHotel) =>
                   updateHotel(hotel.id, updatedHotel)
                 } // Pass the update function here
               />
