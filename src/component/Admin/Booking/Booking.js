@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./Booking.css";
 import axios from "axios";
 import { Alert } from "@mui/material"; // Import Alert from MUI
+import AdminNavBar from "../AdminNavBar/AdminNavBar";
 
 const Booking = () => {
   const nav = useNavigate();
@@ -117,6 +118,7 @@ const Booking = () => {
 
   return (
     <>
+   
       {showAlert && (
         <div
           style={{

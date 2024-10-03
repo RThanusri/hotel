@@ -4,14 +4,15 @@ import ExploreByAmenities from "./ExploreByAmenities";
 import Search from "../Hotel/Search";
 import { Box } from "@mui/material";
 import FAQ from "./FAQ";
-import UserNavbar from "../User/UserNavBar";
+
+import AdminNavBar from "../Admin/AdminNavBar/AdminNavBar";
 import Footer from "../Footer/Footer";
 
-const Home = () => {
+const AdminHome = () => {
   return (
    
     <Box sx={{ p: 3}}> 
-     <UserNavbar/>
+     <AdminNavBar/>
       <Box sx={{ mb: 5 }}> 
         <Search />
       </Box>
@@ -25,9 +26,10 @@ const Home = () => {
       <Box > 
         <FAQ />
       </Box>
-    <Footer/>
+      <Footer/>
     </Box>
+   
   );
 };
 
-export default Home;
+export default AdminHome;

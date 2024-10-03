@@ -96,7 +96,7 @@ const Hotel = () => {
         setAlertType('success');
         setAlertMsg('Hotel updated successfully');
         setShowAlert(true);
-        getHotels(); // Refresh hotel list after update
+        getHotels(); 
       })
       .catch((error) => {
         console.error("There was an error updating the hotel!", error);
@@ -111,14 +111,13 @@ const Hotel = () => {
       });
   };
 
-  // Fetch all hotels on component mount
   useEffect(() => {
-    getHotels(); // Call the function to get all hotels
+    getHotels(); 
   }, []);
 
   return (
     <>
-      {/* Alert at the top right corner */}
+    
       {showAlert && (
         <div
           style={{

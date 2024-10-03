@@ -3,6 +3,7 @@ import UserCard from "./UserCard"; // Ensure this is the correct import path
 import axios from "axios"; // Import axios
 import './User.css';
 import { Alert } from "@mui/material"; // Import Alert from MUI
+import AdminNavBar from "../AdminNavBar/AdminNavBar";
 
 const User = () => {
   const [users, setUsers] = useState([]); // Initialize with an empty array
@@ -81,6 +82,7 @@ const User = () => {
 
   return (
     <>
+    <AdminNavBar/>
       {showAlert && (
         <div
           style={{

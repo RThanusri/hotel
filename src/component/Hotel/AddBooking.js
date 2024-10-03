@@ -9,6 +9,8 @@ import {
   Box,
   Paper,
   Modal,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 
 const AddBooking = () => {
@@ -23,50 +25,83 @@ const AddBooking = () => {
   const [openModal, setOpenModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [bookingInfo, setBookingInfo] = useState({});
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  const addBooking = () => {
+  const checkRoomAvailability = async () => {
+    const token = localStorage.getItem("token");
+    const availabilityChecks = roomIds.map(roomId =>
+      axios.get(`http://localhost:8080/api/api/shared/checkAvailability`, {
+        params: { roomId, checkInDate, checkOutDate },
+        headers: { Authorization: `Bearer ${token}` },
+      })
+    );
+
+    try {
+      const responses = await Promise.all(availabilityChecks);
+      console.log(responses)
+      return responses.every(response => response.data);
+    } catch (error) {
+      console.error("Error checking availability:", error);
+      setSnackbarMessage("Error checking room availability.");
+      setSnackbarOpen(true);
+      return false;
+    }
+  };
+
+  const addBooking = async () => {
+    const isAvailable = await checkRoomAvailability();
+    if (!isAvailable) {
+        setSnackbarMessage("Some rooms are already occupied for the selected dates. Please check other rooms.");
+        setSnackbarOpen(true);
+        return;
+    }
+
     const userId = localStorage.getItem("userId");
     const booking = {
-      userId,
-      checkInDate,
-      checkOutDate,
-      numberOfAdults,
-      numberOfChildren,
-      guestAges,
-      numberOfRooms,
-      roomIds,
+        userId,
+        checkInDate,
+        checkOutDate,
+        numberOfAdults,
+        numberOfChildren,
+        guestAges,
+        numberOfRooms,
+        roomIds,
     };
     const token = localStorage.getItem("token");
 
-    axios
-      .post("http://localhost:8080/api/api/user/makeBooking", booking, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        const { bookingId, totalFare, bookingStatus } = response.data;
-        console.log(response.data)
+    try {
+        const response = await axios.post("http://localhost:8080/api/api/user/makeBooking", booking, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+        });
 
-        // Store booking info in local storage using a unique key
+        console.log(`response ${response}`);
+        const { bookingId, totalFare, bookingStatus } = response.data;
+        
+        // Check if totalFare is being returned correctly
+        console.log("Total Fare:", totalFare); // Log the total fare
+        
+        // Ensure the totalFare is being saved correctly
         localStorage.setItem(`booking_${bookingId}`, JSON.stringify({ totalFare, bookingStatus }));
 
         setBookingInfo({
-          bookingId,
-          totalFare,
-          bookingStatus,
+            bookingId,
+            totalFare,
+            bookingStatus,
         });
 
         setModalMessage("Booking added successfully!");
-      })
-      .catch((error) => {
-        setModalMessage("There was an error in adding the booking!",error);
-      })
-      .finally(() => {
+    } catch (error) {
+        console.error("Error adding booking:", error);
+        setModalMessage("There was an error in adding the booking!");
+    } finally {
         setOpenModal(true);
-      });
-  };
+    }
+};
+
 
   const handleGuestAgeChange = (index, value) => {
     const newGuestAges = [...guestAges];
@@ -82,6 +117,10 @@ const AddBooking = () => {
 
   const handleCloseModal = () => {
     setOpenModal(false);
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   return (
@@ -115,6 +154,12 @@ const AddBooking = () => {
           </Button>
         </Box>
       </Modal>
+
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
 
       <Paper elevation={3} style={{ padding: "20px", backgroundColor: "#fff", border: '2px solid black' }}>
         <Typography

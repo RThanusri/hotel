@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import "./AdminNavBar.css";
 import { Link } from "react-router-dom";
+import "./AdminNavBar.css";
+
 const AdminNavBar = () => {
   const [menu, setMenu] = useState("");
 
@@ -8,10 +9,10 @@ const AdminNavBar = () => {
     <div className="Admin-Navbar">
       <img
         src="../logo1.jpeg"
-        alt=""
+        alt="Logo"
         className="logo"
       />
-      <ul className="Admin-navbar-menu">
+      <ul className="navbar-menu">
         <li className={menu === "bookings" ? "active" : ""}>
           <Link to="/booking" onClick={() => setMenu("bookings")}>
             Bookings
@@ -28,8 +29,8 @@ const AdminNavBar = () => {
           </Link>
         </li>
         <li className={menu === "hotelOwners" ? "active" : ""}>
-          <Link to="/HotelOwner" onClick={() => setMenu("hotelOwners")}>
-            HotelOwners
+          <Link to="/HotelOwners" onClick={() => setMenu("hotelOwners")}>
+            Hotel Owners
           </Link>
         </li>
         <li className={menu === "users" ? "active" : ""}>

@@ -13,6 +13,7 @@ import {
   ListItemText,
   Rating,
 } from "@mui/material";
+import AdminNavBar from "../AdminNavBar/AdminNavBar";
 
 const AdminReview = () => {
   const { hotelId } = useParams();
@@ -57,8 +58,11 @@ const AdminReview = () => {
 
   const overallRating = calculateOverallRating();
 
-  return (
+  return (<>
+  
+
     <Box sx={{ p: 4, bgcolor: 'lavender', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      
       <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', textAlign: 'center' }}>
         Rated {overallRating} out of 5 from {totalReviews} reviews.
       </Typography>
@@ -115,6 +119,8 @@ const AdminReview = () => {
         <Typography textAlign="center">No reviews available for this hotel.</Typography>
       )}
     </Box>
+    </>
+    
   );
 };
 

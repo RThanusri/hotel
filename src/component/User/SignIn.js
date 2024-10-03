@@ -28,7 +28,7 @@ const SignIn = ({ open, handleClose, openSignUp }) => {
         localStorage.setItem("token", token);
         localStorage.setItem("userId", userId);
         localStorage.setItem("role", role);
-        localStorage.setItem("loginTime", currentTime); // Store the login time
+        localStorage.setItem("loginTime", currentTime); 
 
         setSuccessMessage("Login Successful");
         handleClose();
@@ -36,9 +36,8 @@ const SignIn = ({ open, handleClose, openSignUp }) => {
         
         if (role === 'USER') nav('/');
         else if (role === 'ADMIN') nav('/admin');
-        if (role === "USER") nav("/");
-        else if (role === "ADMIN") nav("/admin");
-        else if (role === "HOTEL_OWNER") nav("/owner");
+      
+        else if (role === "HOTEL_OWNER") nav("/HotelOwner");
 
       })
       .catch((error) => {

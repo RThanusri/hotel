@@ -23,7 +23,7 @@ import Contact from "./component/Contact/Contact"
 import AdminReview from "./component/Admin/Review/AdminReview"
 import Hotel from "./component/Admin/Hotel/Hotel";
 import Room from "./component/Admin/Room/Room"
-
+import AdminHome from "./component/Home/AdminHome.js"
 import ExploreHotelListings from "./component/Home/ExploreHotelListing.js"
 import ExploreRoomListing from "./component/Home/ExploreRoomListing.js"
 import UserNavbar from "./component/User/UserNavBar.js"
@@ -35,6 +35,7 @@ import PrivacyPolicy from "./component/Footer/PrivacyPolicy.js"
 import TermsOfService from "./component/Footer/TermsOfService.js"
 import Sitemap from "./component/Footer/SiteMap.js"
 import CompanyDetails from "./component/Footer/CompanyDetails.js"
+import OwnerHome from "./component/Home/OwnerHome.js"
 
 
 
@@ -66,10 +67,10 @@ const SRoutes=()=>
       <Route path="/addRoom" element={<AddRoom/>}/>
       <Route path="/booking" element={<Booking/>}/>
       <Route path="/addBooking" element={<AddBooking/>}/>
-      <Route path="/HotelOwner" element={<HotelOwner/>}/>
+      <Route path="/HotelOwner" element={<OwnerHome/>}/>
       <Route path="/users" element={<User/>}/>
       <Route path="/AdminReview" element={<AdminReview/>}/>
-      <Route path="/admin" element={<Admin/>}/>
+      <Route path="/admin" element={<AdminHome/>}/>
       <Route path="/UserNavBar" element={<UserNavbar/>}/>
       <Route path="/Contact" element={<Contact/>}/>
       <Route path="/About" element={<About/>}/>
@@ -81,6 +82,8 @@ const SRoutes=()=>
       <Route path="/terms" element={<TermsOfService/>}/>
       <Route path="/sitemap" element={<Sitemap/>}/>
       <Route path ="/company-details" element={<CompanyDetails/>}/>
+      <Route path="/HotelOwners" element={<HotelOwner/>}/>
+      
 
 
 

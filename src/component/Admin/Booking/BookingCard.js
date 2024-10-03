@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal, TextField, Typography, Box } from "@mui/material";
 import { Alert } from "@mui/material";
 import { styled } from "@mui/system";
+import AdminNavBar from "../AdminNavBar/AdminNavBar";
 
 const BookingCardContainer = styled(Box)(({ theme }) => ({
   backgroundColor: '#fff',
@@ -118,7 +119,9 @@ const BookingCard = ({
     setNRoomIds(updatedIds);
   };
 
-  return (
+  return (<>
+  
+  
     <BookingCardContainer>
       {showAlert && (
         <Alert severity={alertType} style={{ marginBottom: '16px' }}>
@@ -214,6 +217,7 @@ const BookingCard = ({
         </Box>
       </Modal>
     </BookingCardContainer>
+    </>
   );
 };
 

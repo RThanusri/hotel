@@ -17,6 +17,8 @@ const Navbar = () => {
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("role");
 
     // Show success alert on logout
     setAlertType("success");
