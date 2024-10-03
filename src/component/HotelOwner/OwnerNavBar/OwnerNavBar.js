@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../Admin/AdminNavBar/AdminNavBar.css";
+import "./OwnerNavBar.css";
 import { Link } from "react-router-dom";
 const OwnerNavBar = () => {
   const [menu, setMenu] = useState("");
@@ -13,7 +13,7 @@ const OwnerNavBar = () => {
       />
       <ul className="Admin-navbar-menu">
         <li className={menu === "bookings" ? "active" : ""}>
-          <Link to="/booking" onClick={() => setMenu("bookings")}>
+          <Link to="/ownerBooking" onClick={() => setMenu("bookings")}>
             Bookings
           </Link>
         </li>

@@ -3,7 +3,7 @@ import OwnerNavBar from './OwnerNavBar/OwnerNavBar'
 
 const Owner = () => {
   return (
-    <div>
+    <div className='content-wrapper'>
         <OwnerNavBar/>
     </div>
   )

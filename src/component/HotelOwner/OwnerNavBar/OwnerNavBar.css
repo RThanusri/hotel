@@ -1,0 +1,39 @@
+.Admin-Navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px; /* Set the width for the navbar */
+    height: 100%; /* Full height to cover the side */
+    background-color: #fff; /* Background color for the navbar */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow for aesthetics */
+    z-index: 1000; /* Keeps the navbar on top of other content */
+  }
+  
+  .Admin-navbar-menu {
+    list-style-type: none; /* Removes default list styling */
+    padding: 0;
+    margin: 0;
+    margin-top: 100px; /* Space for the logo above */
+  }
+  
+  .Admin-navbar-menu li {
+    padding: 10px 20px; /* Space around the menu items */
+  }
+  
+  .Admin-navbar-menu li.active {
+    background-color: #cc0000; /* Highlight active menu item */
+  }
+  
+  .Admin-navbar-menu li a {
+    text-decoration: none; /* Removes underline from links */
+    color: #000; /* Default text color */
+  }
+  
+  .logo {
+    width: 100px; /* Logo width */
+    margin-top: 20px; /* Space above the logo */
+    display: block; /* Centers the logo */
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
