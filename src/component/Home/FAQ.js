@@ -29,13 +29,13 @@ const FAQ = () => {
     ];
 
     return (
-        <div style={{ maxWidth: '2000px', margin: '0 auto', padding: '40px', display: 'flex', flexDirection: 'column',backgroundColor:'white' }}>
+        <div style={{ maxWidth: '3000px', margin: '0 auto', padding: '40px', display: 'flex', flexDirection: 'column',backgroundColor:'white' }}>
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
                 <Title level={2} style={{ color: 'black', fontSize: '4rem', fontWeight: 'bold' }}>
                     Your Questions, Answered
                 </Title>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px'}}>
+            <div style={{maxWidth:'100%', display: 'flex', justifyContent: 'flex-end', marginTop: '20px'}}>
                 <Collapse 
                     accordion 
                     style={{ width: '100%',backgroundColor:'white' }}
