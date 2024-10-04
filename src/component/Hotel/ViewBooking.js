@@ -162,6 +162,7 @@ const ViewBooking = () => {
                                 checkOutDate={booking.checkOutDate}
                                 numberOfAdults={booking.numberOfAdults}
                                 numberOfChildren={booking.numberOfChildren}
+                                roomIds={booking.rooms.map(room => room.id)}
                                 guestAges={booking.guestAges}
                                 totalFare={booking.totalFare} // Use total fare from local storage if available
                                 remove={() => cancelBooking(booking.bookingId)}
