@@ -69,12 +69,15 @@ const AddHotel = () => {
   return (
     <Box
       sx={{
-        bgcolor: '#F5F5F5',
-        width: '100vw',
+        bgcolor: 'white',
+        width: '95%',
         height: '80vh',
         display: 'flex',
+        marginTop:'100px',
+        marginLeft:'30px',
         justifyContent: 'center',
         alignItems: 'center',
+        alignContent:'center'
       }}
     >
       {showAlert && (
@@ -97,12 +100,12 @@ const AddHotel = () => {
           padding: 2,
           borderRadius: 1,
           border: '2px solid grey', 
-          width: '100%', 
+          width: '80%', 
           maxWidth: 900,
         }}
       >
         <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#cc0000' }} align="center" gutterBottom>
-          Add a New Hotel
+          Add  New Hotel
         </Typography>
         <form onSubmit={addHotel}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>

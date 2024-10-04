@@ -136,7 +136,7 @@ const HotelByOwner = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)} // Update search term
       />
-      <button onClick={handleSearch}>Search</button>
+      <button sx={{color:'#cc0000'}}onClick={handleSearch}>Search</button>
       <button onClick={handleAddHotel}>Add Hotel</button>
       <div className="hotel-container">
         {searchTerm
