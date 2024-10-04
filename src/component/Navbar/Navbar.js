@@ -84,7 +84,7 @@ const Navbar = () => {
           Sign Up
         </button>
         <button
-          className="full-width-button"
+          className="Nav-right"
           onClick={() => setSignInModalOpen(true)}
         >
           Sign In

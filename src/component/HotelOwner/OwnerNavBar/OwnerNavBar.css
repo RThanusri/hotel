@@ -1,41 +1,59 @@
+/* OwnerNavBar.css */
+.owner-layout {
+  display: flex;
+  height: 100vh; 
+  /* Make sure the layout spans the entire viewport height */
+}
+
 .Admin-Navbar {
   position: fixed;
   top: 0;
   left: 0;
-  width: 250px; /* Set the width for the navbar */
-  height: 100%; /* Full height to cover the side */
-  background-color: #fff; /* Background color for the navbar */
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow for aesthetics */
-  z-index: 1000; /* Keeps the navbar on top of other content */
+  height: 100%;
+  width: 150px;
+  z-index: 1000; /* Ensures the navbar is above other elements */
+  background-color: #fff;
+  display: flex;
+  align-content: center;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  padding: 20px 0;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
 }
 
 .Admin-navbar-menu {
-  list-style-type: none; /* Removes default list styling */
-  padding: 0;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
   margin: 0;
-  margin-top: 100px; /* Space for the logo above */
+  padding: 0;
+  width: 100%;
+  gap:100px;
+  align-items: center;
 }
 
 .Admin-navbar-menu li {
-  display: block; /* Ensure each menu item is displayed as a block */
-  padding: 10px 20px; /* Space around the menu items */
-}
-
-.Admin-navbar-menu li.active {
-  background-color: #cc0000; /* Highlight active menu item */
+  margin: 20px 0;
 }
 
 .Admin-navbar-menu li a {
-  text-decoration: none; /* Removes underline from links */
-  color: #000; /* Default text color */
-  display: block; /* Makes the entire area of the list item clickable */
-  width: 100%; /* Ensures the link takes the full width of the item */
+  text-decoration: none;
+  color: #333;
+  padding: 10px 20px;
+  width: 100%;
+  display: block;
 }
 
-.logo {
-  width: 100px; /* Logo width */
-  margin-top: 20px; /* Space above the logo */
-  display: block; /* Centers the logo */
-  margin-left: auto;
-  margin-right: auto;
+.active {
+  font-weight: bold;
+  color: #007bff;
+  background-color: #f0f0f0;
+}
+.logo{
+
+
+width: 150px;
+height: "auto";
+margin-top: 40px
 }

@@ -2,14 +2,16 @@
     padding: 20px 0;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Ensures space between logo and menu */
-    background-color:'#F0F8FF';
-    width:'100%'
+    justify-content: space-between; /* Ensure space between logo and menu */
+    background-color: white; /* Corrected color syntax */
+    width: 100%; /* Remove quotes */
 }
 
 .Navbar .logo {
     width: 250px;
-    height: auto; /* Adjust height automatically */
+    height: auto;
+    margin-left: 0; /* Adjust as needed */
+    margin-right: 20px; /* Added space to the right */
 }
 
 .navbar-menu {
@@ -17,24 +19,21 @@
     font-size: 18px;
     list-style: none;
     color: black;
-    gap: 50px; /* Adjust for even spacing between menu items */
+    gap: 30px; /* Adjusted spacing between menu items */
 }
 
 .navbar-right {
-    margin-top: -7px;;
     display: flex;
-    color:black;
+    color: black;
     font-size: 18px;
-    margin-left: 50px;
-    margin-right:2px;
-    gap: 10px; 
+    gap: 30px; 
 }
-.navbar-right1{
+
+.navbar-right1 {
     box-shadow: inset;
     display: flex;
     font-size: 18px;
-    margin-left: 1px;
-    gap: 10px; 
+    gap: 30px; 
 }
 
 .Navbar button {
@@ -78,4 +77,3 @@
     color: red;
     text-decoration: underline;
 }
- 
