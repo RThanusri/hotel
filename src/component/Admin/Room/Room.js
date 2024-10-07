@@ -16,9 +16,9 @@ const Room = () => {
   const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
 
   const handleAddRoom = () => {
-    nav("/addRoom");
+    nav("/addRoom", { state: { hotelId } }); // Pass hotelId through navigation state
   };
-
+  
   const getRooms = () => {
     const token = localStorage.getItem("token");
 
@@ -102,13 +102,12 @@ const Room = () => {
         setShowAlert(true);
       })
       .finally(() => {
-        setTimeout(() => setShowAlert(false), 3000); // Hide alert after 3 seconds
+        setTimeout(() => setShowAlert(false), 3000); 
       });
   };
 
-  // Fetch all rooms on component mount
   useEffect(() => {
-    getRooms(); // Call the function to get all rooms
+    getRooms(); 
   }, []);
 
   return (

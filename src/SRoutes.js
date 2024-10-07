@@ -62,7 +62,7 @@ const SRoutes=()=>
    <Route path="/addReview/:hotelId" element={<AddReview/>}></Route>
    <Route path="/AllHotels" element ={<AllHotels/>}/>
    <Route path="/addRoom" element={<AddRoom/>}/>
-   <Route path="/Hotel" element={<Hotel />} />
+   <Route path="/hotels" element={<Hotel />} />
       <Route path="/addHotel" element={<AddHotel/>}/>
       <Route path="/room/:hotelId" element={<Room/>} />
       <Route path="/addRoom" element={<AddRoom/>}/>

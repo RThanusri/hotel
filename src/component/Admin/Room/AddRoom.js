@@ -1,38 +1,45 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Alert } from "@mui/material"; // Import Alert from MUI
+import { useLocation } from "react-router-dom"; // Import useLocation to get hotelId from state
 
 const AddRoom = () => {
-  const [roomSize, setRoomSize] = useState("");
-  const [bedSize, setBedSize] = useState("Single");
-  const [maxOccupancy, setMaxOccupancy] = useState(2);
-  const [baseFare, setBaseFare] = useState(1000);
-  const [isAC, setIsAC] = useState(false);
-  const [availableFrom, setAvailableFrom] = useState("");
-  const [availableTo, setAvailableTo] = useState("");
-  const [images, setImages] = useState("");
+  const location = useLocation(); // Use useLocation to access hotelId from the passed state
+  const { hotelId } = location.state || {}; // Extract hotelId from state
+
+  // Updated state variable names
+  const [roomSizeState, setRoomSizeState] = useState("");
+  const [bedSizeState, setBedSizeState] = useState("Single");
+  const [maxOccupancyState, setMaxOccupancyState] = useState(2);
+  const [baseFareState, setBaseFareState] = useState(1000);
+  const [isACState, setIsACState] = useState(false);
+  const [availableFromState, setAvailableFromState] = useState("");
+  const [availableToState, setAvailableToState] = useState("");
+  const [imageInputState, setImageInputState] = useState(""); // State for input field
+  const [imagesState, setImagesState] = useState([]); // Store image URLs as an array
 
   // State for alerts
-  const [alertMsg, setAlertMsg] = useState(''); // Message for success/error alerts
-  const [alertType, setAlertType] = useState(''); // Type for alert severity (success, error)
-  const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
+  const [alertMsgState, setAlertMsgState] = useState(""); // Message for success/error alerts
+  const [alertTypeState, setAlertTypeState] = useState(""); // Type for alert severity (success, error)
+  const [showAlertState, setShowAlertState] = useState(false); // State to show/hide alerts
 
   const addRoom = (e) => {
     e.preventDefault(); // Prevent form submission
 
     const room = {
-      roomSize,
-      bedSize,
-      maxOccupancy,
-      baseFare,
-      isAC,
-      availableFrom,
-      availableTo,
-      images,
+      hotelId: parseInt(hotelId), // Ensure hotelId is an integer
+      roomSize: roomSizeState,
+      bedSize: bedSizeState,
+      maxOccupancy: parseInt(maxOccupancyState), // Ensure maxOccupancy is an integer
+      baseFare: parseFloat(baseFareState), // Ensure baseFare is a number
+      availableFrom: availableFromState,
+      availableTo: availableToState,
+      images: imagesState, // Ensure images are an array of strings
+      ac: isACState // Ensure ac is a boolean
     };
 
     const token = localStorage.getItem("token"); // Retrieve token from localStorage
-
+    console.log(room);
     axios
       .post("http://localhost:8080/api/owner/addRoom", room, {
         headers: {
@@ -41,28 +48,42 @@ const AddRoom = () => {
         },
       })
       .then((response) => {
-        console.log(response);
-        setAlertType('success');
-        setAlertMsg('Room added successfully!');
-        setShowAlert(true);
+        console.log(response.data);
+        setAlertTypeState("success");
+        setAlertMsgState("Room added successfully!");
+        setShowAlertState(true);
       })
       .catch((error) => {
         console.error("There was an error adding the room!", error);
-        setAlertType('error');
-        setAlertMsg('Failed to add the room');
-        setShowAlert(true);
+        setAlertTypeState("error");
+        setAlertMsgState("Failed to add the room");
+        setShowAlertState(true);
       })
       .finally(() => {
         // Hide alert after 3 seconds
         setTimeout(() => {
-          setShowAlert(false);
+          setShowAlertState(false);
         }, 3000);
       });
   };
 
+  // Add image URL to the array
+  const handleAddImage = () => {
+    if (imageInputState.trim()) {
+      setImagesState([...imagesState, imageInputState]);
+      setImageInputState(""); // Clear input after adding
+    }
+  };
+
+  // Remove image from the array
+  const handleRemoveImage = (index) => {
+    const updatedImages = imagesState.filter((_, i) => i !== index);
+    setImagesState(updatedImages);
+  };
+
   return (
     <div>
-      {showAlert && (
+      {showAlertState && (
         <div
           style={{
             position: "fixed",
@@ -72,7 +93,7 @@ const AddRoom = () => {
             width: "320px",
           }}
         >
-          <Alert severity={alertType}>{alertMsg}</Alert>
+          <Alert severity={alertTypeState}>{alertMsgState}</Alert>
         </div>
       )}
 
@@ -82,9 +103,9 @@ const AddRoom = () => {
           <label>Room Size:</label>
           <input
             type="text"
-            value={roomSize}
+            value={roomSizeState}
             placeholder="Enter room size"
-            onChange={(e) => setRoomSize(e.target.value)}
+            onChange={(e) => setRoomSizeState(e.target.value)}
             required
           />
         </div>
@@ -92,9 +113,9 @@ const AddRoom = () => {
           <label>Bed Size:</label>
           <input
             type="text"
-            value={bedSize}
+            value={bedSizeState}
             placeholder="Enter bed size"
-            onChange={(e) => setBedSize(e.target.value)}
+            onChange={(e) => setBedSizeState(e.target.value)}
             required
           />
         </div>
@@ -102,9 +123,9 @@ const AddRoom = () => {
           <label>Max Occupancy:</label>
           <input
             type="number"
-            value={maxOccupancy}
+            value={maxOccupancyState}
             placeholder="Enter max occupancy"
-            onChange={(e) => setMaxOccupancy(e.target.value)}
+            onChange={(e) => setMaxOccupancyState(e.target.value)}
             required
           />
         </div>
@@ -112,9 +133,9 @@ const AddRoom = () => {
           <label>Base Fare:</label>
           <input
             type="number"
-            value={baseFare}
+            value={baseFareState}
             placeholder="Enter base fare"
-            onChange={(e) => setBaseFare(e.target.value)}
+            onChange={(e) => setBaseFareState(e.target.value)}
             required
           />
         </div>
@@ -122,41 +143,58 @@ const AddRoom = () => {
           <label>AC Available:</label>
           <input
             type="checkbox"
-            checked={isAC}
-            onChange={(e) => setIsAC(e.target.checked)}
+            checked={isACState}
+            onChange={(e) => setIsACState(e.target.checked)}
           />
         </div>
         <div>
           <label>Available From:</label>
           <input
             type="date"
-            value={availableFrom}
-            onChange={(e) => setAvailableFrom(e.target.value)}
+            value={availableFromState}
+            onChange={(e) => setAvailableFromState(e.target.value)}
           />
         </div>
         <div>
           <label>Available To:</label>
           <input
             type="date"
-            value={availableTo}
-            onChange={(e) => setAvailableTo(e.target.value)}
+            value={availableToState}
+            onChange={(e) => setAvailableToState(e.target.value)}
           />
         </div>
         <div>
-          <label>Image </label>
+          <label>Image URLs</label>
           <input
             type="text"
-            value={images}
+            value={imageInputState}
             placeholder="Enter image URL"
-            onChange={(e) => setImages(e.target.value)}
+            onChange={(e) => setImageInputState(e.target.value)}
           />
-          {images && (
-            <img
-              src={images}
-              alt="New Room"
-              style={{ width: "100px", height: "100px", marginTop: "10px" }}
-            />
-          )}
+          <button type="button" onClick={handleAddImage}>
+            Add Image
+          </button>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "10px",
+            marginTop: "10px",
+          }}
+        >
+          {imagesState.map((image, index) => (
+            <div key={index}>
+              <img
+                src={image}
+                alt={`Room Preview ${index + 1}`}
+                style={{ width: "100px", height: "100px" }}
+              />
+              <button type="button" onClick={() => handleRemoveImage(index)}>
+                Remove
+              </button>
+            </div>
+          ))}
         </div>
         <button type="submit">Add Room</button>
       </form>

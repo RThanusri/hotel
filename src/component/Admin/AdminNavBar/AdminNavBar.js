@@ -53,7 +53,7 @@ const AdminNavBar = () => {
       
     },
     activeMenuItem: {
-      paddingBottom: "2px",
+      paddingBottom: '0px',
       color: "#000000",
       textDecoration: "underline",
     },

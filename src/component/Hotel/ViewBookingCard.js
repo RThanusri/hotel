@@ -64,11 +64,16 @@ const ViewBookingCard = ({
   const handleUpdate = () => {
     const updatedData = {};
     if (nCheckInDate !== checkInDate) updatedData.checkInDate = nCheckInDate;
-    if (nCheckOutDate !== checkOutDate) updatedData.checkOutDate = nCheckOutDate;
-    if (nNumberOfAdults !== numberOfAdults) updatedData.numberOfAdults = nNumberOfAdults;
-    if (nNumberOfChildren !== numberOfChildren) updatedData.numberOfChildren = nNumberOfChildren;
-    if (JSON.stringify(nGuestAges) !== JSON.stringify(guestAges)) updatedData.guestAges = nGuestAges;
-    if (JSON.stringify(nRoomIds) !== JSON.stringify(roomIds)) updatedData.roomIds = nRoomIds;
+    if (nCheckOutDate !== checkOutDate)
+      updatedData.checkOutDate = nCheckOutDate;
+    if (nNumberOfAdults !== numberOfAdults)
+      updatedData.numberOfAdults = nNumberOfAdults;
+    if (nNumberOfChildren !== numberOfChildren)
+      updatedData.numberOfChildren = nNumberOfChildren;
+    if (JSON.stringify(nGuestAges) !== JSON.stringify(guestAges))
+      updatedData.guestAges = nGuestAges;
+    if (JSON.stringify(nRoomIds) !== JSON.stringify(roomIds))
+      updatedData.roomIds = nRoomIds;
 
     if (Object.keys(updatedData).length > 0) {
       update(extractedBookingId, updatedData);
@@ -103,13 +108,20 @@ const ViewBookingCard = ({
 
   return (
     <div>
-      <TableContainer component={Paper} sx={{ mb: 2, backgroundColor: "white" }}>
+      <TableContainer
+        component={Paper}
+        sx={{ mb: 2, backgroundColor: "white" }}
+      >
         <Table>
           <TableHead>
             <TableRow>
               <TableCell align="center">
-                <Button variant="contained" sx={buttonStyle} onClick={() => setOpen(true)}>
-                  View Booking
+                <Button
+                  variant="contained"
+                  sx={buttonStyle}
+                  onClick={() => setOpen(true)}
+                >
+                  booking :{bookingId}
                 </Button>
               </TableCell>
               <TableCell align="center">
@@ -165,7 +177,11 @@ const ViewBookingCard = ({
               </Grid>
             ))}
             <Grid item xs={12}>
-              <Button variant="contained" sx={buttonStyle} onClick={addGuestAge}>
+              <Button
+                variant="contained"
+                sx={buttonStyle}
+                onClick={addGuestAge}
+              >
                 Add Guest Age
               </Button>
             </Grid>
