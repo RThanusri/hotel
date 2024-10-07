@@ -1,31 +1,70 @@
 import React, { useState } from "react";
 import axios from "axios";
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  Card,
-  Alert,
-} from "@mui/material";
+import { Box, Button, TextField, Typography, Card, Alert } from "@mui/material";
 
 const AddHotel = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [amenities, setAmenities] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageFile, setImageFile] = useState(null); 
+  const [imageUrl, setImageUrl] = useState(""); 
   const [address, setAddress] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
   const [noOfRooms, setNoOfRooms] = useState(0);
   
-  const [alertMsg, setAlertMsg] = useState(''); // Message for alerts
-  const [alertType, setAlertType] = useState(''); // Type for alert severity (success, error)
-  const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
+  const [alertMsg, setAlertMsg] = useState('');
+  const [alertType, setAlertType] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
 
-  const addHotel = (e) => {
+  const handleImageUpload = async (file) => {
+    const formData = new FormData();
+    formData.append("image", file); 
+
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await axios.post("http://localhost:8080/api/upload", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log("Image upload response:", response.data);
+      setImageUrl(response.data); 
+      console.log("Uploaded image URL:", response.data);
+      
+    } catch (error) {
+      console.error("Image upload failed:", error);
+      setAlertType('error');
+      setAlertMsg('Image upload failed');
+      setShowAlert(true);
+    }
+  };
+
+  const addHotel = async (e) => {
     e.preventDefault();
 
+    // Upload the image if it exists
+    if (imageFile) {
+      await handleImageUpload(imageFile); 
+    }
+
+    // Wait until the imageUrl is set after upload
+    if (!imageUrl) {
+      // Delay for a brief moment to allow the URL to be set
+      setTimeout(() => {
+        if (!imageUrl) {
+          setAlertType('error');
+          setAlertMsg('Image URL is not available. Please upload an image.');
+          setShowAlert(true);
+        }
+      }, 1000);
+      return; // Prevent sending the hotel data if the image URL is not set
+    }
+
     const userId = localStorage.getItem("userId");
+    console.log("Uploaded image URL:", imageUrl); 
 
     const hotel = {
       name,
@@ -33,37 +72,33 @@ const AddHotel = () => {
       address,
       description,
       amenities,
-      image: imageUrl,
+      image: imageUrl, 
       noOfRooms,
       userId,
     };
 
     const token = localStorage.getItem("token");
 
-    axios
-      .post("http://localhost:8080/api/owner/addHotel", hotel, {
+    try {
+      await axios.post("http://localhost:8080/api/owner/addHotel", hotel, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      })
-      .then(() => {
-        setAlertType('success');
-        setAlertMsg('Hotel added successfully!');
-        setShowAlert(true);
-      })
-      .catch((error) => {
-        console.error("There was an error in adding the hotel!", error);
-        setAlertType('error');
-        setAlertMsg('Failed to add the hotel');
-        setShowAlert(true);
-      })
-      .finally(() => {
-        // Hide alert after 3 seconds
-        setTimeout(() => {
-          setShowAlert(false);
-        }, 3000);
       });
+      setAlertType('success');
+      setAlertMsg('Hotel added successfully!');
+      setShowAlert(true);
+    } catch (error) {
+      console.error("There was an error in adding the hotel!", error);
+      setAlertType('error');
+      setAlertMsg('Failed to add the hotel');
+      setShowAlert(true);
+    } finally {
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 3000);
+    }
   };
 
   return (
@@ -73,11 +108,11 @@ const AddHotel = () => {
         width: '95%',
         height: '80vh',
         display: 'flex',
-        marginTop:'100px',
-        marginLeft:'30px',
+        marginTop: '100px',
+        marginLeft: '30px',
         justifyContent: 'center',
         alignItems: 'center',
-        alignContent:'center'
+        alignContent: 'center'
       }}
     >
       {showAlert && (
@@ -99,13 +134,13 @@ const AddHotel = () => {
           backgroundColor: 'white',
           padding: 2,
           borderRadius: 1,
-          border: '2px solid grey', 
-          width: '80%', 
+          border: '2px solid grey',
+          width: '80%',
           maxWidth: 900,
         }}
       >
         <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#cc0000' }} align="center" gutterBottom>
-          Add  New Hotel
+          Add New Hotel
         </Typography>
         <form onSubmit={addHotel}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -115,16 +150,6 @@ const AddHotel = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              InputProps={{
-                sx: {
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#cc0000',
-                  },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#cc0000',
-                  },
-                },
-              }}
             />
             <TextField
               label="Description"
@@ -134,16 +159,6 @@ const AddHotel = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
-              InputProps={{
-                sx: {
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#cc0000',
-                  },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#cc0000',
-                  },
-                },
-              }}
             />
             <TextField
               label="Amenities"
@@ -151,16 +166,6 @@ const AddHotel = () => {
               value={amenities}
               onChange={(e) => setAmenities(e.target.value)}
               required
-              InputProps={{
-                sx: {
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#cc0000',
-                  },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#cc0000',
-                  },
-                },
-              }}
             />
             <TextField
               label="Address"
@@ -168,16 +173,6 @@ const AddHotel = () => {
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               required
-              InputProps={{
-                sx: {
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#cc0000',
-                  },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#cc0000',
-                  },
-                },
-              }}
             />
             <TextField
               label="Phone Number"
@@ -185,16 +180,6 @@ const AddHotel = () => {
               value={phoneNo}
               onChange={(e) => setPhoneNo(e.target.value)}
               required
-              InputProps={{
-                sx: {
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#cc0000',
-                  },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#cc0000',
-                  },
-                },
-              }}
             />
             <TextField
               label="Number of Rooms"
@@ -203,34 +188,20 @@ const AddHotel = () => {
               value={noOfRooms}
               onChange={(e) => setNoOfRooms(e.target.value)}
               required
-              InputProps={{
-                sx: {
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#cc0000',
-                  },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#cc0000',
-                  },
-                },
-              }}
             />
-            <TextField
-              label="Image URL"
-              variant="outlined"
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImageFile(e.target.files[0])}
               required
-              InputProps={{
-                sx: {
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#cc0000',
-                  },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#cc0000',
-                  },
-                },
-              }}
             />
+            {imageUrl && (
+              <img
+                src={imageUrl}
+                alt="Uploaded Preview"
+                style={{ width: "200px", height: "200px", marginTop: "10px" }}
+              />
+            )}
             <Button
               variant="contained"
               sx={{
