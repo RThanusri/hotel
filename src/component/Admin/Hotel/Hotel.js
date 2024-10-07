@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Import axios
 import { Alert } from "@mui/material"; // Import Alert from MUI
 import "./Hotel.css";
-import AdminNavBar from "../AdminNavBar/AdminNavBar";
 
 const Hotel = () => {
   const nav = useNavigate();

@@ -38,7 +38,7 @@ const AdminNavBar = () => {
       flexDirection: "column",
       alignItems: "center",
       marginTop:'60px',
-      gap:'100px'
+      gap:'40px'
     },
     menuItem: {
       width: "100%",

@@ -18,6 +18,7 @@ const HotelCard = ({
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(false); // Modal for details
   const [nName, setNName] = useState(name);
   const [nDescription, setNDescription] = useState(description);
   const [nAmenities, setNAmenities] = useState(amenities);
@@ -74,7 +75,6 @@ const HotelCard = ({
         setShowAlert(false);
       }, 3000);
     }
-    console.log(updatedData);
     setOpen(false);
   };
 
@@ -103,7 +103,7 @@ const HotelCard = ({
     navigate("/addBooking");
   };
 
-  const handleCardClick = () => {
+  const handleImageClick = () => {
     navigate(`/room/${id}`);
   };
 
@@ -125,80 +125,144 @@ const HotelCard = ({
 
       <center>
         <div className="card">
-          <img
-            src={image}
-            alt={image}
-            onClick={handleCardClick}
-            style={{ cursor: "pointer" }}
-          />
-          <h3>Hotel Id :{id}</h3>
+          {/* Display image first */}
+          {nImage && (
+            <img
+              src={nImage}
+              alt="Hotel Image"
+              style={{ width: "250px", height: "150px", cursor: "pointer", borderRadius: "10px" }}
+              onClick={handleImageClick} // Click the image to navigate
+            />
+          )}
+          <h3>Hotel Id: {id}</h3>
           <h2>{name}</h2>
+
           <p>{description}</p>
-          <p> {amenities}</p>
-          <p>
-            {address} Phone No: {phoneNo}
-          </p>
-          <button onClick={handleRemove}>Remove</button>
+
+          {/* View Details and Remove buttons */}
+          <div style={{ display: "flex", justifyContent: "center", margin: "10px 0" }}>
+            <button 
+              style={{ backgroundColor: "#cc0000", color: "#fff", border: "none", padding: "10px 20px", margin: "0 5px", cursor: "pointer" }} 
+              onClick={() => setDetailsOpen(true)}
+            >
+              View Details
+            </button>
+            <button 
+              style={{ backgroundColor: "#cc0000", color: "#fff", border: "none", padding: "10px 20px", margin: "0 5px", cursor: "pointer" }} 
+              onClick={handleRemove}
+            >
+              Remove
+            </button>
+          </div>
+
+          {/* Reserve and Update buttons */}
+          <div style={{ display: "flex", justifyContent: "center", margin: "10px 0" }}>
+            <button 
+              style={{ backgroundColor: "#cc0000", color: "#fff", border: "none", padding: "10px 20px", margin: "0 5px", cursor: "pointer" }} 
+              onClick={handleReserve}
+            >
+              Reserve
+            </button>
+            <button 
+              style={{ backgroundColor: "#cc0000", color: "#fff", border: "none", padding: "10px 20px", margin: "0 5px", cursor: "pointer" }} 
+              onClick={() => setOpen(true)}
+            >
+              Update
+            </button>
+          </div>
+
+          {/* Modal for showing full details */}
+          <Modal
+            open={detailsOpen}
+            onClose={() => setDetailsOpen(false)}
+            size="small"
+            style={{
+              borderRadius: "10px",
+              padding: "20px",
+              textAlign: "center",
+              background: "#f0f0f0",
+            }}
+          >
+            <Modal.Header style={{ background: "#cc0000", color: "#fff" }}>Hotel Details</Modal.Header>
+            <Modal.Content>
+              <p style={{ color: 'black' }}><strong>Name:</strong></p>
+              <p style={{ color: 'black' }}>{nName}</p>
+              <p style={{ color: 'black' }}><strong>Description:</strong></p>
+              <p style={{ color: 'black' }}>{nDescription}</p>
+              <p style={{ color: 'black' }}><strong>Amenities:</strong></p>
+              <p style={{ color: 'black' }}>{nAmenities}</p>
+              <p style={{ color: 'black' }}><strong>Address:</strong></p>
+              <p style={{ color: 'black' }}>{nAddress}</p>
+              <p style={{ color: 'black' }}><strong>Phone No:</strong></p>
+              <p style={{ color: 'black' }}>{nPhoneNo}</p>
+              {nImage && <img src={nImage} alt="Hotel Image" style={{ width: "150px", height: "150px", borderRadius: "10px" }} />}
+            </Modal.Content>
+            <Modal.Actions>
+              <Button style={{ backgroundColor: "#cc0000", color: "#fff" }} onClick={() => setDetailsOpen(false)}>Close</Button>
+            </Modal.Actions>
+          </Modal>
+
+          {/* Modal for update */}
           <Modal
             onClose={() => setOpen(false)}
-            onOpen={() => setOpen(true)}
             open={open}
-            trigger={<Button>Update</Button>}
           >
-            <input
-              type="text"
-              value={nName}
-              placeholder={name}
-              onChange={(e) => setNName(e.target.value)}
-            />
-            <br />
-            <input
-              type="text"
-              value={nDescription}
-              placeholder={description}
-              onChange={(e) => setNDescription(e.target.value)}
-            />
-            <br />
-            <input
-              type="text"
-              value={nAmenities}
-              placeholder={amenities}
-              onChange={(e) => setNAmenities(e.target.value)}
-            />
-            <br />
-            <input
-              type="text"
-              value={nAddress}
-              placeholder={address}
-              onChange={(e) => setNAddress(e.target.value)}
-            />
-            <br />
-            <input
-              type="text"
-              value={nPhoneNo}
-              placeholder={phoneNo}
-              onChange={(e) => setNPhoneNo(e.target.value)}
-            />
-            <label>Images (comma-separated URLs):</label>
-            <input
-              type="text"
-              value={nImage}
-              placeholder="Enter image URLs separated by commas"
-              onChange={(e) => setNImage(e.target.value)}
-            />
-            <br />
-            {nImage && (
-              <img
-                src={nImage}
-                alt="New Image"
-                style={{ width: "100px", height: "100px" }}
+            <Modal.Header>Update Hotel Information</Modal.Header>
+            <Modal.Content>
+              <input
+                type="text"
+                value={nName}
+                placeholder={name}
+                onChange={(e) => setNName(e.target.value)}
               />
-            )}
-            <br />
-            <button onClick={handleUpdate}>Confirm</button>
-            <button onClick={handleClose}>Cancel</button>
+              <br />
+              <input
+                type="text"
+                value={nDescription}
+                placeholder={description}
+                onChange={(e) => setNDescription(e.target.value)}
+              />
+              <br />
+              <input
+                type="text"
+                value={nAmenities}
+                placeholder={amenities}
+                onChange={(e) => setNAmenities(e.target.value)}
+              />
+              <br />
+              <input
+                type="text"
+                value={nAddress}
+                placeholder={address}
+                onChange={(e) => setNAddress(e.target.value)}
+              />
+              <br />
+              <input
+                type="text"
+                value={nPhoneNo}
+                placeholder={phoneNo}
+                onChange={(e) => setNPhoneNo(e.target.value)}
+              />
+              <label>Images (comma-separated URLs):</label>
+              <input
+                type="text"
+                value={nImage}
+                placeholder="Enter image URLs separated by commas"
+                onChange={(e) => setNImage(e.target.value)}
+              />
+              <br />
+              {nImage && (
+                <img
+                  src={nImage}
+                  alt="New Image"
+                  style={{ width: "100px", height: "100px" }}
+                />
+              )}
+              <br />
+              <Button onClick={handleUpdate}>Confirm</Button>
+              <Button onClick={handleClose}>Cancel</Button>
+            </Modal.Content>
           </Modal>
-          <button onClick={handleReserve}>Reserve</button>
         </div>
       </center>
     </>
