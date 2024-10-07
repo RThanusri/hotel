@@ -6,19 +6,26 @@ const AddHotel = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [amenities, setAmenities] = useState("");
-  const [imageFile, setImageFile] = useState(null); 
-  const [imageUrl, setImageUrl] = useState(""); 
+  const [imageFile, setImageFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
   const [address, setAddress] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
   const [noOfRooms, setNoOfRooms] = useState(0);
-  
+
   const [alertMsg, setAlertMsg] = useState('');
   const [alertType, setAlertType] = useState('');
   const [showAlert, setShowAlert] = useState(false);
 
-  const handleImageUpload = async (file) => {
+  const handleImageUpload = async () => {
+    if (!imageFile) {
+      setAlertType('error');
+      setAlertMsg('Please select an image to upload.');
+      setShowAlert(true);
+      return;
+    }
+
     const formData = new FormData();
-    formData.append("image", file); 
+    formData.append("image", imageFile);
 
     const token = localStorage.getItem("token");
 
@@ -30,10 +37,10 @@ const AddHotel = () => {
         },
       });
 
-      console.log("Image upload response:", response.data);
-      setImageUrl(response.data); 
-      console.log("Uploaded image URL:", response.data);
-      
+      setImageUrl(response.data);
+      setAlertType('success');
+      setAlertMsg('Image uploaded successfully!');
+      setShowAlert(true);
     } catch (error) {
       console.error("Image upload failed:", error);
       setAlertType('error');
@@ -45,26 +52,14 @@ const AddHotel = () => {
   const addHotel = async (e) => {
     e.preventDefault();
 
-    // Upload the image if it exists
-    if (imageFile) {
-      await handleImageUpload(imageFile); 
-    }
-
-    // Wait until the imageUrl is set after upload
     if (!imageUrl) {
-      // Delay for a brief moment to allow the URL to be set
-      setTimeout(() => {
-        if (!imageUrl) {
-          setAlertType('error');
-          setAlertMsg('Image URL is not available. Please upload an image.');
-          setShowAlert(true);
-        }
-      }, 1000);
-      return; // Prevent sending the hotel data if the image URL is not set
+      setAlertType('error');
+      setAlertMsg('Please upload an image before adding the hotel.');
+      setShowAlert(true);
+      return;
     }
 
     const userId = localStorage.getItem("userId");
-    console.log("Uploaded image URL:", imageUrl); 
 
     const hotel = {
       name,
@@ -72,7 +67,7 @@ const AddHotel = () => {
       address,
       description,
       amenities,
-      image: imageUrl, 
+      image: imageUrl,
       noOfRooms,
       userId,
     };
@@ -195,6 +190,20 @@ const AddHotel = () => {
               onChange={(e) => setImageFile(e.target.files[0])}
               required
             />
+            <Button
+              variant="contained"
+              onClick={handleImageUpload}
+              sx={{
+                backgroundColor: '#cc0000',
+                color: 'white',
+                fontWeight: 'bold',
+                '&:hover': {
+                  backgroundColor: '#b30000',
+                },
+              }}
+            >
+              Upload Image
+            </Button>
             {imageUrl && (
               <img
                 src={imageUrl}
@@ -204,6 +213,7 @@ const AddHotel = () => {
             )}
             <Button
               variant="contained"
+              type="submit"
               sx={{
                 backgroundColor: '#cc0000',
                 color: 'white',
@@ -212,7 +222,6 @@ const AddHotel = () => {
                   backgroundColor: '#b30000',
                 },
               }}
-              type="submit"
             >
               Add Hotel
             </Button>
