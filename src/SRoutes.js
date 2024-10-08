@@ -38,6 +38,7 @@ import CompanyDetails from "./component/Footer/CompanyDetails.js"
 import OwnerHome from "./component/Home/OwnerHome.js"
 import OwnerBooking from "./component/HotelOwner/OwnerBooking/OwnerBooking.js"
 import OwnerReview from "./component/HotelOwner/OwnerBooking/OwnerReview.js"
+import OwnerRoom from "./component/HotelOwner/OwnerRoom.js"
 
 
 
@@ -87,6 +88,7 @@ const SRoutes=()=>
       <Route path="/HotelOwners" element={<HotelOwner/>}/>
       <Route path="/ownerBooking" element={<OwnerBooking/>}/>
       <Route path="/OwnerReview" element={<OwnerReview/>}/>
+      <Route path='/OwnerRoom' element={<OwnerRoom/>}/>
 
 
 
