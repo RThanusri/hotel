@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Button, Modal } from "semantic-ui-react";
-import "./HotelCard.css";
-import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material"; // Import Alert from MUI
+import { useNavigate } from "react-router-dom";
+import "./HotelCard.css";
 
 const HotelCard = ({
   id,
@@ -18,7 +18,7 @@ const HotelCard = ({
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
-  const [detailsOpen, setDetailsOpen] = useState(false); // Modal for details
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [nName, setNName] = useState(name);
   const [nDescription, setNDescription] = useState(description);
   const [nAmenities, setNAmenities] = useState(amenities);
@@ -28,52 +28,28 @@ const HotelCard = ({
 
   // State for alerts
   const [alertMsg, setAlertMsg] = useState('');
-  const [alertType, setAlertType] = useState(''); // Type for alert severity (success, error)
-  const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
+  const [alertType, setAlertType] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setNImage(imageUrl);
-    }
+  const handleImageClick = () => {
+    navigate(`/room/${id}`);
   };
 
   const handleUpdate = () => {
     const updatedData = {};
+    if (nName !== name) updatedData.name = nName;
+    if (nPhoneNo !== phoneNo) updatedData.phoneNo = nPhoneNo;
+    if (nDescription !== description) updatedData.description = nDescription;
+    if (nAddress !== address) updatedData.address = nAddress;
+    if (nImage !== image) updatedData.image = nImage;
+    if (nAmenities !== amenities) updatedData.amenities = nAmenities;
 
-    if (nName !== name) {
-      updatedData.name = nName;
-    }
-
-    if (nPhoneNo !== phoneNo) {
-      updatedData.phoneNo = nPhoneNo;
-    }
-
-    if (nDescription !== description) {
-      updatedData.description = nDescription;
-    }
-
-    if (nAddress !== address) {
-      updatedData.address = nAddress;
-    }
-
-    if (nImage !== image) {
-      updatedData.image = nImage;
-    }
-
-    if (nAmenities !== amenities) {
-      updatedData.amenities = nAmenities;
-    }
     if (Object.keys(updatedData).length > 0) {
       update(id, updatedData);
       setAlertType('success');
       setAlertMsg('Hotel updated successfully!');
       setShowAlert(true);
-      // Hide alert after 3 seconds
-      setTimeout(() => {
-        setShowAlert(false);
-      }, 3000);
+      setTimeout(() => setShowAlert(false), 3000);
     }
     setOpen(false);
   };
@@ -89,112 +65,82 @@ const HotelCard = ({
   };
 
   const handleRemove = () => {
-    remove(id); // Call the remove function passed as prop
+    remove(id);
     setAlertType('success');
     setAlertMsg('Hotel removed successfully!');
     setShowAlert(true);
-    // Hide alert after 3 seconds
-    setTimeout(() => {
-      setShowAlert(false);
-    }, 3000);
+    setTimeout(() => setShowAlert(false), 3000);
   };
 
   const handleReserve = () => {
     navigate("/addBooking");
   };
 
-  const handleImageClick = () => {
-    navigate(`/room/${id}`);
-  };
-
   return (
     <>
       {showAlert && (
-        <div
-          style={{
-            position: "fixed",
-            top: "20px",
-            right: "20px",
-            zIndex: 1000,
-            width: "320px",
-          }}
-        >
+        <div style={{ position: "fixed", top: "20px", right: "20px", zIndex: 1000, width: "320px" }}>
           <Alert severity={alertType}>{alertMsg}</Alert>
         </div>
       )}
 
       <center>
-        <div className="card">
-          {/* Display image first */}
+        <div className="card" style={{ padding: '20px', borderRadius: '10px', border: '1px solid #cc0000', margin: '10px', boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',width:'500px' }}>
           {nImage && (
             <img
               src={nImage}
               alt="Hotel Image"
-              style={{ width: "250px", height: "150px", cursor: "pointer", borderRadius: "10px" }}
-              onClick={handleImageClick} // Click the image to navigate
+              style={{ width: "100%", height: "350px", cursor: "pointer", borderRadius: "10px" }}
+              onClick={handleImageClick}
             />
           )}
           <h3>Hotel Id: {id}</h3>
           <h2>{name}</h2>
-
           <p>{description}</p>
 
-          {/* View Details and Remove buttons */}
           <div style={{ display: "flex", justifyContent: "center", margin: "10px 0" }}>
-            <button 
-              style={{ backgroundColor: "#cc0000", color: "#fff", border: "none", padding: "10px 20px", margin: "0 5px", cursor: "pointer" }} 
+            <Button
+              style={{ backgroundColor: "#cc0000", color: "#fff", margin: "0 5px" }}
               onClick={() => setDetailsOpen(true)}
             >
               View Details
-            </button>
-            <button 
-              style={{ backgroundColor: "#cc0000", color: "#fff", border: "none", padding: "10px 20px", margin: "0 5px", cursor: "pointer" }} 
+            </Button>
+            <Button
+              style={{ backgroundColor: "#cc0000", color: "#fff", margin: "0 5px" }}
               onClick={handleRemove}
             >
               Remove
-            </button>
+            </Button>
           </div>
 
-          {/* Reserve and Update buttons */}
           <div style={{ display: "flex", justifyContent: "center", margin: "10px 0" }}>
-            <button 
-              style={{ backgroundColor: "#cc0000", color: "#fff", border: "none", padding: "10px 20px", margin: "0 5px", cursor: "pointer" }} 
+            <Button
+              style={{ backgroundColor: "#cc0000", color: "#fff", margin: "0 5px" }}
               onClick={handleReserve}
             >
               Reserve
-            </button>
-            <button 
-              style={{ backgroundColor: "#cc0000", color: "#fff", border: "none", padding: "10px 20px", margin: "0 5px", cursor: "pointer" }} 
+            </Button>
+            <Button
+              style={{ backgroundColor: "#cc0000", color: "#fff", margin: "0 5px" }}
               onClick={() => setOpen(true)}
             >
               Update
-            </button>
+            </Button>
           </div>
 
-          {/* Modal for showing full details */}
           <Modal
             open={detailsOpen}
             onClose={() => setDetailsOpen(false)}
             size="small"
-            style={{
-              borderRadius: "10px",
-              padding: "20px",
-              textAlign: "center",
-              background: "#f0f0f0",
-            }}
+            style={{ borderRadius: "10px", padding: "20px", textAlign: "center", background: "#f0f0f0",maxHeight:'700px' }}
           >
             <Modal.Header style={{ background: "#cc0000", color: "#fff" }}>Hotel Details</Modal.Header>
             <Modal.Content>
-              <p style={{ color: 'black' }}><strong>Name:</strong></p>
-              <p style={{ color: 'black' }}>{nName}</p>
-              <p style={{ color: 'black' }}><strong>Description:</strong></p>
-              <p style={{ color: 'black' }}>{nDescription}</p>
-              <p style={{ color: 'black' }}><strong>Amenities:</strong></p>
-              <p style={{ color: 'black' }}>{nAmenities}</p>
-              <p style={{ color: 'black' }}><strong>Address:</strong></p>
-              <p style={{ color: 'black' }}>{nAddress}</p>
-              <p style={{ color: 'black' }}><strong>Phone No:</strong></p>
-              <p style={{ color: 'black' }}>{nPhoneNo}</p>
+              <p style={{ color: 'black' }}><strong>Name:</strong> {nName}</p>
+              <p style={{ color: 'black' }}><strong>Description:</strong> {nDescription}</p>
+              <p style={{ color: 'black' }}><strong>Amenities:</strong> {nAmenities}</p>
+              <p style={{ color: 'black' }}><strong>Address:</strong> {nAddress}</p>
+              <p style={{ color: 'black' }}><strong>Phone No:</strong> {nPhoneNo}</p>
               {nImage && <img src={nImage} alt="Hotel Image" style={{ width: "150px", height: "150px", borderRadius: "10px" }} />}
             </Modal.Content>
             <Modal.Actions>
@@ -202,46 +148,43 @@ const HotelCard = ({
             </Modal.Actions>
           </Modal>
 
-          {/* Modal for update */}
-          <Modal
-            onClose={() => setOpen(false)}
-            open={open}
-          >
+          <Modal onClose={() => setOpen(false)} open={open}>
             <Modal.Header>Update Hotel Information</Modal.Header>
             <Modal.Content>
               <input
                 type="text"
                 value={nName}
-                placeholder={name}
+                placeholder="Enter hotel name"
                 onChange={(e) => setNName(e.target.value)}
+                style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
               />
-              <br />
               <input
                 type="text"
                 value={nDescription}
-                placeholder={description}
+                placeholder="Enter description"
                 onChange={(e) => setNDescription(e.target.value)}
+                style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
               />
-              <br />
               <input
                 type="text"
                 value={nAmenities}
-                placeholder={amenities}
+                placeholder="Enter amenities"
                 onChange={(e) => setNAmenities(e.target.value)}
+                style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
               />
-              <br />
               <input
                 type="text"
                 value={nAddress}
-                placeholder={address}
+                placeholder="Enter address"
                 onChange={(e) => setNAddress(e.target.value)}
+                style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
               />
-              <br />
               <input
                 type="text"
                 value={nPhoneNo}
-                placeholder={phoneNo}
+                placeholder="Enter phone number"
                 onChange={(e) => setNPhoneNo(e.target.value)}
+                style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
               />
               <label>Images (comma-separated URLs):</label>
               <input
@@ -249,18 +192,11 @@ const HotelCard = ({
                 value={nImage}
                 placeholder="Enter image URLs separated by commas"
                 onChange={(e) => setNImage(e.target.value)}
+                style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
               />
-              <br />
-              {nImage && (
-                <img
-                  src={nImage}
-                  alt="New Image"
-                  style={{ width: "100px", height: "100px" }}
-                />
-              )}
-              <br />
-              <Button onClick={handleUpdate}>Confirm</Button>
-              <Button onClick={handleClose}>Cancel</Button>
+              {nImage && <img src={nImage} alt="New Image" style={{ width: "100px", height: "100px" }} />}
+              <Button onClick={handleUpdate} style={{ backgroundColor: "#cc0000", color: "#fff", marginTop: "10px" }}>Confirm</Button>
+              <Button onClick={handleClose} style={{ marginLeft: "10px" }}>Cancel</Button>
             </Modal.Content>
           </Modal>
         </div>

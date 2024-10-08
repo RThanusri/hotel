@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
-import HotelCard from "./HotelCard"; // Ensure this is the correct import path
+import HotelCard from "./HotelCard"; 
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // Import axios
-import { Alert } from "@mui/material"; // Import Alert from MUI
+import axios from "axios"; 
+import { Alert, TextField, Button, Container, Box } from "@mui/material"; 
 import "./Hotel.css";
 
 const Hotel = () => {
   const nav = useNavigate();
-  const [hotels, setHotels] = useState([]); // Initialize with an empty array
-  const [searchTerm, setSearchTerm] = useState(0); // For search functionality
+  const [hotels, setHotels] = useState([]); 
+  const [searchTerm, setSearchTerm] = useState(""); 
   const [filteredHotels, setFilteredHotels] = useState([]);
-  const [alertMsg, setAlertMsg] = useState(''); // Message for success/error alerts
-  const [alertType, setAlertType] = useState(''); // Type for alert severity (success, error)
-  const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
+  const [alertMsg, setAlertMsg] = useState(''); 
+  const [alertType, setAlertType] = useState(''); 
+  const [showAlert, setShowAlert] = useState(false); 
 
   const handleAddHotel = () => {
     nav("/addHotel");
@@ -28,25 +28,21 @@ const Hotel = () => {
         },
       })
       .then((response) => {
-        setHotels(response.data); // Set the hotels to the state
+        setHotels(response.data); 
       })
-      .catch((error) => {
-        console.error("There was an error fetching the hotels!", error);
+      .catch(() => {
         setAlertType('error');
         setAlertMsg('There was an error fetching the hotels!');
         setShowAlert(true);
-        setTimeout(() => {
-          setShowAlert(false);
-        }, 3000);
+        setTimeout(() => setShowAlert(false), 3000);
       });
   };
 
-  // Search hotels based on ID
   const handleSearch = () => {
-    const searchId = parseInt(searchTerm); // Convert search term to number
+    const searchId = parseInt(searchTerm); 
     if (!isNaN(searchId)) {
-      const filtered = hotels.filter((hotel) => hotel.id === searchId); // Filter hotels by ID
-      setFilteredHotels(filtered); // Set filtered hotels
+      const filtered = hotels.filter((hotel) => hotel.id === searchId); 
+      setFilteredHotels(filtered); 
     } else {
       setFilteredHotels(hotels);
     }
@@ -61,52 +57,44 @@ const Hotel = () => {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((response) => {
-        console.log(response);
+      .then(() => {
         setAlertType('success');
         setAlertMsg('Hotel removed successfully');
         setShowAlert(true);
-        getHotels(); // Refresh hotel list after deletion
+        getHotels(); 
       })
-      .catch((error) => {
-        console.error("There was an error removing the hotel!", error);
+      .catch(() => {
         setAlertType('error');
         setAlertMsg('There was an error removing the hotel!');
         setShowAlert(true);
       })
       .finally(() => {
-        setTimeout(() => {
-          setShowAlert(false);
-        }, 3000);
+        setTimeout(() => setShowAlert(false), 3000);
       });
   };
 
   const updateHotel = (id, updatedHotel) => {
     const token = localStorage.getItem("token");
-    console.log(updatedHotel);
-    
+
     axios
       .put(`http://localhost:8080/api/owner/updateHotel/${id}`, updatedHotel, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((response) => {
+      .then(() => {
         setAlertType('success');
         setAlertMsg('Hotel updated successfully');
         setShowAlert(true);
         getHotels(); 
       })
-      .catch((error) => {
-        console.error("There was an error updating the hotel!", error);
+      .catch(() => {
         setAlertType('error');
         setAlertMsg('There was an error updating the hotel!');
         setShowAlert(true);
       })
       .finally(() => {
-        setTimeout(() => {
-          setShowAlert(false);
-        }, 3000);
+        setTimeout(() => setShowAlert(false), 3000);
       });
   };
 
@@ -115,52 +103,55 @@ const Hotel = () => {
   }, []);
 
   return (
-    <>
-    
+    <Container>
       {showAlert && (
-        <div
-          style={{
-            position: "fixed",
-            top: "20px",
-            right: "20px",
-            zIndex: 1000,
-            width: "320px",
-          }}
-        >
+        <Box sx={{ position: "fixed", top: 20, right: 20, zIndex: 1000 }}>
           <Alert severity={alertType}>{alertMsg}</Alert>
-        </div>
+        </Box>
       )}
 
-      <input
-        type="text"
-        placeholder="Search by ID"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)} // Update search term
-      />
-      <button onClick={handleSearch}>Search</button>
-      <button onClick={handleAddHotel}>Add Hotel</button>
+      <Box 
+        sx={{ 
+          my: 4, 
+          display: "flex", 
+          justifyContent: "center", 
+          alignItems: "center" 
+        }}
+      >
+        <TextField
+          variant="outlined"
+          placeholder="Search by ID"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)} 
+          sx={{ mr: 2 }} 
+        />
+        <Button
+          variant="contained"
+          onClick={handleSearch}
+          sx={{ backgroundColor: "#cc0000", color: "white", "&:hover": { backgroundColor: "#b30000" } }}
+        >
+          Search
+        </Button>
+        <Button
+          variant="contained"
+          onClick={handleAddHotel}
+          sx={{ backgroundColor: "#cc0000", color: "white", ml: 2, "&:hover": { backgroundColor: "#b30000" } }}
+        >
+          Add Hotel
+        </Button>
+      </Box>
+
       <div className="hotel-container">
-        {searchTerm
-          ? filteredHotels.map((hotel) => (
-              <HotelCard
-                key={hotel.id}
-                {...hotel}
-                remove={() => removeHotel(hotel.id)} // Pass the remove function with hotel ID
-                update={(updatedHotel) => updateHotel(hotel.id, updatedHotel)} // Pass the update function with hotel ID
-              />
-            ))
-          : hotels.map((hotel) => (
-              <HotelCard
-                key={hotel.id}
-                {...hotel}
-                remove={() => removeHotel(hotel.id)} // Pass the remove function here
-                update={(id,updatedHotel) =>
-                  updateHotel(hotel.id, updatedHotel)
-                } // Pass the update function here
-              />
-            ))}
+        {(searchTerm ? filteredHotels : hotels).map((hotel) => (
+          <HotelCard
+            key={hotel.id}
+            {...hotel}
+            remove={() => removeHotel(hotel.id)} 
+            update={(updatedHotel) => updateHotel(hotel.id, updatedHotel)} 
+          />
+        ))}
       </div>
-    </>
+    </Container>
   );
 };
 

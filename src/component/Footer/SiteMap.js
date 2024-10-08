@@ -3,7 +3,7 @@ import { Typography, List, ListItem, ListItemText } from '@mui/material';
 
 const Sitemap = () => {
     return (
-        <div style={{ padding: '40px', textAlign: 'center' ,margin:'-80px auto 0'}}>
+        <div style={{ padding: '40px', textAlign: 'center' ,margin:'180px auto 0'}}>
             <Typography 
                 variant="h4" 
                 gutterBottom 

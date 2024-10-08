@@ -1,24 +1,40 @@
 import React, { useState } from "react";
 import "./OwnerNavBar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 const OwnerNavBar = () => {
   const [menu, setMenu] = useState("");
+  const navigate = useNavigate(); // Hook to programmatically navigate
+  const [alertMsg, setAlertMsg] = useState('');
+  const [alertType, setAlertType] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("role");
+
+    setAlertType("success");
+    setAlertMsg("Logged out successfully!");
+    setShowAlert(true);
+    navigate("/");
+
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 3000);
+  };
 
   return (
-    <div className="Admin-Navbar">
-      <img
-        src="../logo1.jpeg"
-        alt=""
-        className="logo"
-      />
-      <ul className="Admin-navbar-menu">
+    <div className="owner-Navbar">
+      <img src="../logo1.jpeg" alt="Logo" className="logo" />
+      <ul className="owner-navbar-menu">
         <li className={menu === "bookings" ? "active" : ""}>
           <Link to="/ownerBooking" onClick={() => setMenu("bookings")}>
             Bookings
           </Link>
         </li>
         <li className={menu === "reviews" ? "active" : ""}>
-          <Link to="/AdminReview" onClick={() => setMenu("reviews")}>
+          <Link to="/OwnerReview" onClick={() => setMenu("reviews")}>
             Reviews
           </Link>
         </li>
@@ -28,6 +44,15 @@ const OwnerNavBar = () => {
           </Link>
         </li>
       </ul>
+      <div className="ownernavbar-right1">
+        <button onClick={logout}>Log Out</button>
+      </div>
+
+      {showAlert && (
+        <div className={`alert ${alertType}`}>
+          {alertMsg}
+        </div>
+      )}
     </div>
   );
 };

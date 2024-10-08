@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
 import BookingCard from "./BookingCard"; // Ensure this is the correct import path
 import { useNavigate } from "react-router-dom";
-import "./Booking.css";
+import { Alert, TextField, Button, Container, Box } from "@mui/material"; // Import Material UI components
 import axios from "axios";
-import { Alert } from "@mui/material"; // Import Alert from MUI
+import "./Booking.css";
 import AdminNavBar from "../AdminNavBar/AdminNavBar";
 
 const Booking = () => {
   const nav = useNavigate();
   const [bookings, setBookings] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
   const [filteredBookings, setFilteredBookings] = useState([]);
-  const [alertMsg, setAlertMsg] = useState(""); // Message for success/error alerts
-  const [alertType, setAlertType] = useState(""); // Type for alert severity (success, error)
-
-  const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
+  const [alertMsg, setAlertMsg] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
 
   const getBookings = () => {
     const token = localStorage.getItem("token");
@@ -26,17 +25,13 @@ const Booking = () => {
         },
       })
       .then((response) => {
-        console.log(response.data);
         setBookings(response.data);
       })
-      .catch((error) => {
+      .catch(() => {
         setAlertType("error");
         setAlertMsg("There was an error fetching the bookings!");
         setShowAlert(true);
-        // Hide alert after 3 seconds
-        setTimeout(() => {
-          setShowAlert(false);
-        }, 3000);
+        setTimeout(() => setShowAlert(false), 3000);
       });
   };
 
@@ -67,16 +62,13 @@ const Booking = () => {
         setShowAlert(true);
         getBookings(); // Refresh booking list after deletion
       })
-      .catch((error) => {
+      .catch(() => {
         setAlertType("error");
         setAlertMsg("There was an error cancelling the booking!");
         setShowAlert(true);
       })
       .finally(() => {
-        // Hide alert after 3 seconds
-        setTimeout(() => {
-          setShowAlert(false);
-        }, 3000);
+        setTimeout(() => setShowAlert(false), 3000);
       });
   };
 
@@ -99,16 +91,13 @@ const Booking = () => {
         setShowAlert(true);
         getBookings(); // Refresh booking list after update
       })
-      .catch((error) => {
+      .catch(() => {
         setAlertType("error");
         setAlertMsg("There was an error updating the booking!");
         setShowAlert(true);
       })
       .finally(() => {
-        // Hide alert after 3 seconds
-        setTimeout(() => {
-          setShowAlert(false);
-        }, 3000);
+        setTimeout(() => setShowAlert(false), 3000);
       });
   };
 
@@ -116,55 +105,55 @@ const Booking = () => {
     getBookings(); // Fetch all bookings on component mount
   }, []);
 
-  return (
-    <>
-   
+  return (<>
+    
+    <Container>
       {showAlert && (
-        <div
-          style={{
-            position: "fixed",
-            top: "20px",
-            right: "20px",
-            zIndex: 1000,
-            width: "320px",
-          }}
-        >
+        <Box sx={{ position: "fixed", top: 20, right: 20, zIndex: 1000 }}>
           <Alert severity={alertType}>{alertMsg}</Alert>
-        </div>
+        </Box>
       )}
 
-      <input
-        type="text"
-        placeholder="Search by Booking ID"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)} // Update search term
-      />
-      <button onClick={handleSearch}>Search</button>
+      <Box 
+        sx={{ 
+          my: 4, 
+          display: "flex", 
+          justifyContent: "center", 
+          alignItems: "center" 
+        }}
+      >
+        <TextField
+          variant="outlined"
+          placeholder="Search by Booking ID"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          sx={{ mr: 2 }} // Margin right for spacing
+        />
+        <Button
+          variant="contained"
+          onClick={handleSearch}
+          sx={{ backgroundColor: "#cc0000", color: "white", "&:hover": { backgroundColor: "#b30000" } }}
+        >
+          Search
+        </Button>
+      </Box>
+
       <div className="booking-container">
-        {searchTerm
-          ? filteredBookings.map((booking) => (
-              <BookingCard
-                key={booking.bookingId}
-                {...booking}
-                remove={() => cancelBooking(booking.bookingId)} // Pass the remove function
-                update={(updatedBooking) =>
-                  updateBooking(booking.bookingId, updatedBooking)
-                } // Pass the update function
-              />
-            ))
-          : bookings.map((booking) => (
-              <BookingCard
-                key={booking.bookingId}
-                {...booking}
-                remove={() => cancelBooking(booking.bookingId)} // Pass the remove function
-                update={(updatedBooking) =>
-                  updateBooking(booking.bookingId, updatedBooking)
-                } // Pass the update function
-              />
-            ))}
+        {(searchTerm ? filteredBookings : bookings).map((booking) => (
+          <BookingCard
+            key={booking.bookingId}
+            {...booking}
+            remove={() => cancelBooking(booking.bookingId)} // Pass the remove function
+            update={(updatedBooking) =>
+              updateBooking(booking.bookingId, updatedBooking)
+            } // Pass the update function
+          />
+        ))}
       </div>
+    </Container>
     </>
   );
+  
 };
 
 export default Booking;

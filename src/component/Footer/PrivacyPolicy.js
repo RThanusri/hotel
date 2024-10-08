@@ -8,7 +8,7 @@ const PrivacyPolicy = () => {
                 padding: '40px',
                 width: '80%', 
                 maxWidth: '2000px', 
-                margin: '-70px auto 0', 
+                margin: '10px auto 0', 
                 backgroundColor: '#ffffff',
             }}
         >

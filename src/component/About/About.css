@@ -2,6 +2,7 @@
 
 .about-container {
     max-width: 800px;
+    margin-top: -800px;
     margin: 0 auto; /* Center the container */
     font-family: 'Arial', sans-serif; /* Set a clean font */
     padding-left: 20px; /* Add padding to the left */
@@ -14,7 +15,7 @@
   
   h2 {
     color: #555; /* Lighter color for subheadings */
-    margin-top: 20px; /* Space above subheadings */
+    margin-top: auto;/* Space above subheadings */
   }
   
   .about-description {
@@ -29,5 +30,5 @@
   
   .about-list li {
     margin-bottom: 10px; /* Space between list items */
-  }
   
+  }

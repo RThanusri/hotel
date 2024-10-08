@@ -37,6 +37,7 @@ import Sitemap from "./component/Footer/SiteMap.js"
 import CompanyDetails from "./component/Footer/CompanyDetails.js"
 import OwnerHome from "./component/Home/OwnerHome.js"
 import OwnerBooking from "./component/HotelOwner/OwnerBooking/OwnerBooking.js"
+import OwnerReview from "./component/HotelOwner/OwnerBooking/OwnerReview.js"
 
 
 
@@ -84,7 +85,8 @@ const SRoutes=()=>
       <Route path="/sitemap" element={<Sitemap/>}/>
       <Route path ="/company-details" element={<CompanyDetails/>}/>
       <Route path="/HotelOwners" element={<HotelOwner/>}/>
-      <Route path="ownerBooking" element={<OwnerBooking/>}/>
+      <Route path="/ownerBooking" element={<OwnerBooking/>}/>
+      <Route path="/OwnerReview" element={<OwnerReview/>}/>
 
 
 

@@ -2,18 +2,24 @@ body {
     font-family: 'Arial', sans-serif;
     background-color: #f7f7f7;
   }
-  
   .card {
-    width: 300px;
+    width: 400px; /* Increased width */
+    max-width: 900px; 
     margin: 20px auto;
     padding: 20px;
     border-radius: 10px;
-    background-color: #ffffff;
+    background-color:white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease-in-out;
     text-align: center;
-    /* display: flex;
-    flex-direction: column; */
+    height: 700px;
+  }
+  
+  /* Responsive styling */
+  @media screen and (max-width: 600px) {
+    .card {
+      width: 90%; /* Keep responsive behavior */
+    }
   }
   
   .card:hover {
@@ -35,7 +41,7 @@ body {
   
   .card h2 {
     font-size: 24px;
-    color: #ff1e1e; /* Bright red for hotel name */
+    color: "#cc000";
     margin: 10px 0;
   }
   

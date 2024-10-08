@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
-import OwnerBookingCard from "./OwnerBookingCard"; // Ensure this is the correct import path
+import OwnerBookingCard from "./OwnerBookingCard"; 
 import { useNavigate } from "react-router-dom";
-import "../../Admin/Booking/Booking.css";
 import axios from "axios";
-import { Alert } from "@mui/material"; // Import Alert from MUI
+import { Alert, TextField, Button, Container, Box } from "@mui/material"; 
+import OwnerNavBar from "../OwnerNavBar/OwnerNavBar";
 
 const OwnerBooking = () => {
   const nav = useNavigate();
   const [bookings, setBookings] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // State to store search term
+  const [searchTerm, setSearchTerm] = useState("");
   const [filteredBookings, setFilteredBookings] = useState([]);
-  const [alertMsg, setAlertMsg] = useState(""); // Message for success/error alerts
-  const [alertType, setAlertType] = useState(""); // Type for alert severity (success, error)
-  const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
+  const [alertMsg, setAlertMsg] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
 
   const getOwnerBookings = () => {
     const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId"); // Get owner ID from localStorage
+    const userId = localStorage.getItem("userId");
 
     axios
       .get(
@@ -28,11 +28,10 @@ const OwnerBooking = () => {
         }
       )
       .then((response) => {
-        console.log(response.data);
         setBookings(response.data);
-        setFilteredBookings(response.data); // Set both filtered and unfiltered bookings
+        setFilteredBookings(response.data);
       })
-      .catch((error) => {
+      .catch(() => {
         setAlertType("error");
         setAlertMsg("There was an error fetching the bookings!");
         setShowAlert(true);
@@ -55,9 +54,9 @@ const OwnerBooking = () => {
         setAlertType("success");
         setAlertMsg("Booking cancelled successfully");
         setShowAlert(true);
-        getOwnerBookings(); // Refresh booking list after cancellation
+        getOwnerBookings();
       })
-      .catch((error) => {
+      .catch(() => {
         setAlertType("error");
         setAlertMsg("There was an error cancelling the booking!");
         setShowAlert(true);
@@ -70,64 +69,63 @@ const OwnerBooking = () => {
   };
 
   const handleSearch = () => {
-    const searchId = parseInt(searchTerm); // Convert search term to a number
+    const searchId = parseInt(searchTerm);
     if (!isNaN(searchId)) {
       const filtered = bookings.filter(
         (booking) => booking.bookingId === searchId
       );
       setFilteredBookings(filtered);
     } else {
-      setFilteredBookings(bookings); // If search term is invalid, show all bookings
+      setFilteredBookings(bookings);
     }
   };
 
   useEffect(() => {
-    getOwnerBookings(); // Fetch all bookings for the owner on component mount
+    getOwnerBookings();
   }, []);
 
-  return (
-    <>
+  return (<>
+  <OwnerNavBar/>
+    <Container>
       {showAlert && (
-        <div
-          style={{
-            position: "fixed",
-            top: "20px",
-            right: "20px",
-            zIndex: 1000,
-            width: "320px",
-          }}
-        >
+        <Box sx={{ position: "fixed", top: 20, right: 20, zIndex: 1000 }}>
           <Alert severity={alertType}>{alertMsg}</Alert>
-        </div>
+        </Box>
       )}
 
-      <input
-        type="text"
-        placeholder="Search by Booking ID"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)} // Update search term
-      />
-      <button onClick={handleSearch}>Search</button>
+      <Box  sx={{ 
+          my: 4, 
+          display: "flex", 
+          justifyContent: "center", 
+          alignItems: "center" 
+        }}>
+        <TextField
+          variant="outlined"
+          placeholder="Search by Booking ID"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          sx={{ mr: 2 }}
+        />
+        <Button
+          variant="contained"
+          color="error" 
+          onClick={handleSearch}
+          sx={{ backgroundColor: "#cc0000" }} 
+        >
+          Search
+        </Button>
+      </Box>
 
-      <div className="booking-container">
-        {searchTerm
-          ? filteredBookings.map((booking) => (
-              <OwnerBookingCard
-                key={booking.bookingId}
-                {...booking}
-                remove={() => cancelBooking(booking.bookingId)}
-              />
-            ))
-          : bookings
-          ? bookings.map((booking) => (
-              <OwnerBookingCard
-                key={booking.bookingId}
-                {...booking}
-                remove={() => cancelBooking(booking.bookingId)}
-              />
-            ))
-          : null}
-      </div>
+      <Box className="booking-container">
+        {(searchTerm ? filteredBookings : bookings).map((booking) => (
+          <OwnerBookingCard
+            key={booking.bookingId}
+            {...booking}
+            remove={() => cancelBooking(booking.bookingId)}
+          />
+        ))}
+      </Box>
+    </Container>
     </>
   );
 };

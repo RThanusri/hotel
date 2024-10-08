@@ -10,7 +10,8 @@ const BookingCardContainer = styled(Box)(({ theme }) => ({
   margin: "16px",
   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
   width: "30%",
-  height: "250px", // Adjusted height to fit content
+  
+  height: "350px", 
 }));
 
 const Title = styled(Typography)({

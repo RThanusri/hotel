@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
-import UserCard from "../User/UserCard"; // Ensure this is the correct import path
-import axios from "axios"; // Import axios
-import { Alert } from "@mui/material"; // Import Alert from MUI
-import './HotelOwner.css'
+import UserCard from "../User/UserCard"; 
+import axios from "axios"; 
+import { Alert, TextField, Button, Container, Box } from "@mui/material"; 
+import './HotelOwner.css';
 
 const HotelOwner = () => {
-  const [owners, setOwners] = useState([]); // Initialize with an empty array
-  const [searchTerm, setSearchTerm] = useState(""); // For search functionality
-  const [filteredUsers, setFilteredUsers] = useState([]);
-
-  // Alert state
-  const [alertMsg, setAlertMsg] = useState(''); // Message for success/error alerts
-  const [alertType, setAlertType] = useState(''); // Type for alert severity (success, error)
-  const [showAlert, setShowAlert] = useState(false); // State to show/hide alerts
+  const [owners, setOwners] = useState([]); 
+  const [searchTerm, setSearchTerm] = useState(""); 
+  const [filteredUsers, setFilteredUsers] = useState([]); 
+  const [alertMsg, setAlertMsg] = useState(''); 
+  const [alertType, setAlertType] = useState(''); 
+  const [showAlert, setShowAlert] = useState(false); 
 
   const getUsers = () => {
     const token = localStorage.getItem("token");
@@ -24,21 +22,17 @@ const HotelOwner = () => {
         },
       })
       .then((response) => {
-        setOwners(response.data); // Set the users to the state
+        setOwners(response.data); 
       })
       .catch((error) => {
         setAlertType('error');
         setAlertMsg('There was an error fetching the users!');
         setShowAlert(true);
-        // Hide alert after 3 seconds
-        setTimeout(() => {
-          setShowAlert(false);
-        }, 3000);
+        setTimeout(() => setShowAlert(false), 3000);
         console.error("There was an error fetching the users!", error);
       });
   };
 
-  // Search users based on userName or email
   const handleSearch = () => {
     const searchValue = searchTerm.toLowerCase();
     const filtered = owners.filter(
@@ -46,7 +40,7 @@ const HotelOwner = () => {
         user.userName.toLowerCase().includes(searchValue) ||
         user.email.toLowerCase().includes(searchValue)
     );
-    setFilteredUsers(filtered); // Set filtered users
+    setFilteredUsers(filtered); 
   };
 
   const removeUser = (id) => {
@@ -62,7 +56,7 @@ const HotelOwner = () => {
         setAlertType('success');
         setAlertMsg('User removed successfully');
         setShowAlert(true);
-        getUsers(); // Refresh user list after deletion
+        getUsers(); 
       })
       .catch((error) => {
         setAlertType('error');
@@ -71,59 +65,58 @@ const HotelOwner = () => {
         console.error("There was an error removing the user!", error);
       })
       .finally(() => {
-        // Hide alert after 3 seconds
-        setTimeout(() => {
-          setShowAlert(false);
-        }, 3000);
+        setTimeout(() => setShowAlert(false), 3000);
       });
   };
 
-  // Fetch all users on component mount
   useEffect(() => {
-    getUsers(); // Call the function to get all users
+    getUsers(); 
   }, []);
 
   return (
-    <>
+    <Container
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        maxWidth: "1200px",
+        padding: 0, // Remove default padding
+        border: 'none', // Remove border
+      
+      }}
+    >
       {showAlert && (
-        <div
-          style={{
-            position: "fixed",
-            top: "20px",
-            right: "20px",
-            zIndex: 1000,
-            width: "320px",
-          }}
-        >
-          <Alert severity={alertType}>{alertMsg}</Alert>
-        </div>
+        <Alert severity={alertType}>{alertMsg}</Alert>
       )}
 
-      <div className="user-container">
-        <input
-          type="text"
+      <Box sx={{ my: 4, display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <TextField
+          variant="outlined"
           placeholder="Search by User Name or Email"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)} // Update search term
+          onChange={(e) => setSearchTerm(e.target.value)} 
+          sx={{ mr: 2 }} 
         />
-        <button onClick={handleSearch}>Search</button>
-        {searchTerm
-          ? filteredUsers.map((user) => (
-              <UserCard
-                key={user.userId}
-                {...user}
-                remove={() => removeUser(user.userId)} // Pass the remove function with userId
-              />
-            ))
-          : owners.map((user) => (
-              <UserCard
-                key={user.userId}
-                {...user}
-                remove={() => removeUser(user.userId)} // Pass the remove function with userId
-              />
-            ))}
+        <Button
+          variant="contained"
+          onClick={handleSearch}
+          sx={{ backgroundColor: "#cc0000", color: "white", "&:hover": { backgroundColor: "#b30000" } }}
+        >
+          Search
+        </Button>
+      </Box>
+
+      <div className="user-container" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center',marginTop:'100px' }}>
+        {(searchTerm ? filteredUsers : owners).map((user) => (
+          <UserCard
+            key={user.userId}
+            {...user}
+            remove={() => removeUser(user.userId)} 
+          />
+        ))}
       </div>
-    </>
+    </Container>
   );
 };
 
