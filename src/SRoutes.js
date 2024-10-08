@@ -66,11 +66,11 @@ const SRoutes=()=>
       <Route path="/addHotel" element={<AddHotel/>}/>
       <Route path="/room/:hotelId" element={<Room/>} />
       <Route path="/addRoom" element={<AddRoom/>}/>
-      <Route path="/bookings" element={<Booking/>}/>
+      <Route path="/booking" element={<Booking/>}/>
       <Route path="/addBooking" element={<AddBooking/>}/>
       <Route path="/HotelOwner" element={<OwnerHome/>}/>
       <Route path="/users" element={<User/>}/>
-      <Route path="/reviews" element={<AdminReview/>}/>
+      <Route path="/AdminReview" element={<AdminReview/>}/>
       <Route path="/admin" element={<AdminHome/>}/>
       <Route path="/UserNavBar" element={<UserNavbar/>}/>
       <Route path="/Contact" element={<Contact/>}/>
@@ -84,7 +84,7 @@ const SRoutes=()=>
       <Route path="/sitemap" element={<Sitemap/>}/>
       <Route path ="/company-details" element={<CompanyDetails/>}/>
       <Route path="/HotelOwners" element={<HotelOwner/>}/>
-      <Route path="/ownerBooking" element={<OwnerBooking/>}/>
+      <Route path="ownerBooking" element={<OwnerBooking/>}/>
 
 
 
