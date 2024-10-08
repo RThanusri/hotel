@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 
 const AddRoom = () => {
   const location = useLocation(); 
-  const { hotelId } = location.state || {}; 
+  const { hotelId } = location.state || {}; // Fallback to an empty object to avoid errors
 
   const [roomSizeState, setRoomSizeState] = useState("");
   const [bedSizeState, setBedSizeState] = useState("Single");
@@ -24,7 +24,7 @@ const AddRoom = () => {
     e.preventDefault();
 
     const room = {
-      hotelId: parseInt(hotelId),
+      hotelId: parseInt(hotelId) || 0, // Fallback to 0 if hotelId is undefined
       roomSize: roomSizeState,
       bedSize: bedSizeState,
       maxOccupancy: parseInt(maxOccupancyState),
@@ -32,14 +32,14 @@ const AddRoom = () => {
       availableFrom: availableFromState,
       availableTo: availableToState,
       images: imagesState,
-      ac: isACState
+      ac: isACState,
     };
 
     const token = localStorage.getItem("token"); 
     try {
       const response = await axios.post("http://localhost:8080/api/owner/addRoom", room, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // Correct string interpolation with backticks
           "Content-Type": "application/json",
         },
       });
@@ -76,7 +76,7 @@ const AddRoom = () => {
         </Box>
       )}
 
-      <Typography variant="h4" color="#cc0000" gutterBottom>Add  New Room</Typography>
+      <Typography variant="h4" color="#cc0000" gutterBottom>Add New Room</Typography>
       <form onSubmit={addRoom}>
         <TextField
           label="Room Size"
@@ -158,7 +158,7 @@ const AddRoom = () => {
             <Box key={index} sx={{ position: "relative" }}>
               <img
                 src={image}
-                alt={`Room Preview ${index + 1}`}
+                alt={`Room Preview ${index + 1}`} // Corrected alt attribute
                 style={{ width: "100px", height: "100px" }}
               />
               <Button

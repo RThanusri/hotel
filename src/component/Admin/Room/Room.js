@@ -4,6 +4,7 @@ import RoomCard from "./RoomCard";
 import axios from "axios";
 import { Alert, TextField, Button, Box, Container, Typography } from "@mui/material"; // Import necessary components from MUI
 import './Room.css';
+import AdminNavBar from "../AdminNavBar/AdminNavBar";
 
 const Room = () => {
   const { hotelId } = useParams();
@@ -108,6 +109,7 @@ const Room = () => {
 
   return (
     <Container>
+      <AdminNavBar/>
       {showAlert && (
         <Box sx={{ position: "fixed", top: 20, right: 20, zIndex: 1000, width: "320px" }}>
           <Alert severity={alertType}>{alertMsg}</Alert>

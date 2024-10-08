@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios"; 
 import { Alert, TextField, Button, Container, Box } from "@mui/material"; 
 import "./Hotel.css";
+import AdminNavBar from "../AdminNavBar/AdminNavBar";
 
 const Hotel = () => {
   const nav = useNavigate();
@@ -104,6 +105,7 @@ const Hotel = () => {
 
   return (
     <Container>
+      <AdminNavBar/>
       {showAlert && (
         <Box sx={{ position: "fixed", top: 20, right: 20, zIndex: 1000 }}>
           <Alert severity={alertType}>{alertMsg}</Alert>

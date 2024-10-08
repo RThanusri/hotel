@@ -12,6 +12,30 @@
     z-index: 1000;
   }
   
+  .adminnavbar-right1 {
+    display: flex;
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Center the content vertically */
+    margin-top: 20px; /* Push the logout link to the bottom of the navbar */
+    padding: 20px; /* Add some padding around the container */
+  }
+  
+  .adminnavbar-right1 a {
+    color: #cc0000; /* Change to a red color for the text */
+    text-decoration: none; /* Remove underline */
+    padding: 10px 15px; /* Add padding for better click area */
+    transition: color 0.3s; /* Smooth transition for hover effect */
+  }
+  
+  .adminnavbar-right1 a:hover {
+    color: #b30000; /* Darker red on hover */
+  }
+  
+  .adminnavbar-right1 a:focus {
+    outline: none; /* Remove outline on focus */
+  }
+  
+
   .logo {
     width: 150px;
     height: auto;

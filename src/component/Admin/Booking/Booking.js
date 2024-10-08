@@ -108,6 +108,7 @@ const Booking = () => {
   return (<>
     
     <Container>
+      <AdminNavBar/>
       {showAlert && (
         <Box sx={{ position: "fixed", top: 20, right: 20, zIndex: 1000 }}>
           <Alert severity={alertType}>{alertMsg}</Alert>

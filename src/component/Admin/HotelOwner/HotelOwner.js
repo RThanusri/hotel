@@ -3,6 +3,7 @@ import UserCard from "../User/UserCard";
 import axios from "axios"; 
 import { Alert, TextField, Button, Container, Box } from "@mui/material"; 
 import './HotelOwner.css';
+import AdminNavBar from "../AdminNavBar/AdminNavBar";
 
 const HotelOwner = () => {
   const [owners, setOwners] = useState([]); 
@@ -73,8 +74,10 @@ const HotelOwner = () => {
     getUsers(); 
   }, []);
 
-  return (
+  return (<>
+  <AdminNavBar/>
     <Container
+  
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -116,7 +119,7 @@ const HotelOwner = () => {
           />
         ))}
       </div>
-    </Container>
+    </Container></>
   );
 };
 
