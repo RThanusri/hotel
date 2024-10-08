@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Box, Button, TextField, Typography, Card, Alert } from "@mui/material";
 
@@ -12,14 +12,21 @@ const AddHotel = () => {
   const [phoneNo, setPhoneNo] = useState("");
   const [noOfRooms, setNoOfRooms] = useState(0);
 
-  const [alertMsg, setAlertMsg] = useState('');
-  const [alertType, setAlertType] = useState('');
+  const [alertMsg, setAlertMsg] = useState("");
+  const [alertType, setAlertType] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+
+  // This useEffect will trigger whenever imageUrl changes
+  useEffect(() => {
+    if (imageUrl) {
+      console.log("Updated image URL:", imageUrl);
+    }
+  }, [imageUrl]);
 
   const handleImageUpload = async () => {
     if (!imageFile) {
-      setAlertType('error');
-      setAlertMsg('Please select an image to upload.');
+      setAlertType("error");
+      setAlertMsg("Please select an image to upload.");
       setShowAlert(true);
       return;
     }
@@ -30,21 +37,26 @@ const AddHotel = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await axios.post("http://localhost:8080/api/upload", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:8080/api/upload",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-      setImageUrl(response.data);
-      setAlertType('success');
-      setAlertMsg('Image uploaded successfully!');
+      setImageUrl(response.data); // Image URL is set asynchronously
+      console.log("response:" + response.data);
+      setAlertType("success");
+      setAlertMsg("Image uploaded successfully!");
       setShowAlert(true);
     } catch (error) {
       console.error("Image upload failed:", error);
-      setAlertType('error');
-      setAlertMsg('Image upload failed');
+      setAlertType("error");
+      setAlertMsg("Image upload failed");
       setShowAlert(true);
     }
   };
@@ -53,14 +65,14 @@ const AddHotel = () => {
     e.preventDefault();
 
     if (!imageUrl) {
-      setAlertType('error');
-      setAlertMsg('Please upload an image before adding the hotel.');
+      setAlertType("error");
+      setAlertMsg("Please upload an image before adding the hotel.");
       setShowAlert(true);
       return;
     }
 
     const userId = localStorage.getItem("userId");
-
+    console.log(imageUrl);
     const hotel = {
       name,
       phoneNo,
@@ -81,13 +93,14 @@ const AddHotel = () => {
           "Content-Type": "application/json",
         },
       });
-      setAlertType('success');
-      setAlertMsg('Hotel added successfully!');
+
+      setAlertType("success");
+      setAlertMsg("Hotel added successfully!");
       setShowAlert(true);
     } catch (error) {
       console.error("There was an error in adding the hotel!", error);
-      setAlertType('error');
-      setAlertMsg('Failed to add the hotel');
+      setAlertType("error");
+      setAlertMsg("Failed to add the hotel");
       setShowAlert(true);
     } finally {
       setTimeout(() => {
@@ -99,15 +112,15 @@ const AddHotel = () => {
   return (
     <Box
       sx={{
-        bgcolor: 'white',
-        width: '95%',
-        height: '80vh',
-        display: 'flex',
-        marginTop: '100px',
-        marginLeft: '30px',
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignContent: 'center'
+        bgcolor: "white",
+        width: "95%",
+        height: "80vh",
+        display: "flex",
+        marginTop: "100px",
+        marginLeft: "30px",
+        justifyContent: "center",
+        alignItems: "center",
+        alignContent: "center",
       }}
     >
       {showAlert && (
@@ -126,19 +139,24 @@ const AddHotel = () => {
 
       <Card
         sx={{
-          backgroundColor: 'white',
+          backgroundColor: "white",
           padding: 2,
           borderRadius: 1,
-          border: '2px solid grey',
-          width: '80%',
+          border: "2px solid grey",
+          width: "80%",
           maxWidth: 900,
         }}
       >
-        <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#cc0000' }} align="center" gutterBottom>
+        <Typography
+          variant="h4"
+          sx={{ fontWeight: "bold", color: "#cc0000" }}
+          align="center"
+          gutterBottom
+        >
           Add New Hotel
         </Typography>
         <form onSubmit={addHotel}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <TextField
               label="Hotel Name"
               variant="outlined"
@@ -194,11 +212,11 @@ const AddHotel = () => {
               variant="contained"
               onClick={handleImageUpload}
               sx={{
-                backgroundColor: '#cc0000',
-                color: 'white',
-                fontWeight: 'bold',
-                '&:hover': {
-                  backgroundColor: '#b30000',
+                backgroundColor: "#cc0000",
+                color: "white",
+                fontWeight: "bold",
+                "&:hover": {
+                  backgroundColor: "#b30000",
                 },
               }}
             >
@@ -209,17 +227,21 @@ const AddHotel = () => {
                 src={imageUrl}
                 alt="Uploaded Preview"
                 style={{ width: "200px", height: "200px", marginTop: "10px" }}
+                onError={(e) => {
+                  e.target.onerror = null; // Prevent infinite loop in case of error
+                  e.target.src = "/path/to/default_image.png"; // Fallback image if imageUrl is broken
+                }}
               />
             )}
             <Button
               variant="contained"
               type="submit"
               sx={{
-                backgroundColor: '#cc0000',
-                color: 'white',
-                fontWeight: 'bold',
-                '&:hover': {
-                  backgroundColor: '#b30000',
+                backgroundColor: "#cc0000",
+                color: "white",
+                fontWeight: "bold",
+                "&:hover": {
+                  backgroundColor: "#b30000",
                 },
               }}
             >
