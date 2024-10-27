@@ -59,6 +59,11 @@ const Navbar = () => {
             Hotels
           </Link>
         </li>
+        <li className={menu === "viewFavourites" ? "active" : ""}>
+          <Link to="/viewFavourites" onClick={() => setMenu("viewFavourites")}>
+            View Favourites
+          </Link>
+        </li>
         <li className={menu === "viewBooking" ? "active" : ""}>
           <Link to="/viewBooking" onClick={() => setMenu("viewBooking")}>
             View Bookings

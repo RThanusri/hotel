@@ -1,14 +1,27 @@
 import React from "react";
-import { Card, CardContent, CardMedia, Typography, Grid, Box, Button } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Grid,
+  Box,
+  Button,
+  Snackbar,
+  Alert,
+  IconButton,
+} from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const HotelListing = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  
   const {
-    hotels ,
+    hotels,
     checkInDate,
     checkOutDate,
     numberOfRooms,
@@ -16,23 +29,80 @@ const HotelListing = () => {
     numberOfChildren,
     hotelLocation,
   } = location.state || {};
-  console.log( hotels ,
-    checkInDate,
-    checkOutDate,
-    numberOfRooms,
-    numberOfAdults,
-    numberOfChildren,
-    hotelLocation);
+
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [snackbarMessage, setSnackbarMessage] = React.useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = React.useState("success");
+  const [wishlist, setWishlist] = React.useState({});
 
   const handleRoomDetailsClick = (hotelId) => {
     navigate(`/roomlistings/${hotelId}`, {
       state: { checkInDate, checkOutDate, numberOfRooms, numberOfAdults, numberOfChildren, hotelLocation },
     });
   };
-  
 
   const handleMoreDetailsClick = (hotel) => {
     navigate(`/hotelDetails/${hotel.id}`, { state: { hotel } });
+  };
+
+  const handleToggleWishlist = async (hotel) => {
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+
+    if (!userId || !token) {
+      console.error("User ID or token not found");
+      return;
+    }
+
+    const wishListDTO = {
+      userId: parseInt(userId),
+      hotelId: hotel.id,
+    };
+
+    try {
+      let response;
+
+      if (wishlist[hotel.id]) {
+        // Remove from wishlist
+        response = await axios.delete(`http://localhost:8080/api/user/removeWishList/${userId}/${hotel.id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.status === 200) {
+          setWishlist((prev) => ({ ...prev, [hotel.id]: false })); 
+          setSnackbarMessage(`${hotel.name} has been removed from your favorites!`);
+          setSnackbarSeverity("error");
+        }
+      } else {
+        // Add to wishlist
+        response = await axios.post('http://localhost:8080/api/user/addWishList', wishListDTO, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.status === 200 || response.status === 201) {
+          setWishlist((prev) => ({ ...prev, [hotel.id]: true })); // Update wishlist state
+          setSnackbarMessage(`${hotel.name} has been added to your favorites!`);
+          setSnackbarSeverity("success");
+        }
+      }
+
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error("Error toggling wishlist:", error);
+      setSnackbarMessage("Failed to update favorites. Please try again.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    }
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   return (
@@ -86,6 +156,12 @@ const HotelListing = () => {
                     >
                       More Details
                     </Button>
+                    <IconButton
+                      onClick={() => handleToggleWishlist(hotel)}
+                      sx={{ color: wishlist[hotel.id] ? 'red' : 'gray' }}
+                    >
+                      {wishlist[hotel.id] ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                    </IconButton>
                   </Box>
                 </CardContent>
               </Card>
@@ -99,6 +175,12 @@ const HotelListing = () => {
           </Grid>
         )}
       </Grid>
+
+      <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

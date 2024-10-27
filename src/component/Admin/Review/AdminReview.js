@@ -59,7 +59,7 @@ const AdminReview = () => {
   const overallRating = calculateOverallRating();
 
   return (<>
-  
+  <AdminNavBar/>
 
     <Box sx={{ p: 4, bgcolor: 'lavender', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       

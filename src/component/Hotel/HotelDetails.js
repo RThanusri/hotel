@@ -16,7 +16,7 @@ const HotelDetails = () => {
     <Box 
       sx={{ 
         p: 3, 
-        backgroundColor: '#f7f7f7', 
+        backgroundColor: 'white', 
         borderRadius: 2, 
         boxShadow: 3,
         width: '1200px',  

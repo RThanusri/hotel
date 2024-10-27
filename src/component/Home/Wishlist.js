@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -11,20 +11,68 @@ import {
   Alert,
   IconButton,
 } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
-const ExploreHotelListings = () => {
-  const location = useLocation();
+const Wishlist = () => {
   const navigate = useNavigate();
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState("");
   const [snackbarSeverity, setSnackbarSeverity] = React.useState("success");
   const [wishlist, setWishlist] = React.useState({});
+  const [hotels, setHotels] = React.useState([]);
 
-  const { hotels } = location.state || {};
+  const fetchUserWishlist = async () => {
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+
+    if (!userId || !token) {
+      console.error("User ID or token not found");
+      return;
+    }
+
+    try {
+      const response = await axios.get(`http://localhost:8080/api/user/getUserWishList/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const hotelIds = response.data.map(item => item.hotelId);
+      console.log("Hotel IDs from wishlist:", hotelIds);
+
+      const hotelPromises = hotelIds.map(hotelId =>
+        axios.get(`http://localhost:8080/api/shared/getHotelById/${hotelId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+      );
+
+      const hotelResponses = await Promise.all(hotelPromises);
+      const hotelData = hotelResponses.map(res => res.data);
+
+      setHotels(hotelData);
+
+      const wishlistItems = hotelIds.reduce((acc, hotelId) => {
+        acc[hotelId] = true;
+        return acc;
+      }, {});
+
+      setWishlist(wishlistItems);
+    } catch (error) {
+      console.error("Error fetching wishlist:", error);
+      setSnackbarMessage("Failed to fetch wishlist. Please try again.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserWishlist();
+  }, []);
 
   const handleRoomDetailsClick = (hotelId) => {
     navigate(`/exploreroomlistings/${hotelId}`);
@@ -60,9 +108,11 @@ const ExploreHotelListings = () => {
         });
 
         if (response.status === 200) {
-          setWishlist((prev) => ({ ...prev, [hotel.id]: false }));
           setSnackbarMessage(`${hotel.name} has been removed from your favorites!`);
           setSnackbarSeverity("error");
+          setSnackbarOpen(true);
+          // Fetch updated wishlist
+          fetchUserWishlist();
         }
       } else {
         response = await axios.post('http://localhost:8080/api/user/addWishList', wishListDTO, {
@@ -73,13 +123,13 @@ const ExploreHotelListings = () => {
         });
 
         if (response.status === 200 || response.status === 201) {
-          setWishlist((prev) => ({ ...prev, [hotel.id]: true }));
           setSnackbarMessage(`${hotel.name} has been added to your favorites!`);
           setSnackbarSeverity("success");
+          setSnackbarOpen(true);
+          // Fetch updated wishlist
+          fetchUserWishlist();
         }
       }
-
-      setSnackbarOpen(true);
     } catch (error) {
       console.error("Error toggling wishlist:", error);
       setSnackbarMessage("Failed to update favorites. Please try again.");
@@ -95,7 +145,7 @@ const ExploreHotelListings = () => {
   return (
     <Box sx={{ p: 3, backgroundColor: '#f7f7f7' }}>
       <Grid container spacing={2} sx={{ maxHeight: 'calc(100vh - 64px)', overflowY: 'auto' }}>
-        {hotels && hotels.length > 0 ? (
+        {hotels.length > 0 ? (
           hotels.map((hotel) => (
             <Grid item xs={12} sm={6} md={4} key={hotel.id}>
               <Card
@@ -157,7 +207,7 @@ const ExploreHotelListings = () => {
         ) : (
           <Grid item xs={12}>
             <Typography variant="h6" color="text.secondary" textAlign="center">
-              No hotels found. Please try a different search.
+              No hotels found in your wishlist.
             </Typography>
           </Grid>
         )}
@@ -172,4 +222,4 @@ const ExploreHotelListings = () => {
   );
 };
 
-export default ExploreHotelListings;
+export default Wishlist;

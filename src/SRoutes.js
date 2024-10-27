@@ -39,6 +39,7 @@ import OwnerHome from "./component/Home/OwnerHome.js"
 import OwnerBooking from "./component/HotelOwner/OwnerBooking/OwnerBooking.js"
 import OwnerReview from "./component/HotelOwner/OwnerBooking/OwnerReview.js"
 import OwnerRoom from "./component/HotelOwner/OwnerRoom.js"
+import Wishlist from "./component/Home/Wishlist.js"
 
 
 
@@ -89,6 +90,7 @@ const SRoutes=()=>
       <Route path="/ownerBooking" element={<OwnerBooking/>}/>
       <Route path="/OwnerReview" element={<OwnerReview/>}/>
       <Route path='/OwnerRoom' element={<OwnerRoom/>}/>
+      <Route path ="/viewFavourites" element={<Wishlist/>}/>
 
 
 

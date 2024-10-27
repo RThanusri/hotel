@@ -136,31 +136,31 @@ const ViewBookingCard = ({
 
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
-          <Typography variant="h6" component="h2">
+          <Typography variant="h5" component="h2"sx={{  fontSize:'0.6cm',textAlign:'center' }}>
             View Booking
           </Typography>
           <Grid container spacing={2} sx={{ mt: 2 }}>
             <Grid item xs={12}>
-              <Typography variant="body1">Total Fare: ${totalFare}</Typography>
-              <Typography variant="body1">
+              <Typography  variant="body1"  sx={{ fontWeight: "bold", color: "#cc0000", fontSize:'0.8cm' }} >Total Fare: ${totalFare}</Typography>
+              <Typography variant="body1"sx={{ fontWeight: "bold", color: "#cc0000", fontSize:'0.8cm' }} >
                 Booking Status: {bookingStatus || "Pending"}
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="body1">
+              <Typography variant="body1"sx={{  fontSize:'0.5cm' }}>
                 Check-in Date: {nCheckInDate}
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="body1">
+              <Typography variant="body1"sx={{  fontSize:'0.5cm' }}>
                 Check-out Date: {nCheckOutDate}
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="body1">Adults: {nNumberOfAdults}</Typography>
+              <Typography variant="body1"sx={{  fontSize:'0.5cm' }}>Adults: {nNumberOfAdults}</Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="body1">
+              <Typography variant="body1"sx={{  fontSize:'0.5cm' }}>
                 Children: {nNumberOfChildren}
               </Typography>
             </Grid>

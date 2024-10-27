@@ -43,7 +43,7 @@ const FAQ = () => {
                 >
                     {faqs.map((faq, index) => (
                         <Panel header={faq.question} key={index} style={{ marginBottom: '10px',fontSize:'2rem',color:'#4B4B4B' }}>
-                            <Paragraph style={{ margin: 0 ,color:'#999999',fontSize:'1.8rem'}}>{faq.answer}</Paragraph>
+                            <Paragraph style={{ margin: 0 ,color:'#333333',fontSize:'1.8rem'}}>{faq.answer}</Paragraph>
                         </Panel>
                     ))}
                 </Collapse>

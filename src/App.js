@@ -39,7 +39,7 @@ function App() {
 
     checkSession();
 
-    const intervalId = setInterval(checkSession, 3000000);
+    const intervalId = setInterval(checkSession, 10000);
     return () => clearInterval(intervalId);
   }, []);
 
