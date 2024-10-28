@@ -1,5 +1,5 @@
 .Navbar {
-    padding: 20px 0;
+    padding: 2px 0;
     display: flex;
     align-items: center;
     justify-content: space-between; /* Ensure space between logo and menu */
@@ -8,7 +8,7 @@
 }
 
 .Navbar .logo {
-    width: 250px;
+    width: 200px;
     height: auto;
     margin-left: 0; /* Adjust as needed */
     margin-right: 20px; /* Added space to the right */

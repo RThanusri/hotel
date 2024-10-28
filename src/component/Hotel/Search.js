@@ -160,7 +160,7 @@ export default function Search() {
         )}
 
         <center>
-          <p style={{ color: '#000', fontWeight: 'bold', fontSize: '3.0rem' }}>
+          <p style={{ color: '#000', fontWeight: 'bold', fontSize: '3.0rem' , marginTop:'5px'}}>
             Find places to stay on Cozy Haven Stay
           </p>
           <p style={{ color: '#000', fontWeight: 'normal', fontSize: '2.0rem', marginTop: '-10px' }}>
