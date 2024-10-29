@@ -1,9 +1,13 @@
 .app {
-  width: 95%;
+  width: 90%;
   margin: auto;  
   display: flex;        
   flex-direction: column; 
   justify-content: space-between;   
-  margin-top:0;
-  margin-bottom:-6000px;
+  padding: 20px; /* Inner spacing */
+  padding-top: 170px; /* Adjust to account for the fixed navbar height */
+  min-height: calc(100vh - 70px); /* Ensure this accounts for navbar height */
+  background-color: white;
+
+  
 }

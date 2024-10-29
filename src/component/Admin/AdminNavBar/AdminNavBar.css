@@ -1,5 +1,5 @@
 .Admin-Navbar {
-    width: 150px;
+    width: 160px;
     height: 100vh;
     background-color: white;
     display: flex;
@@ -37,7 +37,7 @@
   
 
   .logo {
-    width: 150px;
+    width: 10px;
     height: auto;
     margin-top: 0px;
   }

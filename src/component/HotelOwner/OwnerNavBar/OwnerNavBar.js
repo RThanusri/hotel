@@ -25,7 +25,7 @@ const OwnerNavBar = () => {
   };
 
   return (
-    <div className="owner-Navbar">
+    <div className="owner-Navbar"style={{width: '160px'}}>
       <img src="../logo1.jpeg" alt="Logo" className="logo" />
       <ul className="owner-navbar-menu">
         <li className={menu === "bookings" ? "active" : ""}>
@@ -44,7 +44,7 @@ const OwnerNavBar = () => {
           </Link>
         </li>
       </ul>
-      <div className="ownernavbar-right1">
+      <div className="ownernavbar-right1" >
         <button onClick={logout}>Log Out</button>
       </div>
 

@@ -1,79 +1,85 @@
 .Navbar {
-    padding: 2px 0;
+    padding: 10px 20px; /* Padding for better spacing */
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Ensure space between logo and menu */
-    background-color: white; /* Corrected color syntax */
-    width: 100%; /* Remove quotes */
+    justify-content: space-between; /* Space between logo and menu */
+    background-color: white; /* Background color */
+    width: 100%; /* Full width */
+    box-shadow: none; /* Remove shadow for a flatter look */
+    position: fixed; /* Fix the position at the top */
+    top: 0; /* Position at the very top */
+    left: 0; /* Align to the left */
+    z-index: 1000; /* Ensure it is above other content */
+    height: 60px; /* Height of navbar */
+    margin-top: 50px;
 }
 
 .Navbar .logo {
-    width: 200px;
-    height: auto;
-    margin-left: 0; /* Adjust as needed */
-    margin-right: 20px; /* Added space to the right */
+    width: 150px; /* Adjust logo width */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: -100px;
+    margin-left: 150px;
 }
 
 .navbar-menu {
     display: flex;
     font-size: 18px;
-    list-style: none;
-    color: black;
-    gap: 30px; /* Adjusted spacing between menu items */
+    list-style: none; /* Remove default list styles */
+    color: black; /* Text color */
+    gap: 80px; /* Spacing between menu items */
 }
 
 .navbar-right {
     display: flex;
-    color: black;
-    font-size: 18px;
-    gap: 30px; 
-}
-
-.navbar-right1 {
-    box-shadow: inset;
-    display: flex;
-    font-size: 18px;
-    gap: 30px; 
+    align-items: center; /* Center items vertically */
+    color: black; /* Text color */
+    font-size: 18px; /* Font size for buttons */
+    gap: 10px; /* Adjust spacing */
 }
 
 .Navbar button {
-    background: transparent;
-    color: black;
-    font-size: 20px;
-    padding: 10px 20px; 
-    cursor: pointer;
-    border-radius: 50px;
-    transition: background 0.3s, color 0.3s;
+    background: #cc0000; /* Background color */
+    color: white; /* Text color */
+    font-size: 18px; /* Font size */
+    padding: 10px 15px; /* Padding for button */
+    border-radius: 5px; /* Rounded corners */
+    border: none; /* No border */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background 0.3s; /* Transition effect */
 }
 
 .Navbar button:hover {
-    background: #ffcccc; 
-    color: red; 
-    text-decoration: underline;
+    background: #ff3333; /* Darker shade on hover */
 }
 
 .Navbar .active {
-    padding-bottom: 2px;
-    border-bottom: 2px solid #ff2b2b;
-    color: #ff2b2b;
+    padding-bottom: 2px; /* Active link underline spacing */
+    border-bottom: 2px solid #cc0000; /* Underline for active link */
+    color: #cc0000; /* Active link color */
 }
 
 .Navbar li {
-    cursor: pointer;
-    transition: color 0.3s;
+    margin: 0; /* Remove margin */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: color 0.3s; /* Transition for hover effect */
 }
 
 .Navbar li:hover {
-    color: red; 
+    color: red; /* Color change on hover */
 }
 
 .navbar-menu a {
-    color: black;
-    text-decoration: none;
-    padding: 10px; 
+    color: black; /* Link color */
+    text-decoration: none; /* Remove underline */
+    padding: 10px; /* Padding for links */
 }
 
 .navbar-menu a:hover {
-    color: red;
-    text-decoration: underline;
+    color: red; /* Change color on hover */
+    text-decoration: underline; /* Underline on hover */
+}
+
+/* Adjust body margin to account for fixed navbar */
+body {
+    margin-top: 70px; /* Space to prevent content from hiding under the navbar */
 }

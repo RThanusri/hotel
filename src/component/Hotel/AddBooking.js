@@ -11,16 +11,19 @@ import {
   Modal,
   Snackbar,
   Alert,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 
 const AddBooking = () => {
   const [checkInDate, setCheckInDate] = useState("");
   const [checkOutDate, setCheckOutDate] = useState("");
-  const [numberOfAdults, setNumberOfAdults] = useState(1); // Default value set to 1
+  const [numberOfAdults, setNumberOfAdults] = useState(1);
   const [numberOfChildren, setNumberOfChildren] = useState(0);
-  const [guestAges, setGuestAges] = useState([""]);
+  const [guestAges, setGuestAges] = useState([]);
   const [numberOfRooms, setNumberOfRooms] = useState(1);
-  const [roomIds, setRoomIds] = useState([""]); // Dynamically generated based on numberOfRooms
+  const [availableRooms, setAvailableRooms] = useState([]);
+  const [selectedRooms, setSelectedRooms] = useState(new Set());
 
   const [openModal, setOpenModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -29,35 +32,34 @@ const AddBooking = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
   useEffect(() => {
-    setRoomIds(Array(numberOfRooms).fill("")); // Update roomIds based on numberOfRooms
-  }, [numberOfRooms]);
+    if (checkInDate && checkOutDate) {
+      fetchAvailableRooms();
+    }
+  }, [checkInDate, checkOutDate]);
 
-  const checkRoomAvailability = async () => {
+  useEffect(() => {
+    const totalGuests = numberOfAdults + numberOfChildren;
+    setGuestAges(Array(totalGuests).fill(""));
+  }, [numberOfAdults, numberOfChildren]);
+
+  const fetchAvailableRooms = async () => {
     const token = localStorage.getItem("token");
-    const availabilityChecks = roomIds.map((roomId) =>
-      axios.get(`http://localhost:8080/api/api/shared/checkAvailability`, {
-        params: { roomId, checkInDate, checkOutDate },
-        headers: { Authorization: `Bearer ${token}` },
-      })
-    );
-
     try {
-      const responses = await Promise.all(availabilityChecks);
-      return responses.every((response) => response.data);
+      const response = await axios.get("http://localhost:8080/api/shared/getAvailableRooms", {
+        params: { checkInDate, checkOutDate, numberOfAdults, numberOfChildren, hotelId: 1 },
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setAvailableRooms(response.data);
     } catch (error) {
-      console.error("Error checking availability:", error);
-      setSnackbarMessage("Error checking room availability.");
+      console.error("Error fetching available rooms:", error);
+      setSnackbarMessage("Error fetching available rooms.");
       setSnackbarOpen(true);
-      return false;
     }
   };
 
   const addBooking = async () => {
-    const isAvailable = await checkRoomAvailability();
-    if (!isAvailable) {
-      setSnackbarMessage(
-        "Some rooms are already occupied for the selected dates. Please check other rooms."
-      );
+    if (selectedRooms.size !== numberOfRooms) {
+      setSnackbarMessage(`Please select exactly ${numberOfRooms} room(s).`);
       setSnackbarOpen(true);
       return;
     }
@@ -71,7 +73,7 @@ const AddBooking = () => {
       numberOfChildren,
       guestAges,
       numberOfRooms,
-      roomIds,
+      roomIds: Array.from(selectedRooms),
     };
     const token = localStorage.getItem("token");
 
@@ -88,18 +90,7 @@ const AddBooking = () => {
       );
 
       const { bookingId, totalFare, bookingStatus } = response.data;
-
-      localStorage.setItem(
-        `booking_${bookingId}`,
-        JSON.stringify({ totalFare, bookingStatus })
-      );
-
-      setBookingInfo({
-        bookingId,
-        totalFare,
-        bookingStatus,
-      });
-
+      setBookingInfo({ bookingId, totalFare, bookingStatus });
       setModalMessage("Booking added successfully!");
     } catch (error) {
       console.error("Error adding booking:", error);
@@ -115,10 +106,14 @@ const AddBooking = () => {
     setGuestAges(newGuestAges);
   };
 
-  const handleRoomIdChange = (index, value) => {
-    const newRoomIds = [...roomIds];
-    newRoomIds[index] = value;
-    setRoomIds(newRoomIds);
+  const handleRoomSelect = (roomId) => {
+    const updatedSelection = new Set(selectedRooms);
+    if (updatedSelection.has(roomId)) {
+      updatedSelection.delete(roomId);
+    } else {
+      updatedSelection.add(roomId);
+    }
+    setSelectedRooms(updatedSelection);
   };
 
   const handleCloseModal = () => {
@@ -130,12 +125,10 @@ const AddBooking = () => {
   };
 
   const updateGuestCounts = (adults, children) => {
-    const validAdults = Math.max(parseInt(adults) || 1, 1); // Ensure at least 1 adult
-    const validChildren = Math.max(parseInt(children) || 0, 0); // Ensure children is a non-negative number
+    const validAdults = Math.max(parseInt(adults) || 1, 1);
+    const validChildren = Math.max(parseInt(children) || 0, 0);
     setNumberOfAdults(validAdults);
     setNumberOfChildren(validChildren);
-    const total = validAdults + validChildren;
-    setGuestAges(Array(total).fill("")); // Resets ages to an empty string
   };
 
   return (
@@ -200,7 +193,6 @@ const AddBooking = () => {
         style={{
           padding: "20px",
           backgroundColor: "#fff",
-          border: "2px solid black",
         }}
       >
         <Typography
@@ -209,12 +201,7 @@ const AddBooking = () => {
           style={{
             fontWeight: "bold",
             color: "#cc0000",
-            fontFamily: "Arial, sans-serif",
-            transition: "color 0.3s",
-            cursor: "pointer",
           }}
-          onMouseEnter={(e) => (e.target.style.color = "#990000")}
-          onMouseLeave={(e) => (e.target.style.color = "#cc0000")}
         >
           Reserve Your Stay
         </Typography>
@@ -288,25 +275,36 @@ const AddBooking = () => {
                 label="Number of Rooms"
                 type="number"
                 value={numberOfRooms}
-                onChange={(e) =>
-                  setNumberOfRooms(Math.max(1, parseInt(e.target.value) || 1))
-                }
+                onChange={(e) => setNumberOfRooms(Math.max(1, parseInt(e.target.value) || 1))}
                 min="1"
                 required
               />
             </Grid>
-            {roomIds.map((roomId, index) => (
-              <Grid item xs={12} key={index}>
-                <TextField
-                  fullWidth
-                  label={`Room ID ${index + 1}`}
-                  type="text"
-                  value={roomId}
-                  onChange={(e) => handleRoomIdChange(index, e.target.value)}
-                  required
-                />
-              </Grid>
-            ))}
+            <Grid item xs={12}>
+              <Typography variant="h6">Select Rooms:</Typography>
+              {availableRooms.length > 0 ? (
+                availableRooms.map((room) => (
+                  <div key={room.id}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={selectedRooms.has(room.id)}
+                          onChange={() => handleRoomSelect(room.id)}
+                          sx={{
+                            '&.Mui-checked': {
+                              color: '#cc0000', // Red color for checked state
+                            },
+                          }}
+                        />
+                      }
+                      label={`${room.roomSize} - ${room.bedSize} (Max Occupancy: ${room.maxOccupancy})`}
+                    />
+                  </div>
+                ))
+              ) : (
+                <Typography>No rooms available for the selected dates.</Typography>
+              )}
+            </Grid>
             <Grid item xs={12}>
               <Button
                 variant="contained"

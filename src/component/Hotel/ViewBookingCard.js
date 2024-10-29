@@ -13,6 +13,7 @@ import {
   TableCell,
   Paper,
 } from "@mui/material";
+import Navbar from "../Navbar/Navbar";
 
 const style = {
   position: "absolute",
@@ -106,8 +107,10 @@ const ViewBookingCard = ({
     setNRoomIds(updatedRooms);
   };
 
-  return (
+  return (<>
+    
     <div>
+    
       <TableContainer
         component={Paper}
         sx={{ mb: 2, backgroundColor: "white" }}
@@ -214,7 +217,10 @@ const ViewBookingCard = ({
         </Box>
       </Modal>
     </div>
+    </>
   );
+  
 };
+
 
 export default ViewBookingCard;

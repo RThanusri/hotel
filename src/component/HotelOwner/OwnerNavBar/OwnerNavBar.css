@@ -1,4 +1,8 @@
 /* OwnerNavBar.css */
+.owner-Navbar
+{
+  width: 110px;
+}
 .owner-layout {
   display: flex;
   height: 100vh; 
@@ -9,9 +13,10 @@
   align-items: center; /* Center the content vertically */
   margin-top: 20px; /* Push the logout link to the bottom of the navbar */
   padding: 20px; /* Add some padding around the container */
+  background-color: #cc0000;
 }
 
-.ownernavbar-right1 a {
+.ownernavbar-right1  {
   color: #cc0000; /* Change to a red color for the text */
   text-decoration: none; /* Remove underline */
   padding: 10px 15px; /* Add padding for better click area */
@@ -32,7 +37,7 @@
   top: 0;
   left: 0;
   height: 100%;
-  width: 150px;
+  width: 180px;
   z-index: 1000; /* Ensures the navbar is above other elements */
   background-color: #fff;
   display: flex;
@@ -74,7 +79,7 @@
 }
 .logo{
 
-
+margin-left: 10px;
 width: 150px;
 height: "auto";
 margin-top: 40px

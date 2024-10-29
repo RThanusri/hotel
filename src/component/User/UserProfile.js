@@ -96,7 +96,7 @@ const UserProfile = ({ open, handleClose }) => {
             value={user.email}
             disabled
           />
-          <Button variant="contained" color="primary" onClick={handleUpdate}>
+          <Button variant="contained" color="error" onClick={handleUpdate}>
             Update
           </Button>
         </Box>
