@@ -11,7 +11,7 @@ const Home = () => {
   return (
     <Box sx={{ p: 3 }}>
       <UserNavbar /> 
-      <Box sx={{ mb: 5, mt: 5}}> {/* Reduced margin-top here */}
+      <Box sx={{ mb: 5, mt: -10}}> {/* Reduced margin-top here */}
         <Search />
       </Box>
       

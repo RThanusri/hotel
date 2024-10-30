@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BookingCard from "./BookingCard"; // Ensure this is the correct import path
 import { useNavigate } from "react-router-dom";
-import { Alert, TextField, Button, Container, Box } from "@mui/material"; // Import Material UI components
+import { Alert, TextField, Button, Container, Box, Pagination } from "@mui/material"; // Import Material UI components
 import axios from "axios";
 import "./Booking.css";
 import AdminNavBar from "../AdminNavBar/AdminNavBar";
@@ -14,6 +14,10 @@ const Booking = () => {
   const [alertMsg, setAlertMsg] = useState("");
   const [alertType, setAlertType] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+  
+  // Pagination states
+  const itemsPerPage = 3; // Number of bookings per page
+  const [currentPage, setCurrentPage] = useState(1);
 
   const getBookings = () => {
     const token = localStorage.getItem("token");
@@ -26,6 +30,7 @@ const Booking = () => {
       })
       .then((response) => {
         setBookings(response.data);
+        setFilteredBookings(response.data);
       })
       .catch(() => {
         setAlertType("error");
@@ -42,8 +47,10 @@ const Booking = () => {
         (booking) => booking.bookingId === searchId
       );
       setFilteredBookings(filtered);
+      setCurrentPage(1); // Reset to the first page on search
     } else {
       setFilteredBookings(bookings);
+      setCurrentPage(1); // Reset to the first page on search
     }
   };
 
@@ -105,56 +112,76 @@ const Booking = () => {
     getBookings(); // Fetch all bookings on component mount
   }, []);
 
-  return (<>
-    
-    <Container>
-      <AdminNavBar/>
-      {showAlert && (
-        <Box sx={{ position: "fixed", top: 20, right: 20, zIndex: 1000 }}>
-          <Alert severity={alertType}>{alertMsg}</Alert>
-        </Box>
-      )}
+  // Pagination logic
+  const totalPages = Math.ceil(filteredBookings.length / itemsPerPage);
+  const handleChangePage = (event, value) => {
+    setCurrentPage(value);
+  };
 
-      <Box 
-        sx={{ 
-          my: 4, 
-          display: "flex", 
-          justifyContent: "center", 
-          alignItems: "center" 
-        }}
-      >
-        <TextField
-          variant="outlined"
-          placeholder="Search by Booking ID"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          sx={{ mr: 2 }} // Margin right for spacing
-        />
-        <Button
-          variant="contained"
-          onClick={handleSearch}
-          sx={{ backgroundColor: "#cc0000", color: "white", "&:hover": { backgroundColor: "#b30000" } }}
+  // Determine which bookings to display on the current page
+  const indexOfLastBooking = currentPage * itemsPerPage;
+  const indexOfFirstBooking = indexOfLastBooking - itemsPerPage;
+  const currentBookings = filteredBookings.slice(indexOfFirstBooking, indexOfLastBooking);
+
+  return (
+    <>
+      <Container>
+        <AdminNavBar />
+        {showAlert && (
+          <Box sx={{ position: "fixed", top: 0, right: 20, zIndex: 1000 }}>
+            <Alert severity={alertType}>{alertMsg}</Alert>
+          </Box>
+        )}
+
+        <Box
+          sx={{
+          
+            my: -20,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            mb:3
+          }}
         >
-          Search
-        </Button>
-      </Box>
-
-      <div className="booking-container">
-        {(searchTerm ? filteredBookings : bookings).map((booking) => (
-          <BookingCard
-            key={booking.bookingId}
-            {...booking}
-            remove={() => cancelBooking(booking.bookingId)} // Pass the remove function
-            update={(updatedBooking) =>
-              updateBooking(booking.bookingId, updatedBooking)
-            } // Pass the update function
+          <TextField
+            variant="outlined"
+            placeholder="Search by Booking ID"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            sx={{ mr: 2 }} // Margin right for spacing
           />
-        ))}
-      </div>
-    </Container>
+          <Button
+            variant="contained"
+            onClick={handleSearch}
+            sx={{ backgroundColor: "#cc0000", color: "white", "&:hover": { backgroundColor: "#b30000" } }}
+          >
+            Search
+          </Button>
+        </Box>
+
+        <div className="booking-container">
+          {currentBookings.map((booking) => (
+            <BookingCard
+              key={booking.bookingId}
+              {...booking}
+              remove={() => cancelBooking(booking.bookingId)} // Pass the remove function
+              update={(updatedBooking) =>
+                updateBooking(booking.bookingId, updatedBooking)
+              } // Pass the update function
+            />
+          ))}
+        </div>
+
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handleChangePage}
+          color="error"
+          sx={{ mt: 4, display: "flex", justifyContent: "center" }}
+        />
+      </Container>
     </>
   );
-  
 };
 
 export default Booking;

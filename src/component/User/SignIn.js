@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { FormField, Button, Form } from "semantic-ui-react";
 import { Modal, Box, Snackbar, Alert } from "@mui/material";
-import "./SignIn.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import "./SignIn.css";
 
 const SignIn = ({ open, handleClose, openSignUp }) => {
   const [email, setEmail] = useState("");
@@ -33,14 +32,11 @@ const SignIn = ({ open, handleClose, openSignUp }) => {
         setSuccessMessage("Login Successful");
         handleClose();
 
-        
         if (role === 'USER') nav('/');
         else if (role === 'ADMIN') nav('/admin');
-      
         else if (role === "HOTEL_OWNER") nav("/HotelOwner");
-
       })
-      .catch((error) => {
+      .catch(() => {
         setErrorMessage("Login failed! Please check your credentials.");
       });
   };
@@ -53,97 +49,35 @@ const SignIn = ({ open, handleClose, openSignUp }) => {
   return (
     <>
       <Modal open={open} onClose={handleClose}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 600,
-            bgcolor: "background.paper",
-            borderRadius: "8px",
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <span
-            onClick={handleClose}
-            className="close-btn"
-            style={{ cursor: "pointer", color: "#cc0000" }}
-          >
-            X
-          </span>
+        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 600, bgcolor: "background.paper", borderRadius: "8px", boxShadow: 24, p: 4 }}>
+          <span onClick={handleClose} className="close-btn" style={{ cursor: "pointer", color: "#cc0000" }}>X</span>
           <center>
-            <h1 style={{ color: "#cc0000" }} className="title">
-              Login
-            </h1>
+            <h1 style={{ color: "#cc0000" }} className="title">Login</h1>
           </center>
           <Form onSubmit={handleSignIn}>
             <FormField>
               <label>Email</label>
-              <input
-                type="email"
-                placeholder="Email"
-                className="form-input"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+              <input type="email" placeholder="Email" className="form-input" value={email} onChange={(e) => setEmail(e.target.value)} />
             </FormField>
             <FormField>
               <label>Password</label>
-              <input
-                type="password"
-                placeholder="Password"
-                className="form-input"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <input type="password" placeholder="Password" className="form-input" value={password} onChange={(e) => setPassword(e.target.value)} />
             </FormField>
-            <Button type="submit" className="submit">
-              Login
-            </Button>
+            <Button type="submit" className="submit">Login</Button>
             <div className="login" style={{ fontSize: "1.3rem" }}>
               Don't have an account?{" "}
-              <span
-                onClick={() => {
-                  handleClose();
-                  openSignUp();
-                }}
-                className="login-navigation"
-                style={{
-                  fontSize: "1.5rem",
-                  cursor: "pointer",
-                  color: "#cc0000",
-                  textDecoration: "underline",
-                }}
-              >
-                Register Here
-              </span>
+              <span onClick={() => { handleClose(); openSignUp(); }} className="login-navigation" style={{ fontSize: "1.5rem", cursor: "pointer", color: "#cc0000", textDecoration: "underline" }}>Register Here</span>
             </div>
           </Form>
         </Box>
       </Modal>
 
-      <Snackbar
-        open={Boolean(successMessage)}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }} // Position at top
-      >
-        <Alert onClose={handleSnackbarClose} severity="success">
-          {successMessage}
-        </Alert>
+      <Snackbar open={Boolean(successMessage)} autoHideDuration={6000} onClose={handleSnackbarClose} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
+        <Alert onClose={handleSnackbarClose} severity="success">{successMessage}</Alert>
       </Snackbar>
 
-      <Snackbar
-        open={Boolean(errorMessage)}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }} // Position at top
-      >
-        <Alert onClose={handleSnackbarClose} severity="error">
-          {errorMessage}
-        </Alert>
+      <Snackbar open={Boolean(errorMessage)} autoHideDuration={6000} onClose={handleSnackbarClose} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
+        <Alert onClose={handleSnackbarClose} severity="error">{errorMessage}</Alert>
       </Snackbar>
     </>
   );

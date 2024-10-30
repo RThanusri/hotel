@@ -45,7 +45,7 @@ const OwnerNavBar = () => {
         </li>
       </ul>
       <div className="ownernavbar-right1" >
-        <button onClick={logout}>Log Out</button>
+        <button style={{backgroundColor:'#cc0000'}} onClick={logout}>Log Out</button>
       </div>
 
       {showAlert && (

@@ -1,5 +1,5 @@
 import React from 'react';
-import './UserCard.css'
+
 
 const UserCard = ({ userId, userName, email, role, remove }) => {
   return (
@@ -9,7 +9,7 @@ const UserCard = ({ userId, userName, email, role, remove }) => {
       <p>Email: {email}</p>
       <p>Role: {role}</p>
 
-      <button onClick={() => remove(userId)}>Remove User</button>
+      <button style={{backgroundColor:'#cc0000'}}onClick={() => remove(userId)}>Remove User</button>
     </div>
   );
 };

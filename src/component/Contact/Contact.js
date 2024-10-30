@@ -81,7 +81,7 @@ function Contact() {
               required
             />
 
-            <button className='submi'type="submit">Submit</button>
+            <button style={{backgroundColor:'#cc0000'}}className='submit'type="submit">Submit</button>
           </form>
         </div>
 

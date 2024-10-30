@@ -10,6 +10,7 @@ import {
   Snackbar,
   Alert,
   IconButton,
+  Pagination,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -23,6 +24,8 @@ const ExploreHotelListings = () => {
   const [snackbarMessage, setSnackbarMessage] = React.useState("");
   const [snackbarSeverity, setSnackbarSeverity] = React.useState("success");
   const [wishlist, setWishlist] = React.useState({});
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const itemsPerPage = 3;
 
   const { hotels } = location.state || {};
 
@@ -92,11 +95,25 @@ const ExploreHotelListings = () => {
     setSnackbarOpen(false);
   };
 
+  const handleReserve = () => {
+    navigate('/addBooking');
+  };
+
+  // Pagination logic
+  const totalPages = Math.ceil((hotels?.length || 0) / itemsPerPage);
+  const indexOfLastHotel = currentPage * itemsPerPage;
+  const indexOfFirstHotel = indexOfLastHotel - itemsPerPage;
+  const currentHotels = hotels?.slice(indexOfFirstHotel, indexOfLastHotel) || [];
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
   return (
     <Box sx={{ p: 3, backgroundColor: '#f7f7f7' }}>
       <Grid container spacing={2} sx={{ maxHeight: 'calc(100vh - 64px)', overflowY: 'auto' }}>
-        {hotels && hotels.length > 0 ? (
-          hotels.map((hotel) => (
+        {currentHotels.length > 0 ? (
+          currentHotels.map((hotel) => (
             <Grid item xs={12} sm={6} md={4} key={hotel.id}>
               <Card
                 sx={{
@@ -129,7 +146,7 @@ const ExploreHotelListings = () => {
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
                     <Button
                       variant="contained"
-                      color="primary"
+                      color="error"
                       onClick={() => handleRoomDetailsClick(hotel.id)}
                       sx={{ flexGrow: 1, marginRight: 1, '&:hover': { backgroundColor: '#1976d2' } }}
                     >
@@ -137,9 +154,9 @@ const ExploreHotelListings = () => {
                     </Button>
                     <Button
                       variant="contained"
-                      color="primary"
+                      color="error"
                       onClick={() => handleMoreDetailsClick(hotel)}
-                      sx={{ flexGrow: 1, marginLeft: 1, '&:hover': { backgroundColor: '#1976d2' } }}
+                      sx={{ flexGrow: 1, marginRight: 1, '&:hover': { backgroundColor: '#1976d2' } }}
                     >
                       More Details
                     </Button>
@@ -149,6 +166,22 @@ const ExploreHotelListings = () => {
                     >
                       {wishlist[hotel.id] ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                     </IconButton>
+                  </Box>
+                  <Box sx={{ mt: 2, textAlign: 'center' }}>
+                    <Button 
+                      onClick={handleReserve} 
+                      sx={{
+                        backgroundColor: '#cc0000',
+                        color: 'white',
+                        padding: '10px 20px',
+                        cursor: 'pointer',
+                        fontSize: '12px',
+                        borderRadius: '5px',
+                        '&:hover': { backgroundColor: '#b30000' }
+                      }}
+                    >
+                      Reserve
+                    </Button>
                   </Box>
                 </CardContent>
               </Card>
@@ -162,6 +195,15 @@ const ExploreHotelListings = () => {
           </Grid>
         )}
       </Grid>
+
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="error"
+        />
+      </Box>
 
       <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={handleSnackbarClose}>
         <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>

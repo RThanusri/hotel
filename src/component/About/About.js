@@ -12,7 +12,7 @@ const About = () => {
         borderRadius: '12px',
         color: '#333', // Dark grey text
         boxShadow: 'none',// Subtle shadow for depth
-        margin: '50px auto ',
+        margin: '-80px auto',
 
       }}
     >

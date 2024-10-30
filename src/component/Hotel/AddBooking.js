@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   Container,
@@ -16,6 +17,7 @@ import {
 } from "@mui/material";
 
 const AddBooking = () => {
+  
   const [checkInDate, setCheckInDate] = useState("");
   const [checkOutDate, setCheckOutDate] = useState("");
   const [numberOfAdults, setNumberOfAdults] = useState(1);
@@ -24,13 +26,17 @@ const AddBooking = () => {
   const [numberOfRooms, setNumberOfRooms] = useState(1);
   const [availableRooms, setAvailableRooms] = useState([]);
   const [selectedRooms, setSelectedRooms] = useState(new Set());
+  const { hotelId } = useParams();
+  const navigate = useNavigate();
 
   const [openModal, setOpenModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [bookingInfo, setBookingInfo] = useState({});
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
-
+  useEffect(() => {
+    console.log("Hotel ID:", hotelId); // Check if hotelId is defined
+  }, [hotelId]);
   useEffect(() => {
     if (checkInDate && checkOutDate) {
       fetchAvailableRooms();
@@ -130,7 +136,7 @@ const AddBooking = () => {
     setNumberOfAdults(validAdults);
     setNumberOfChildren(validChildren);
   };
-
+ 
   return (
     <Container maxWidth="md">
       <Modal open={openModal} onClose={handleCloseModal}>
@@ -147,6 +153,9 @@ const AddBooking = () => {
             borderRadius: 2,
           }}
         >
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        
+      </Box>
           <Typography variant="h6" component="h2">
             {modalMessage}
           </Typography>
@@ -195,6 +204,7 @@ const AddBooking = () => {
           backgroundColor: "#fff",
         }}
       >
+       
         <Typography
           variant="h4"
           align="center"

@@ -63,7 +63,7 @@ const OwnerReview = () => {
   return (<>
   
 
-    <Box sx={{ p: 4, bgcolor: 'lavender', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Box sx={{ p: 4, bgcolor: 'white', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center',my:-20 }}>
     <OwnerNavBar/>
       
       <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', textAlign: 'center' }}>

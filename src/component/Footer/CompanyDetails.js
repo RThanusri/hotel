@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 
 const CompanyDetails = () => {
     return (
-        <div style={{ padding: '40px', textAlign: 'center' ,margin: '70px  auto 0' }}>
+        <div style={{ padding: '40px', textAlign: 'center' ,margin: '-70px  auto 0' }}>
             <Typography 
                 variant="h4" 
                 gutterBottom 

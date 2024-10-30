@@ -71,6 +71,7 @@ const SRoutes=()=>
       <Route path="/addRoom" element={<AddRoom/>}/>
       <Route path="/booking" element={<Booking/>}/>
       <Route path="/addBooking" element={<AddBooking/>}/>
+      
       <Route path="/HotelOwner" element={<OwnerHome/>}/>
       <Route path="/users" element={<User/>}/>
       <Route path="/AdminReview" element={<AdminReview/>}/>

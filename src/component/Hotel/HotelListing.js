@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -10,6 +10,7 @@ import {
   Snackbar,
   Alert,
   IconButton,
+  Pagination, // Import Pagination component
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -30,17 +31,29 @@ const HotelListing = () => {
     hotelLocation,
   } = location.state || {};
 
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-  const [snackbarMessage, setSnackbarMessage] = React.useState("");
-  const [snackbarSeverity, setSnackbarSeverity] = React.useState("success");
-  const [wishlist, setWishlist] = React.useState({});
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [wishlist, setWishlist] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3; // Number of hotels to display per page
+
+  // Calculate total pages
+  const totalPages = Math.ceil(hotels.length / itemsPerPage);
+
+  // Get current hotels for the current page
+  const indexOfLastHotel = currentPage * itemsPerPage;
+  const indexOfFirstHotel = indexOfLastHotel - itemsPerPage;
+  const currentHotels = hotels.slice(indexOfFirstHotel, indexOfLastHotel);
 
   const handleRoomDetailsClick = (hotelId) => {
     navigate(`/roomlistings/${hotelId}`, {
       state: { checkInDate, checkOutDate, numberOfRooms, numberOfAdults, numberOfChildren, hotelLocation },
     });
   };
-
+  const handleReserve = () => {
+    navigate('/addBooking');
+  };
   const handleMoreDetailsClick = (hotel) => {
     navigate(`/hotelDetails/${hotel.id}`, { state: { hotel } });
   };
@@ -72,7 +85,7 @@ const HotelListing = () => {
         });
 
         if (response.status === 200) {
-          setWishlist((prev) => ({ ...prev, [hotel.id]: false })); 
+          setWishlist((prev) => ({ ...prev, [hotel.id]: false }));
           setSnackbarMessage(`${hotel.name} has been removed from your favorites!`);
           setSnackbarSeverity("error");
         }
@@ -86,7 +99,7 @@ const HotelListing = () => {
         });
 
         if (response.status === 200 || response.status === 201) {
-          setWishlist((prev) => ({ ...prev, [hotel.id]: true })); // Update wishlist state
+          setWishlist((prev) => ({ ...prev, [hotel.id]: true }));
           setSnackbarMessage(`${hotel.name} has been added to your favorites!`);
           setSnackbarSeverity("success");
         }
@@ -105,11 +118,15 @@ const HotelListing = () => {
     setSnackbarOpen(false);
   };
 
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
   return (
     <Box sx={{ p: 3, backgroundColor: '#f7f7f7' }}>
       <Grid container spacing={2} sx={{ maxHeight: 'calc(100vh - 64px)', overflowY: 'auto' }}>
-        {hotels.length > 0 ? (
-          hotels.map((hotel) => (
+        {currentHotels.length > 0 ? (
+          currentHotels.map((hotel) => (
             <Grid item xs={12} sm={6} md={4} key={hotel.id}>
               <Card
                 sx={{
@@ -142,7 +159,7 @@ const HotelListing = () => {
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
                     <Button
                       variant="contained"
-                      color="primary"
+                      color="error"
                       onClick={() => handleRoomDetailsClick(hotel.id)}
                       sx={{ flexGrow: 1, marginRight: 1, '&:hover': { backgroundColor: '#1976d2' } }}
                     >
@@ -150,12 +167,29 @@ const HotelListing = () => {
                     </Button>
                     <Button
                       variant="contained"
-                      color="primary"
+                      color="error"
                       onClick={() => handleMoreDetailsClick(hotel)}
                       sx={{ flexGrow: 1, marginLeft: 1, '&:hover': { backgroundColor: '#1976d2' } }}
                     >
                       More Details
                     </Button>
+                    <Box sx={{  textAlign: 'center' ,flexGrow: 1, marginLeft: 1}}>
+                    <Button 
+                      onClick={handleReserve} 
+                      sx={{
+                        backgroundColor: '#cc0000',
+                        color: 'white',
+                        padding: '10px 20px',
+                        cursor: 'pointer',
+                        fontSize: '12px',
+                        borderRadius: '5px',
+                        '&hover':'primary'
+                        
+                      }}
+                    >
+                      Reserve
+                    </Button>
+                  </Box>
                     <IconButton
                       onClick={() => handleToggleWishlist(hotel)}
                       sx={{ color: wishlist[hotel.id] ? 'red' : 'gray' }}
@@ -175,6 +209,14 @@ const HotelListing = () => {
           </Grid>
         )}
       </Grid>
+
+      <Pagination
+        count={totalPages}
+        page={currentPage}
+        onChange={handlePageChange}
+        color="error"
+        sx={{ mt: 3, display: 'flex', justifyContent: 'center',color:'#cc0000' }}
+      />
 
       <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={handleSnackbarClose}>
         <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>

@@ -31,26 +31,73 @@ const AddReview = () => {
     try {
       await axios.post('http://localhost:8080/api/user/submitReview', params, {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
-        },
+        }
       });
       navigate(`/reviews/${hotelId}`);
     } catch (error) {
-      console.error("Error submitting review:", error);
-      setError("Error submitting review. Please try again later.");
+      console.error('Error submitting review:', error);
+      setError('Error submitting review. Please try again later.');
     }
   };
 
+  const handleBack = () => {
+    navigate(`/exploreroomlistings/${hotelId}`);
+  };
+
   return (
-    <Box sx={{ p: 4, bgcolor: '#E6E6FA', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-      <Paper elevation={3} sx={{ p: 4, borderRadius: 2, width: '100%', maxWidth: 900, border: '2px solid black' }}>
-        <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', textAlign: 'center', color: '#cc0000' }}>
+    <Box
+      sx={{
+        p: 4,
+        bgcolor: 'white',
+        minHeight: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'relative',
+      }}
+    >
+      {/* Back Button */}
+      <Button
+        
+        onClick={handleBack}
+        variant="contained"
+        color="error"
+        sx={{
+          position: 'fixed', // Fixed position for top left corner
+          top: 16,
+          left: 16,
+          bgcolor: 'white',
+          color: '#cc0000',
+          borderColor: '#cc0000',
+          '&:hover': { bgcolor: '#f0f0f0' },
+          zIndex: 1000,
+        }}
+      >
+        Back
+      </Button>
+
+      <Paper
+        elevation={3}
+        sx={{
+          p: 4,
+          borderRadius: 2,
+          width: '100%',
+          maxWidth: 900,
+          border: '2px solid black',
+        }}
+      >
+        <Typography
+          variant="h4"
+          gutterBottom
+          sx={{ fontWeight: 'bold', textAlign: 'center', color: '#cc0000' }}
+        >
           Add Your Review
         </Typography>
-        
+
         {error && <Typography color="error">{error}</Typography>}
-        
+
         <TextField
           label="Review Text"
           multiline
@@ -62,49 +109,63 @@ const AddReview = () => {
           variant="outlined"
         />
 
-        <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>Cleanliness</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
+          Cleanliness
+        </Typography>
         <Rating
           value={cleanlinessRating}
           onChange={(event, newValue) => setCleanlinessRating(newValue)}
-          sx={{ mb: 2 ,color:'#cc0000'}}
+          sx={{ mb: 2, color: '#cc0000' }}
         />
 
-        <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>Staff Service</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
+          Staff Service
+        </Typography>
         <Rating
           value={staffServiceRating}
           onChange={(event, newValue) => setStaffServiceRating(newValue)}
-          sx={{ mb: 2 ,color:'#cc0000'}}
+          sx={{ mb: 2, color: '#cc0000' }}
         />
 
-        <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>Amenities</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
+          Amenities
+        </Typography>
         <Rating
           value={amenitiesRating}
           onChange={(event, newValue) => setAmenitiesRating(newValue)}
-          sx={{ mb: 2 ,color:'#cc0000'}}
+          sx={{ mb: 2, color: '#cc0000' }}
         />
 
-        <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>Property Conditions</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
+          Property Conditions
+        </Typography>
         <Rating
           value={propertyConditionsRating}
           onChange={(event, newValue) => setPropertyConditionRating(newValue)}
-          sx={{ mb: 2 ,color:'#cc0000'}}
+          sx={{ mb: 2, color: '#cc0000' }}
         />
 
-        <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>Eco-Friendliness</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
+          Eco-Friendliness
+        </Typography>
         <Rating
           value={ecoFriendlinessRating}
           onChange={(event, newValue) => setEcoFriendlinessRating(newValue)}
-          sx={{ mb: 2 ,color:'#cc0000'}}
+          sx={{ mb: 2, color: '#cc0000' }}
         />
-         <br/>
+
         <Button
+       
           variant="contained"
-          color="primary"
           onClick={handleSubmit}
-          sx={{ mt: 2, bgcolor: '#cc0000', '&:hover': { bgcolor: '#ff0000' } }} 
+          sx={{ textAlign: 'center', mt: 10, bgcolor: '#cc0000', width: '100%' }}
         >
           Submit Review
+          
         </Button>
+        
+        
+
       </Paper>
     </Box>
   );

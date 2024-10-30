@@ -61,28 +61,11 @@ const AdminReview = () => {
   return (<>
   <AdminNavBar/>
 
-    <Box sx={{ p: 4, bgcolor: 'lavender', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Box sx={{ p: 4, bgcolor: 'white', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center',my:-20 }}>
       
-      <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', textAlign: 'center' }}>
-        Rated {overallRating} out of 5 from {totalReviews} reviews.
-      </Typography>
-      <Typography variant="h6" color="text.secondary" textAlign="center">
-        Guest favourite: One of the most loved homes on Cozy Haven Stay based on ratings, reviews, and reliability
-      </Typography>
-      <Divider sx={{ my: 2, width: '100%' }} />
+      
 
-      <Grid container spacing={2} justifyContent="center">
-        <Grid item xs={12} sm={6}>
-          <Paper elevation={3} sx={{ p: 2, borderRadius: 2, textAlign: 'center' }}>
-            <Typography variant="h6">Overall rating</Typography>
-            <Rating name="overall-rating" value={parseFloat(overallRating)} readOnly precision={0.1} sx={{ color: '#cc0000' }}/>
-            <Typography variant="body2">
-              {overallRating} stars, {((overallRating / 5) * 100).toFixed(0)}% of reviews
-            </Typography>
-          </Paper>
-        </Grid>
-      </Grid>
-
+      
       <Typography variant="h5" sx={{ mt: 4, textAlign: 'center' }}>Reviews</Typography>
       {reviews.length > 0 ? (
         <List sx={{ width: '100%', maxWidth: 600, margin: '0 auto' }}>

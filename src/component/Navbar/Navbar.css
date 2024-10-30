@@ -11,14 +11,16 @@
     left: 0; /* Align to the left */
     z-index: 1000; /* Ensure it is above other content */
     height: 60px; /* Height of navbar */
-    margin-top: 50px;
+    /* Removed margin-top: 50px; */
+    padding-bottom: 70px;
+    padding-top: 75px;
 }
 
 .Navbar .logo {
     width: 150px; /* Adjust logo width */
     height: auto; /* Maintain aspect ratio */
-    margin-right: -100px;
-    margin-left: 150px;
+    margin-right: -100px; /* Adjust if necessary */
+    margin-left: 150px; /* Adjust if necessary */
 }
 
 .navbar-menu {
@@ -79,7 +81,9 @@
     text-decoration: underline; /* Underline on hover */
 }
 
-/* Adjust body margin to account for fixed navbar */
+/* Adjust body padding to account for fixed navbar */
 body {
-    margin-top: 70px; /* Space to prevent content from hiding under the navbar */
+    margin: 0; /* Remove default body margin */
+    padding-top: 70px; 
+    /* Space to prevent content from hiding under the navbar */
 }

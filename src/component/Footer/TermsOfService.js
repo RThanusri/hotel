@@ -8,7 +8,7 @@ const TermsOfService = () => {
                 padding: '40px',
                 width: '75%', 
                 maxWidth: '2000px', 
-                margin: '80px auto 0', 
+                margin: '-60px auto 0', 
                 backgroundColor: '#ffffff', 
             }}
         >

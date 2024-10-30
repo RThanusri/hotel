@@ -7,20 +7,13 @@
   display: flex;
   height: 100vh; 
   /* Make sure the layout spans the entire viewport height */
-}.ownernavbar-right1 {
-  display: flex;
-  justify-content: center; /* Center the content horizontally */
-  align-items: center; /* Center the content vertically */
-  margin-top: 20px; /* Push the logout link to the bottom of the navbar */
-  padding: 20px; /* Add some padding around the container */
-  background-color: #cc0000;
 }
-
 .ownernavbar-right1  {
   color: #cc0000; /* Change to a red color for the text */
   text-decoration: none; /* Remove underline */
   padding: 10px 15px; /* Add padding for better click area */
   transition: color 0.3s; /* Smooth transition for hover effect */
+  padding-top: 60px;
 }
 
 .ownernavbar-right1 a:hover {

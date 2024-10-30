@@ -4,11 +4,10 @@ import UserNavbar from "./component/User/UserNavBar";
 import SRoutes from "./SRoutes";
 import 'semantic-ui-css/semantic.min.css';
 import SignIn from "./component/User/SignIn";
+import SignUp from "./component/User/SignUp"; // Import SignUp component
 import Footer from "./component/Footer/Footer";
 import { Snackbar, Alert, Button } from '@mui/material';
 import Home from "./component/Home/Home";
-import OwnerHome from "./component/Home/OwnerHome";
-import AdminHome from "./component/Home/AdminHome";
 import OwnerNavBar from "./component/HotelOwner/OwnerNavBar/OwnerNavBar";
 import AdminNavBar from "./component/Admin/AdminNavBar/AdminNavBar";
 
@@ -17,6 +16,7 @@ const SESSION_DURATION = 30 * 60 * 1000; // 30 minutes
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [signInOpen, setSignInOpen] = useState(false);
+  const [signUpOpen, setSignUpOpen] = useState(false); // State for SignUp modal
   const [sessionExpired, setSessionExpired] = useState(false);
   const [userRole, setUserRole] = useState(null);
 
@@ -28,26 +28,24 @@ function App() {
 
       if (!token) {
         setIsLoggedIn(false);
-        setSignInOpen(true); // Show login modal if no token
+        setSignInOpen(true);
         return;
       }
 
       if (loginTime && (currentTime - loginTime > SESSION_DURATION)) {
-        handleLogout(); // Log out user if session has expired
+        handleLogout();
       } else {
         const role = localStorage.getItem("role");
         if (role) {
           setIsLoggedIn(true);
           setUserRole(role);
-          console.log('User role from localStorage:', role);
         }
       }
     };
 
-    checkSession(); // Initial check
-
-    const intervalId = setInterval(checkSession, 1000); // Check every second
-    return () => clearInterval(intervalId); // Cleanup on unmount
+    checkSession();
+    const intervalId = setInterval(checkSession, 240000);
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleLoginSuccess = () => {
@@ -58,12 +56,9 @@ function App() {
     setUserRole(role);
     localStorage.setItem("loginTime", Date.now());
 
-    // Set a timeout to remove the token after 30 minutes
     setTimeout(() => {
       handleLogout();
     }, SESSION_DURATION);
-
-    console.log('User logged in with role:', role);
   };
 
   const handleLogout = () => {
@@ -83,7 +78,6 @@ function App() {
   return (
     <div className="app">
       {!isLoggedIn && <UserNavbar onLogout={handleLogout} userRole={userRole} />}
-      
       {isLoggedIn && userRole === 'HOTEL_OWNER' && <OwnerNavBar onLogout={handleLogout} />}
       {isLoggedIn && userRole === 'ADMIN' && <AdminNavBar onLogout={handleLogout} />}
       {isLoggedIn && userRole === 'USER' && <UserNavbar onLogout={handleLogout} />}
@@ -92,33 +86,31 @@ function App() {
         {!isLoggedIn && <Home />}
         <SRoutes />
       </div>
-  
+
       <Snackbar
         open={sessionExpired}
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert
-          action={
-            <Button color="inherit" onClick={() => setSignInOpen(true)}>
-              Login
-            </Button>
-          }
-          onClose={handleCloseSnackbar}
-          severity="error"
-          sx={{ width: '100%' }}
-        >
+        <Alert action={<Button color="inherit" onClick={() => setSignInOpen(true)}>Login</Button>} onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
           Session Expired! Please log in again to continue.
         </Alert>
       </Snackbar>
-  
+
       <SignIn
         open={signInOpen}
         handleClose={() => setSignInOpen(false)}
         onLoginSuccess={handleLoginSuccess}
+        openSignUp={() => setSignUpOpen(true)} // Pass openSignUp function here
+      />
+      
+      <SignUp
+        open={signUpOpen}
+        handleClose={() => setSignUpOpen(false)}
+        handleOpenSignIn={() => setSignInOpen(true)} // Open SignIn from SignUp
       />
     </div>
   );
-}  
+}
 
 export default App;

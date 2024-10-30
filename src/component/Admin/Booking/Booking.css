@@ -4,7 +4,8 @@
   flex-wrap: wrap;
   justify-content: space-around;
   gap: 20px; /* Add space between the cards */
-  padding: 20px;
+  padding: 0px;
+ 
   
   background-color: white;
 }

@@ -57,9 +57,12 @@ const HotelReviews = () => {
   };
 
   const overallRating = calculateOverallRating();
+  const handleBack = () => {
+    navigate(`/exploreroomlistings/${hotelId}`);
+  };
 
   return (
-    <Box sx={{ p: 4, bgcolor: 'lavender', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Box sx={{ p: 4, bgcolor: 'white', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', textAlign: 'center' }}>
         Rated {overallRating} out of 5 from {totalReviews} reviews.
       </Typography>
@@ -82,7 +85,7 @@ const HotelReviews = () => {
 
       <Button
         variant="contained"
-        color="primary"
+        color="error"
         sx={{ mt: 4 }}
         onClick={() => navigate(`/addReview/${hotelId}`)} 
       >
@@ -123,6 +126,24 @@ const HotelReviews = () => {
       ) : (
         <Typography textAlign="center">No reviews available for this hotel.</Typography>
       )}
+      <Button
+  onClick={handleBack}
+  variant="contained"
+  color="error"
+  sx={{
+    position: 'fixed', // Change to fixed
+    top: 16,
+    left: 16,
+    bgcolor: 'white', // Optional: set background for better visibility
+    color: '#cc0000',
+    borderColor: '#cc0000',
+    '&:hover': { bgcolor: '#f0f0f0' }, // Optional: change background on hover
+    zIndex: 1000, // Ensure it's on top of other elements
+  }}
+>
+  Back
+</Button>
+
     </Box>
   );
 };

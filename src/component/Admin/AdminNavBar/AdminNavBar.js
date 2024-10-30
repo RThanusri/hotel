@@ -55,7 +55,7 @@ const AdminNavBar = () => {
         </li>
       </ul>
       <div className="adminnavbar-right1">
-        <button onClick={logout}>Log Out</button>
+        <button style={{backgroundColor:'#cc0000'}}onClick={logout}>Log Out</button>
       </div>
 
       {showAlert && <div className={`alert ${alertType}`}>{alertMsg}</div>}
