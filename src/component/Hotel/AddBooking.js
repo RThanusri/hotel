@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   Container,
@@ -17,7 +16,6 @@ import {
 } from "@mui/material";
 
 const AddBooking = () => {
-  
   const [checkInDate, setCheckInDate] = useState("");
   const [checkOutDate, setCheckOutDate] = useState("");
   const [numberOfAdults, setNumberOfAdults] = useState(1);
@@ -26,17 +24,13 @@ const AddBooking = () => {
   const [numberOfRooms, setNumberOfRooms] = useState(1);
   const [availableRooms, setAvailableRooms] = useState([]);
   const [selectedRooms, setSelectedRooms] = useState(new Set());
-  const { hotelId } = useParams();
-  const navigate = useNavigate();
 
   const [openModal, setOpenModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [bookingInfo, setBookingInfo] = useState({});
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
-  useEffect(() => {
-    console.log("Hotel ID:", hotelId); // Check if hotelId is defined
-  }, [hotelId]);
+
   useEffect(() => {
     if (checkInDate && checkOutDate) {
       fetchAvailableRooms();
@@ -63,8 +57,19 @@ const AddBooking = () => {
     }
   };
 
+  const validateDates = () => {
+    const checkIn = new Date(checkInDate);
+    const checkOut = new Date(checkOutDate);
+    if (checkOut <= checkIn) {
+      setSnackbarMessage("Check-out date must be after check-in date.");
+      setSnackbarOpen(true);
+      return false;
+    }
+    return true;
+  };
+
   const addBooking = async () => {
-    if (selectedRooms.size !== numberOfRooms) {
+    if (!validateDates() || selectedRooms.size !== numberOfRooms) {
       setSnackbarMessage(`Please select exactly ${numberOfRooms} room(s).`);
       setSnackbarOpen(true);
       return;
@@ -94,8 +99,21 @@ const AddBooking = () => {
           },
         }
       );
-
+  
       const { bookingId, totalFare, bookingStatus } = response.data;
+  
+      // Format the key as 'booking_<bookingId>'
+      const bookingKey = `booking_${bookingId}`;
+      
+      // Create the booking object to store
+      const bookingData = {
+        totalFare,
+        bookingStatus,
+      };
+  
+      // Store in local storage
+      localStorage.setItem(bookingKey, JSON.stringify(bookingData));
+  
       setBookingInfo({ bookingId, totalFare, bookingStatus });
       setModalMessage("Booking added successfully!");
     } catch (error) {
@@ -136,7 +154,7 @@ const AddBooking = () => {
     setNumberOfAdults(validAdults);
     setNumberOfChildren(validChildren);
   };
- 
+
   return (
     <Container maxWidth="md">
       <Modal open={openModal} onClose={handleCloseModal}>
@@ -153,66 +171,30 @@ const AddBooking = () => {
             borderRadius: 2,
           }}
         >
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-        
-      </Box>
           <Typography variant="h6" component="h2">
             {modalMessage}
           </Typography>
           {modalMessage === "Booking added successfully!" && (
             <Box mt={2}>
-              <Typography variant="body1">
-                Booking ID: {bookingInfo.bookingId}
-              </Typography>
-              <Typography variant="body1">
-                Total Fare: ₹{bookingInfo.totalFare.toFixed(2)}
-              </Typography>
-              <Typography variant="body1">
-                Booking Status: {bookingInfo.bookingStatus}
-              </Typography>
+              <Typography variant="body1">Booking ID: {bookingInfo.bookingId}</Typography>
+              <Typography variant="body1">Total Fare: ₹{bookingInfo.totalFare.toFixed(2)}</Typography>
+              <Typography variant="body1">Booking Status: {bookingInfo.bookingStatus}</Typography>
             </Box>
           )}
-          <Button
-            onClick={handleCloseModal}
-            color="primary"
-            variant="contained"
-            style={{ marginTop: "20px" }}
-          >
+          <Button onClick={handleCloseModal} color="primary" variant="contained" style={{ marginTop: "20px" }}>
             Close
           </Button>
         </Box>
       </Modal>
 
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity="error"
-          sx={{ width: "100%" }}
-        >
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: "100%" }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>
 
-      <Paper
-        elevation={3}
-        style={{
-          padding: "20px",
-          backgroundColor: "#fff",
-        }}
-      >
-       
-        <Typography
-          variant="h4"
-          align="center"
-          style={{
-            fontWeight: "bold",
-            color: "#cc0000",
-          }}
-        >
+      <Paper elevation={3} style={{ padding: "20px", backgroundColor: "#fff" }}>
+        <Typography variant="h4" align="center" style={{ fontWeight: "bold", color: "#cc0000" }}>
           Reserve Your Stay
         </Typography>
         <Box mt={2}>
@@ -245,9 +227,7 @@ const AddBooking = () => {
                 label="Number of Adults"
                 type="number"
                 value={numberOfAdults}
-                onChange={(e) =>
-                  updateGuestCounts(e.target.value, numberOfChildren)
-                }
+                onChange={(e) => updateGuestCounts(e.target.value, numberOfChildren)}
                 min="1"
                 required
               />
@@ -258,9 +238,7 @@ const AddBooking = () => {
                 label="Number of Children"
                 type="number"
                 value={numberOfChildren}
-                onChange={(e) =>
-                  updateGuestCounts(numberOfAdults, e.target.value)
-                }
+                onChange={(e) => updateGuestCounts(numberOfAdults, e.target.value)}
                 min="0"
               />
             </Grid>
@@ -312,17 +290,12 @@ const AddBooking = () => {
                   </div>
                 ))
               ) : (
-                <Typography>No rooms available for the selected dates.</Typography>
+                <Typography>No available rooms for selected dates.</Typography>
               )}
             </Grid>
             <Grid item xs={12}>
-              <Button
-                variant="contained"
-                style={{ backgroundColor: "#cc0000", color: "#fff" }}
-                onClick={addBooking}
-                fullWidth
-              >
-                Add Booking
+              <Button variant="contained" color="primary" onClick={addBooking}>
+                Book Now
               </Button>
             </Grid>
           </Grid>
